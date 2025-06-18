@@ -10,7 +10,13 @@ import React, { useEffect, useState } from "react";
  *
  * Usage: <GoogleLoginButton onLogin={cb} />
  */
-const CLIENT_ID = "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com"; // TODO: Replace with actual
+/**
+ * IMPORTANT:
+ * Replace the below CLIENT_ID with your actual Google OAuth 2.0 Client ID for Web from
+ * https://console.cloud.google.com/apis/credentials (create OAuth client, type: Web, authorized JS origins).
+ * See the Goalie README OAuth section for more details.
+ */
+const CLIENT_ID = "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com"; // TODO: Replace with your actual Google OAuth client id
 
 // Small helper for localStorage namespacing
 const localKey = "goalie-google-oauth";

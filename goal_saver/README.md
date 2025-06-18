@@ -69,6 +69,27 @@ Common components include:
 - Navigation (`.navbar`)
 - Typography (`.title`, `.subtitle`, `.description`)
 
+## Google OAuth2 Calendar Integration
+
+### Setting up Google Authentication for Calendar Access
+
+This app supports Google Calendar integration using OAuth 2.0 (client-side, PKCE via [Google Identity Services](https://developers.google.com/identity/oauth2/web/guides/overview)).
+
+**To enable OAuth login:**
+1. Go to the [Google Cloud Console - Credentials](https://console.cloud.google.com/apis/credentials).
+2. Create a new **OAuth 2.0 Client ID** (type: "Web application").
+3. Under "Authorized JavaScript origins", add your local dev server (e.g., `http://localhost:3000`).
+4. Copy your new Client ID to `goal_saver/src/GoogleLoginButton.js` — set the `CLIENT_ID` at the top.
+5. Save and restart the app.
+6. When users click "Connect Google Calendar", they will be prompted to sign in with Google and grant the **Calendar (calendar.events) scope**. The permission prompt is clear: Goalie only requests access to add/view your calendar events (not email or files).
+
+**Token Storage:**  
+Access tokens are stored securely in `localStorage` under a Goalie-specific key, and are never sent to any third party. If the app ever needs to access Google Calendar APIs, it uses only your own local token.
+
+**Note:**  
+- You can always disconnect your Google account with the "Disconnect" button.
+- If your app fails to reach the Google login dialog, check that your JS origins are properly set in Google Cloud Console.
+
 ## Learn More
 
 To learn React, check out the [React documentation](https://reactjs.org/).
