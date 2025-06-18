@@ -1,27 +1,27 @@
 :root {
-  /* Goalie Brand - Modern Striking Dark Palette */
-  --goalie-darkest: #10131b;      /* Main background */
-  --goalie-dark: #161920;         /* Navbar/background accent */
-  --goalie-card: #232843;         /* Card backgrounds */
-  --goalie-card-alt: #232446;     /* Alternate card backgrounds */
-  --goalie-light: #25fff7;        /* Accent teal/aqua */
-  --goalie-accent: #67ff83;       /* Electric green accent */
-  --goalie-warn: #ffde6e;         /* Gold for warning/tips */
-  --goalie-pink: #ff57b2;         /* Accent pink */
-  --goalie-brand: #38ffd9;        /* Brand feature */
-  --goalie-blue: #50a8ff;         /* Accent blue */
-  --goalie-purple: #7e42fa;       /* Subtle purple accent */
-  --goalie-shadow: 0 2px 18px 0 #111b3044;
+  /* Goalie Brand - Harmonious Softened Modern Dark Palette */
+  --goalie-darkest: #17181c;      /* Main background: Desaturated midnight */
+  --goalie-dark: #22232b;         /* Navbar/background accent: Blue-charcoal */
+  --goalie-card: #232537;         /* Card backgrounds: Muted indigo/navy */
+  --goalie-card-alt: #262940;     /* Alternate card backgrounds: Muted, lighter blue */
+  --goalie-light: #61e5e2;        /* Accent teal: Soft cyan (less electric) */
+  --goalie-accent: #76d98b;       /* Pleasant minty green accent */
+  --goalie-warn: #ffe0a5;         /* Soft gold/almond for warnings/tips */
+  --goalie-pink: #f7a9ca;         /* Gentle pastel pink */
+  --goalie-brand: #36e4c0;        /* Refined soft brand teal */
+  --goalie-blue: #79b4fa;         /* Gentle blue accent */
+  --goalie-purple: #ab93e7;       /* Soft lavender/muted purple */
+  --goalie-shadow: 0 2px 18px 0 #24253f36;
 
-  --text-color: #edf2fa;          /* Main text */
-  --text-secondary: #97a4b8;      /* Muted/secondary */
-  --text-heading: #f2fff9;        /* Headings */
-  --border-color: #22253e;        /* Card, nav, etc */
-  --border-accent: #24ffc388;     /* Glowing accent */
-  --shadow-card: 0 5px 28px 0 #121e384d;
-  --shadow-navbar: 0 2px 16px 0 #23264e55;
-  --shadow-btn: 0 0px 6px 0 #36ffd188;
-  --ring-focus: 0 0 0 2px #36ffd199;
+  --text-color: #e7eaf3;          /* Main text: Soft off-white */
+  --text-secondary: #adb7c8;      /* Muted/secondary: muted blue-gray */
+  --text-heading: #f5f6fe;        /* Headings: Nearly white */
+  --border-color: #24263a;        /* Card/nav borders: very dark blue */
+  --border-accent: #83efd055;     /* Glowing accent border: subtle mint glow */
+  --shadow-card: 0 8px 29px 0 #26274b23;
+  --shadow-navbar: 0 2px 20px 0 #383b5585;
+  --shadow-btn: 0 0px 7px 0 #7feec570;
+  --ring-focus: 0 0 0 2px #67ffbb77;
   --focus-outline: 2px solid var(--goalie-brand);
 }
 
@@ -35,6 +35,7 @@ body {
   min-height: 100vh;
   letter-spacing: 0.04em;
   font-size: 16px;
+  transition: background 0.22s, color 0.22s;
 }
 
 .app,
@@ -99,9 +100,9 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 21px;
-  background: linear-gradient(100deg, #19202b 70%, #1d263b 100%);
+  background: linear-gradient(99deg, #202336 75%, #232943 100%);
   border-radius: 0 0 50px 50px;
-  box-shadow: 0 19px 29px -18px #22253e44;
+  box-shadow: 0 19px 28px -16px #24274f34;
 }
 
 .subtitle {
@@ -133,19 +134,19 @@ body {
 
 /* BUTTONS */
 .btn {
-  background: linear-gradient(90deg, var(--goalie-light) 60%, var(--goalie-accent) 120%);
+  background: linear-gradient(89deg, var(--goalie-light) 60%, var(--goalie-accent) 120%);
   color: var(--goalie-darkest);
   border: none;
-  border-radius: 7px;
+  border-radius: 8px;
   padding: 10px 26px;
   font-size: 1rem;
   font-weight: 700;
   box-shadow: var(--shadow-btn);
-  transition: 
-      background 0.18s cubic-bezier(.42,0,.3,1),
-      color 0.18s cubic-bezier(.42,0,.3,1),
-      transform 0.13s cubic-bezier(.63,0,.22,1),
-      box-shadow 0.15s;
+  transition:
+    background 0.18s cubic-bezier(.42,0,.3,1),
+    color 0.18s cubic-bezier(.42,0,.3,1),
+    transform 0.13s cubic-bezier(.63,0,.22,1),
+    box-shadow 0.15s;
   cursor: pointer;
   outline: none;
   border-bottom: 2.5px solid #00000025;
@@ -157,10 +158,10 @@ body {
   box-shadow: var(--ring-focus), var(--shadow-btn);
 }
 .btn:hover, .btn:focus {
-  background: linear-gradient(102deg, var(--goalie-accent) 35%, var(--goalie-brand) 100%);
+  background: linear-gradient(102deg, var(--goalie-accent) 30%, var(--goalie-brand) 100%);
   color: var(--goalie-darkest);
-  transform: translateY(-2.5px) scale(1.024);
-  box-shadow: 0 4px 19px 0 #38ffd940;
+  transform: translateY(-2.5px) scale(1.025);
+  box-shadow: 0 4px 14px 0 var(--goalie-accent);
 }
 .btn-large {
   padding: 13px 32px;
@@ -170,31 +171,31 @@ body {
 .btn-brand {
   background: linear-gradient(93deg, var(--goalie-brand) 65%, var(--goalie-blue) 100%);
   color: var(--goalie-darkest);
-  border-bottom: 2px solid #23284336;
+  border-bottom: 2px solid var(--goalie-card-alt);
   font-weight: 800;
 }
 .btn-brand:hover {
-  background: var(--goalie-blue);
+  background: linear-gradient(95deg, var(--goalie-blue) 55%, var(--goalie-brand) 120%);
   color: var(--goalie-darkest);
-  box-shadow: 0 6px 28px 0 #50a8ff66;
+  box-shadow: 0 6px 24px 0 var(--goalie-blue);
 }
 .btn-danger {
-  background: linear-gradient(95deg, #2a142b 45%, var(--goalie-pink) 130%);
-  color: #ffb7dd;
-  border: 1.5px solid #ae386d;
+  background: linear-gradient(91deg, #302232 52%, var(--goalie-pink) 130%);
+  color: #f7e8f1;
+  border: 1.5px solid #a7758a;
 }
 .btn-danger:hover {
   background: var(--goalie-pink);
   color: #331022;
   border: 2px solid var(--goalie-pink);
-  box-shadow: 0 4px 14px #ff63c365;
+  box-shadow: 0 4px 14px #f7a9ca60;
 }
 
 /* CARD */
 .goal-card {
-  background: linear-gradient(127deg, var(--goalie-card) 85%, var(--goalie-dark) 98%);
+  background: linear-gradient(124deg, var(--goalie-card) 88%, var(--goalie-card-alt) 100%);
   border: 2.5px solid var(--goalie-brand);
-  border-radius: 19px;
+  border-radius: 17px;
   padding: 26px 23px 21px 27px;
   box-shadow: var(--shadow-card);
   display: flex;
@@ -207,7 +208,7 @@ body {
 }
 .goal-card .active {
   border-color: var(--goalie-light) !important;
-  box-shadow: 0 0 0 2.5px var(--goalie-accent), 0 6px 24px #38ffd92a;
+  box-shadow: 0 0 0 2.5px var(--goalie-accent), 0 6px 24px #6de5c220;
 }
 
 input, select {
@@ -231,14 +232,14 @@ input:focus, select:focus {
 
 /* Goal FORM */
 .goal-form {
-  background: linear-gradient(120deg, var(--goalie-card-alt) 90%, #1b1727 110%);
+  background: linear-gradient(116deg, var(--goalie-card-alt) 94%, var(--goalie-card) 109%);
   border: 2.5px solid var(--goalie-light);
-  border-radius: 15px;
+  border-radius: 13px;
   padding: 33px 31px 20px 31px;
   margin-bottom: 36px;
   margin-top: 14px;
   max-width: 495px;
-  box-shadow: 0 4px 19px 0 #1cfede24, 0 1px 8px 0 #22253e1c;
+  box-shadow: 0 4px 16px 0 #61e5e22a, 0 1px 8px 0 #7799ef1a;
 }
 .goal-form label {
   display: block;
@@ -256,15 +257,15 @@ input:focus, select:focus {
 }
 
 .progress-bar-bg {
-  background: #23264b;
+  background: #212337;
   border-radius: 10px;
-  height: 18px;
+  height: 17px;
   margin-left: 42px;
   margin-right: 20px;
   position: relative;
-  margin-top: 5px;
-  margin-bottom: 7px;
-  box-shadow: 0 1.5px 8px #38ffd90b;
+  margin-top: 6px;
+  margin-bottom: 6px;
+  box-shadow: 0 1.5px 8px #36e4c022;
 }
 
 .progress-bar-fg {
@@ -277,9 +278,9 @@ input:focus, select:focus {
 
 /* MINI CHART, PIE CHART, ETC */
 .pie-chart-section {
-  background: linear-gradient(115deg, var(--goalie-card) 84%, #171d34 100%);
-  border-radius: 21px;
-  box-shadow: 0 3.5px 20px 0 #1e243a90, 0 1px 12px #10131b30;
+  background: linear-gradient(118deg, var(--goalie-card) 82%, var(--goalie-dark) 100%);
+  border-radius: 22px;
+  box-shadow: 0 6.5px 28px 0 #23234417, 0 1px 12px #27284a20;
   margin: 38px 0 41px 0;
   padding: 30px 0 29px 0;
 }
@@ -289,41 +290,41 @@ input:focus, select:focus {
   letter-spacing: 0.6px;
   font-weight: 600;
   margin-bottom: 12px;
-  font-size: 1.15em;
-  text-shadow: 0 1px 12px #25fff730;
+  font-size: 1.17em;
+  text-shadow: 0 1.5px 11px #61e5e220;
 }
 
 /* TIPS / PROMPTS / REMINDERS */
 .tip-to-save {
-  background: linear-gradient(92deg, #262766 55%, #171d2d 100%);
+  background: linear-gradient(92deg, #27305b 53%, var(--goalie-card-alt) 100%);
   color: var(--goalie-pink);
-  border-radius: 12px;
+  border-radius: 14px;
   margin: 18px 0 16px 0;
-  padding: 15px 22px 14px 19px;
-  font-size: 1.18em;
-  box-shadow: 0 3px 15px 0 #601c7945, 0 2px 7px #25fff712;
+  padding: 16px 24px 14px 21px;
+  font-size: 1.19em;
+  box-shadow: 0 2.5px 15px 0 #8190ff22, 0 2px 7px #c0f6ef18;
   display: flex;
-  gap: 14px;
+  gap: 15px;
   align-items: flex-start;
 }
 .tip-icon {
   font-size: 1.5em;
   margin-right: 9px;
-  filter: drop-shadow(0 1px 8px #ff57b230);
+  filter: drop-shadow(0 1px 8px #f7a9ca65);
 }
 
 .reminder-prompt {
-  background: linear-gradient(95deg,#281635 77%, #22232c 100%);
-  border: 2px solid var(--goalie-warn);
+  background: linear-gradient(93deg,#312e56 71%, var(--goalie-card-alt) 100%);
+  border: 2.5px solid var(--goalie-warn);
   color: var(--goalie-warn);
-  border-radius: 10px;
+  border-radius: 12px;
   padding: 20px 27px;
   position: fixed;
   top: 81px;
   right: 45px;
   z-index: 102;
-  min-width: 235px;
-  box-shadow: 0 4px 22px 0 #2b0f4988, 0 2px 11px #231a2644;
+  min-width: 240px;
+  box-shadow: 0 4px 18px 0 #ffe0a516, 0 2px 10px #a38be633;
   font-weight: 600;
   font-size: 18px;
   display: flex;
