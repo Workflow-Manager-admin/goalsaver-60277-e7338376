@@ -6,6 +6,7 @@ import Tooltip from "./Tooltip";
 import LoadingOverlay from "./LoadingOverlay";
 import SmartHelper from "./SmartHelper";
 import GoogleLoginButton from "./GoogleLoginButton";
+import { addGoalReminderToCalendar } from "./GoogleCalendarUtils";
 
 /* Goalie Brand Palette */
 const BRAND = {
@@ -48,6 +49,9 @@ function MainContainer() {
   const [reminders, setReminders] = useState([]);
   // Form state
   const [showGoalForm, setShowGoalForm] = useState(false);
+
+  // For Google Calendar integration feedback
+  const [calendarMsg, setCalendarMsg] = useState(null); // {status, message}
 
   // Global loading/progress state for major actions
   const [loading, setLoading] = useState(false);
@@ -151,8 +155,9 @@ function MainContainer() {
   }
 
   // Public: Add new goal
-  function addGoal(goal) {
-    setGoals((prev) => [...prev, {
+  async function addGoal(goal) {
+    // Add the goal first
+    const newGoal = {
       ...goal,
       id: Date.now(),
       progress: 0,
@@ -160,9 +165,20 @@ function MainContainer() {
       remindersEnabled: true,
       isActive: true,
       savingsHistory: [],
-      createdAt: new Date().toISOString(), // Store for context-aware helpers!
-    }]);
+      createdAt: new Date().toISOString(),
+    };
+    setGoals((prev) => [...prev, newGoal]);
     setShowGoalForm(false);
+
+    // Send Google Calendar event if OAuth connected (async, show notification)
+    const calendarRes = await addGoalReminderToCalendar(newGoal, "created");
+    if (calendarRes.status === "success") {
+      setCalendarMsg({ status: "success", message: calendarRes.message });
+    } else if (calendarRes.status === "error" && calendarRes.message) {
+      setCalendarMsg({ status: "error", message: calendarRes.message });
+    }
+    // Timeout to hide notification
+    setTimeout(() => setCalendarMsg(null), 4000);
   }
 
   // Update a goal progress
@@ -193,10 +209,23 @@ function MainContainer() {
   }
 
   // Modify goal (edit, activate/deactivate etc)
-  function modifyGoal(goalId, data) {
+  async function modifyGoal(goalId, data) {
     setGoals((prev) =>
       prev.map((g) => (g.id === goalId ? { ...g, ...data } : g))
     );
+    // Only create a Calendar event if data contains fields relevant to reminder (could be improved)
+    const theGoal = goals.find((g) => g.id === goalId);
+    if (theGoal && (data.title || data.amount || data.deadline)) {
+      // After updating, add/refresh calendar reminder
+      const updatedGoal = { ...theGoal, ...data };
+      const calendarRes = await addGoalReminderToCalendar(updatedGoal, "updated");
+      if (calendarRes.status === "success") {
+        setCalendarMsg({ status: "success", message: calendarRes.message });
+      } else if (calendarRes.status === "error" && calendarRes.message) {
+        setCalendarMsg({ status: "error", message: calendarRes.message });
+      }
+      setTimeout(() => setCalendarMsg(null), 4200);
+    }
   }
 
   // Remove goal
@@ -472,6 +501,35 @@ function MainContainer() {
             onDismiss={() => dismissReminder(reminder.id)}
           />
         ))}
+      {/* Google Calendar message/confirmation */}
+      {calendarMsg && (
+        <div
+          style={{
+            position: "fixed",
+            top: 75,
+            left: "50%",
+            transform: "translateX(-50%)",
+            background: calendarMsg.status === "success"
+              ? "linear-gradient(92deg,#f7fffc,#e8eefa 120%)"
+              : "linear-gradient(92deg,#fff3f2,#fcdedd 120%)",
+            color: calendarMsg.status === "success" ? "#218679" : "#be505a",
+            fontWeight: 570,
+            fontSize: 17,
+            zIndex: 1103,
+            border: "1.5px solid " + (calendarMsg.status === "success" ? "#bff7f7" : "#f8bdbd"),
+            borderRadius: 10,
+            boxShadow: "0 3px 18px #dfebf540",
+            minWidth: 260,
+            maxWidth: 420,
+            padding: "15px 22px",
+            margin: "10px auto"
+          }}
+          aria-live="polite"
+          aria-atomic="true"
+        >
+          {calendarMsg.message}
+        </div>
+      )}
       {/* Main Content */}
       <main style={{ paddingTop: 100, maxWidth: 940, margin: "0 auto" }}>
         <div className="container">
