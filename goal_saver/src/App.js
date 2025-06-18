@@ -201,6 +201,7 @@ function MainContainer() {
 
   // --- FREQUENCY SELECTION PROMPT ---
   if (!frequency) {
+    // Enhanced onboarding overlay for frequency selection, with step indicator and contextual helper
     return (
       <div
         className="goalie-main"
@@ -232,50 +233,89 @@ function MainContainer() {
             </span>
           </div>
         </nav>
-        <div style={{
-          background: "linear-gradient(97deg,#f9fbff 72%,var(--goalie-accent) 120%)",
-          borderRadius: 18,
-          marginTop: 38,
-          padding: 38,
-          marginBottom: 24,
-          boxShadow: "0 2px 16px #c8d5ef33",
-          minWidth: 285,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center"
-        }}>
-          <h2 style={{ color: "var(--goalie-blue)", fontSize: 28, fontWeight: 700, marginBottom: 15 }}>
-            First, how often do you want to save?
-          </h2>
-          <div style={{ color: "#667295", fontSize: 16, marginBottom: 24, textAlign: "center" }}>
-            Choose a savings plan frequency. You can change this any time.
+        <div
+          style={{
+            background: "linear-gradient(97deg,#f9fbff 72%,var(--goalie-accent) 120%)",
+            borderRadius: 18,
+            marginTop: 38,
+            padding: 38,
+            marginBottom: 24,
+            boxShadow: "0 2px 16px #c8d5ef33",
+            minWidth: 295,
+            minHeight: 280,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            position: "relative"
+          }}
+        >
+          <div
+            style={{
+              position: "absolute",
+              top: 18,
+              right: 25,
+              fontSize: 14,
+              color: "var(--goalie-blue)",
+              fontWeight: 500,
+              opacity: 0.92
+            }}
+          >
+            Step 1 of 2
           </div>
-          <div style={{ display: "flex", gap: 20, margin: "10px 0" }}>
+          <h2 style={{ color: "var(--goalie-blue)", fontSize: 28, fontWeight: 700, marginBottom: 7, marginTop: 8 }}>
+            Pick how often you want to save
+          </h2>
+          <div style={{ color: "#667295", fontSize: "1.08rem", marginBottom: 24, marginTop: 8, maxWidth: 350, textAlign: "center" }}>
+            Goalie gives you saving recommendations based on plan frequency. Don’t worry, you can change this later at any time!
+          </div>
+          <div style={{ display: "flex", gap: 18, margin: "8px 0", marginBottom: 15, flexWrap: "wrap", justifyContent: "center" }}>
             <button
               className="btn btn-large"
-              style={{ background: "var(--goalie-blue)", color: "#263232" }}
+              style={{ background: "var(--goalie-blue)", color: "#263232", borderWidth: 2 }}
               onClick={() => handleSetFrequency("daily")}
+              aria-label="Select daily savings"
             >
-              Daily
+              <span role="img" aria-label="calendar">📅</span> Daily
             </button>
             <button
               className="btn btn-large"
-              style={{ background: "var(--goalie-accent)", color: "#872a6a" }}
+              style={{ background: "var(--goalie-accent)", color: "#872a6a", borderWidth: 2 }}
               onClick={() => handleSetFrequency("weekly")}
+              aria-label="Select weekly savings"
             >
-              Weekly
+              <span role="img" aria-label="calendar">🗓️</span> Weekly
             </button>
             <button
               className="btn btn-large"
-              style={{ background: "var(--goalie-brand)", color: "#245252" }}
+              style={{ background: "var(--goalie-brand)", color: "#245252", borderWidth: 2 }}
               onClick={() => handleSetFrequency("monthly")}
+              aria-label="Select monthly savings"
             >
-              Monthly
+              <span role="img" aria-label="calendar">🗓️</span> Monthly
             </button>
+          </div>
+
+          <div style={{
+            background: "#fffbe8",
+            borderRadius: 7,
+            color: "#9a8117",
+            fontSize: 14,
+            maxWidth: 340,
+            fontWeight: 500,
+            padding: "10px 13px",
+            marginTop: 8,
+            display: "flex",
+            alignItems: "center",
+            gap: 9
+          }}>
+            <span role="img" aria-label="helper tip">💡</span> 
+            <span>
+              Unsure? We suggest matching your savings frequency to how often you get paid.
+            </span>
           </div>
         </div>
-        <div style={{ color: "#b7bbc6", fontSize: 13, maxWidth: 320, textAlign: "center" }}>
-          This determines how your savings recommendations are distributed.
+        <div style={{ color: "#b7bbc6", fontSize: 13, maxWidth: 330, textAlign: "center", marginTop: 12 }}>
+          You can always revisit your plan in the menu above.
         </div>
       </div>
     );
@@ -323,6 +363,7 @@ function MainContainer() {
                 background: "var(--goalie-card-alt)",
                 color: "#457057"
               }}
+              aria-label="Change savings frequency"
             >
               <option value="daily">Daily</option>
               <option value="weekly">Weekly</option>
@@ -332,13 +373,32 @@ function MainContainer() {
               className="btn btn-brand"
               style={{ marginLeft: 18 }}
               onClick={() => setShowGoalForm((x) => !x)}
+              aria-label={showGoalForm ? "Cancel goal creation" : "Add a new goal"}
             >
-              {showGoalForm ? "Cancel" : "New Goal"}
+              {showGoalForm ? "Cancel" : "+ New Goal"}
             </button>
           </div>
         </div>
       </nav>
-
+      {/* Progress helper if zero goals */}
+      {(goals.length === 0 && !showGoalForm) && (
+        <div style={{
+          background: "#f9fded",
+          color: "#648749",
+          margin: "30px auto 0 auto",
+          marginTop: 110,
+          maxWidth: 420,
+          borderRadius: 13,
+          fontSize: 17,
+          boxShadow: "0 0.5px 8px #e8eed926",
+          padding: "22px 28px",
+          textAlign: "center",
+          letterSpacing: ".04em"
+        }}>
+          <span role="img" aria-label="tip" style={{fontSize:24, marginRight:7}}>✨</span>
+          Ready to set a goal? Click <b>+ New Goal</b> to get started!
+        </div>
+      )}
       {/* Reminders */}
       {reminders.length > 0 &&
         reminders.map((reminder) => (
@@ -348,7 +408,6 @@ function MainContainer() {
             onDismiss={() => dismissReminder(reminder.id)}
           />
         ))}
-
       {/* Main Content */}
       <main style={{ paddingTop: 100, maxWidth: 940, margin: "0 auto" }}>
         <div className="container">
@@ -372,6 +431,21 @@ function MainContainer() {
               Set financial goals, plan your savings, track your progress, and build saving habits—
               all in one simple, offline-friendly virtual piggy bank.
             </p>
+            {/* Show dynamic helper if no goals yet */}
+            {(goals.length === 0 && !showGoalForm) && (
+              <div style={{
+                background: "#fffbe8",
+                color: "#8f5070",
+                borderRadius: 7,
+                fontWeight: 500,
+                fontSize: 15,
+                padding: "12px 16px",
+                marginTop: 15,
+                boxShadow: "0 0.5px 8px #f0eecb36"
+              }}>
+                💡 Pro tip: Saving is easier with a goal! Tap <b>+ New Goal</b> above to set your first target.
+              </div>
+            )}
           </section>
           {/* Savings Distribution Pie Chart */}
           <SavingsPieChart goals={goals} />
@@ -440,6 +514,17 @@ function GoalForm({ onSave, onCancel, frequency }) {
   }
   perPeriodEst = Math.round(perPeriodEst * 100) / 100;
 
+  // Determine progress step for onboarding overlay
+  const isFirstGoal = (() => {
+    try {
+      const stored = localStorage.getItem("goalie-goals");
+      const arr = stored ? JSON.parse(stored) : [];
+      return arr.length === 0;
+    } catch {
+      return false;
+    }
+  })();
+
   // PUBLIC_INTERFACE
   function handleSubmit(e) {
     e.preventDefault();
@@ -461,8 +546,36 @@ function GoalForm({ onSave, onCancel, frequency }) {
   }
 
   return (
-    <form className="goal-form" style={formStyles.form} onSubmit={handleSubmit}>
-      <h3 style={formStyles.title}>New Goal</h3>
+    <form className="goal-form" style={{ ...formStyles.form, position: "relative" }} onSubmit={handleSubmit}>
+      {isFirstGoal && (
+        <div
+          style={{
+            position: "absolute",
+            top: 12,
+            right: 19,
+            fontSize: 14,
+            color: "var(--goalie-blue)",
+            fontWeight: 500,
+            opacity: 0.92
+          }}
+        >
+          Step 2 of 2
+        </div>
+      )}
+      <h3 style={formStyles.title}>{isFirstGoal ? "Let's create your first goal" : "New Goal"}</h3>
+      {isFirstGoal && (
+        <div style={{
+          background: "#fce4ec",
+          color: "#9c5875",
+          borderRadius: 5,
+          padding: "9px 14px",
+          fontSize: 15,
+          marginBottom: 12
+        }}>
+          <span role="img" aria-label="flag">🎯</span>  
+          Give your goal a memorable name, savings amount, and deadline.
+        </div>
+      )}
       <label style={formStyles.label}>
         Goal Name
         <input
@@ -471,6 +584,9 @@ function GoalForm({ onSave, onCancel, frequency }) {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           style={formStyles.input}
+          placeholder={isFirstGoal ? "eg. Emergency Fund" : "Goal name"}
+          aria-label="Goal name"
+          autoFocus
         />
       </label>
       <label style={formStyles.label}>
@@ -482,6 +598,8 @@ function GoalForm({ onSave, onCancel, frequency }) {
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
           style={formStyles.input}
+          placeholder={isFirstGoal ? "eg. 10000" : ""}
+          aria-label="Goal amount"
         />
       </label>
       <label style={formStyles.label}>
@@ -492,26 +610,29 @@ function GoalForm({ onSave, onCancel, frequency }) {
           value={deadline}
           onChange={(e) => setDeadline(e.target.value)}
           style={formStyles.input}
+          aria-label="Goal deadline"
         />
       </label>
       <label style={formStyles.label}>
-        Monthly Income (optional)
+        Monthly Income <span style={{color:"#b7bbc6", fontWeight:400}}>(optional)</span>
         <input
           type="number"
           min="0"
           value={income}
           onChange={(e) => setIncome(e.target.value)}
           style={formStyles.input}
+          aria-label="Monthly income"
         />
       </label>
       <label style={formStyles.label}>
-        Monthly Spending (optional)
+        Monthly Spending <span style={{color:"#b7bbc6", fontWeight:400}}>(optional)</span>
         <input
           type="number"
           min="0"
           value={spending}
           onChange={(e) => setSpending(e.target.value)}
           style={formStyles.input}
+          aria-label="Monthly spending"
         />
       </label>
       {amount && deadline && (
@@ -528,6 +649,7 @@ function GoalForm({ onSave, onCancel, frequency }) {
           type="submit"
           className="btn"
           style={{ background: BRAND.primary, color: "#fff" }}
+          aria-label="Add goal"
         >
           Add Goal
         </button>
@@ -536,10 +658,23 @@ function GoalForm({ onSave, onCancel, frequency }) {
           className="btn"
           style={{ background: "#31344a", color: "#eee" }}
           onClick={onCancel}
+          aria-label="Cancel goal creation"
         >
           Cancel
         </button>
       </div>
+      {isFirstGoal && (
+        <div style={{
+          background: "#fffbe8",
+          color: "#93810a",
+          borderRadius: 5,
+          marginTop: 20,
+          padding: "8px 11px",
+          fontSize: 14
+        }}>
+          💡 You’ll get automated savings suggestions and reminders once you set your first goal.
+        </div>
+      )}
     </form>
   );
 }
