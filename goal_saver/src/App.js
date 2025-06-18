@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
+import TipToSave from "./TipToSave";
 
 /* Goalie Dark Mode Brand Palette */
 const BRAND = {
@@ -177,7 +178,7 @@ function MainContainer() {
         <div className="container">
           {/* Welcome & summary */}
           <section style={{
-            marginBottom: 30,
+            marginBottom: 16,
             padding: "18px 14px",
             background: "linear-gradient(91deg,var(--goalie-darkest),var(--goalie-card-alt) 98%)",
             borderRadius: 12,
@@ -196,6 +197,7 @@ function MainContainer() {
               all in one simple, offline-friendly virtual piggy bank.
             </p>
           </section>
+          <TipToSave />
           {/* Goal creation form */}
           {showGoalForm && <GoalForm onSave={addGoal} onCancel={() => setShowGoalForm(false)} />}
           {/* Multiple Goals Management */}
