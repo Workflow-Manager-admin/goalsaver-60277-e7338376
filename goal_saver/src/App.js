@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 import TipToSave from "./TipToSave";
+import SavingsPieChart from "./SavingsPieChart";
 
 /* Goalie Dark Mode Brand Palette */
 const BRAND = {
@@ -197,6 +198,8 @@ function MainContainer() {
               all in one simple, offline-friendly virtual piggy bank.
             </p>
           </section>
+          {/* Savings Distribution Pie Chart */}
+          <SavingsPieChart goals={goals} />
           <TipToSave />
           {/* Goal creation form */}
           {showGoalForm && <GoalForm onSave={addGoal} onCancel={() => setShowGoalForm(false)} />}

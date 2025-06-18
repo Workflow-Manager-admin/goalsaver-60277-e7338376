@@ -1,0 +1,5 @@
+Instructions: The savings distribution pie chart uses the `recharts` library. If not already installed, run this command inside the goal_saver directory:
+
+npm install recharts
+
+This will add the required charting library so the dashboard visualization works.
