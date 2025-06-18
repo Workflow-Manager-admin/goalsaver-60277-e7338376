@@ -34,3 +34,288 @@ cached modules 2.78 MiB [cached] 633 modules
 runtime modules 27.5 KiB 14 modules
 ./src/GoogleLoginButton.js 7.86 KiB [built]
 webpack 5.99.9 compiled successfully in 220 ms
+assets by status 1.98 KiB [cached] 1 asset
+assets by path *.js 3.08 MiB
+  asset bundle.js 3.07 MiB [emitted] (name: main)
+  asset main.113f4a2433b4f7be49c6.hot-update.js 11.1 KiB [emitted] [immutable] [hmr] (name: main)
+asset main.113f4a2433b4f7be49c6.hot-update.json 28 bytes [emitted] [immutable] [hmr]
+Entrypoint main 3.08 MiB = bundle.js 3.07 MiB main.113f4a2433b4f7be49c6.hot-update.js 11.1 KiB
+cached modules 2.78 MiB [cached] 633 modules
+runtime modules 27.5 KiB 14 modules
+./src/GoogleLoginButton.js 8.1 KiB [built] [code generated]
+webpack 5.99.9 compiled successfully in 237 ms
+assets by status 1.98 KiB [cached] 1 asset
+assets by path *.js 3.08 MiB
+  asset bundle.js 3.07 MiB [emitted] (name: main)
+  asset main.eaa7fc4feb15382eeb7d.hot-update.js 11.3 KiB [emitted] [immutable] [hmr] (name: main)
+asset main.eaa7fc4feb15382eeb7d.hot-update.json 28 bytes [emitted] [immutable] [hmr]
+Entrypoint main 3.08 MiB = bundle.js 3.07 MiB main.eaa7fc4feb15382eeb7d.hot-update.js 11.3 KiB
+cached modules 2.78 MiB [cached] 633 modules
+runtime modules 27.5 KiB 14 modules
+./src/GoogleLoginButton.js 8.31 KiB [built] [code generated]
+webpack 5.99.9 compiled successfully in 134 ms
+assets by status 1.98 KiB [cached] 1 asset
+assets by path *.js 3.08 MiB
+  asset bundle.js 3.07 MiB [emitted] (name: main)
+  asset main.cb6d9c374410484ed7e7.hot-update.js 11.9 KiB [emitted] [immutable] [hmr] (name: main)
+asset main.cb6d9c374410484ed7e7.hot-update.json 28 bytes [emitted] [immutable] [hmr]
+Entrypoint main 3.08 MiB = bundle.js 3.07 MiB main.cb6d9c374410484ed7e7.hot-update.js 11.9 KiB
+cached modules 2.78 MiB [cached] 633 modules
+runtime modules 27.5 KiB 14 modules
+./src/GoogleLoginButton.js 8.88 KiB [built] [code generated]
+webpack 5.99.9 compiled successfully in 118 ms
+assets by status 1.98 KiB [cached] 1 asset
+assets by path *.js 3.08 MiB
+  asset bundle.js 3.07 MiB [emitted] (name: main)
+  asset main.86b2a3662c2d958d6983.hot-update.js 12.3 KiB [emitted] [immutable] [hmr] (name: main)
+asset main.86b2a3662c2d958d6983.hot-update.json 28 bytes [emitted] [immutable] [hmr]
+Entrypoint main 3.08 MiB = bundle.js 3.07 MiB main.86b2a3662c2d958d6983.hot-update.js 12.3 KiB
+cached modules 2.78 MiB [cached] 633 modules
+runtime modules 27.5 KiB 14 modules
+./src/GoogleLoginButton.js 9.21 KiB [built] [code generated]
+webpack 5.99.9 compiled successfully in 89 ms
+assets by status 1.98 KiB [cached] 1 asset
+assets by path *.js 3.09 MiB
+  asset bundle.js 3.07 MiB [emitted] (name: main)
+  asset main.cdbc503084e2f9c9f458.hot-update.js 13.2 KiB [emitted] [immutable] [hmr] (name: main)
+asset main.cdbc503084e2f9c9f458.hot-update.json 28 bytes [emitted] [immutable] [hmr]
+Entrypoint main 3.09 MiB = bundle.js 3.07 MiB main.cdbc503084e2f9c9f458.hot-update.js 13.2 KiB
+cached modules 2.78 MiB [cached] 633 modules
+runtime modules 27.5 KiB 14 modules
+./src/GoogleLoginButton.js 10.1 KiB [built] [code generated]
+webpack 5.99.9 compiled successfully in 91 ms
+assets by status 1.98 KiB [cached] 1 asset
+assets by path *.js 3.08 MiB
+  asset bundle.js 3.07 MiB [emitted] (name: main)
+  asset main.c4f87108e576fa87e4be.hot-update.js 9.61 KiB [emitted] [immutable] [hmr] (name: main)
+asset main.c4f87108e576fa87e4be.hot-update.json 28 bytes [emitted] [immutable] [hmr]
+Entrypoint main 3.08 MiB = bundle.js 3.07 MiB main.c4f87108e576fa87e4be.hot-update.js 9.61 KiB
+cached modules 2.72 MiB [cached] 631 modules
+runtime modules 27.5 KiB 14 modules
+javascript modules 69 KiB
+  ./src/App.js 54.8 KiB [code generated]
+  ./src/GoogleCalendarUtils.js 39 bytes [built] [code generated] [1 error]
+  ./src/CalendarNudges.js 14.1 KiB [code generated]
+
+ERROR in ./src/GoogleCalendarUtils.js
+Module build failed (from ./node_modules/babel-loader/lib/index.js):
+SyntaxError: /home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/src/GoogleCalendarUtils.js: Unterminated string constant. (320:11)
+
+  318 |     source: {
+  319 |       title: "Goalie App",
+> 320 |       url: "https:/**
+      |            ^
+  321 |  * ========= GOOGLE CALENDAR UTILS DEBUG CHECKLIST =========
+  322 |  * 
+  323 |  * - Requires valid access_token with calendar.events scope in localStorage ("goalie-google-oauth")
+    at constructor (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:363:19)
+    at JSXParserMixin.raise (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:6609:19)
+    at Object.unterminated (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:5674:20)
+    at readStringContents (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:5416:16)
+    at JSXParserMixin.readString (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:6508:9)
+    at JSXParserMixin.getTokenFromCode (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:6268:14)
+    at JSXParserMixin.getTokenFromCode (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:4809:11)
+    at JSXParserMixin.nextToken (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:5792:10)
+    at JSXParserMixin.next (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:5702:10)
+    at JSXParserMixin.eat (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:5706:12)
+    at JSXParserMixin.parseObjectProperty (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:11884:14)
+    at JSXParserMixin.parseObjPropValue (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:11913:100)
+    at JSXParserMixin.parsePropertyDefinition (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:11850:17)
+    at JSXParserMixin.parseObjectLike (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:11765:21)
+    at JSXParserMixin.parseExprAtom (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:11270:23)
+    at JSXParserMixin.parseExprAtom (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:4776:20)
+    at JSXParserMixin.parseExprSubscripts (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:11012:23)
+    at JSXParserMixin.parseUpdate (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:10997:21)
+    at JSXParserMixin.parseMaybeUnary (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:10977:23)
+    at JSXParserMixin.parseMaybeUnaryOrPrivate (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:10830:61)
+    at JSXParserMixin.parseExprOps (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:10835:23)
+    at JSXParserMixin.parseMaybeConditional (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:10812:23)
+    at JSXParserMixin.parseMaybeAssign (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:10765:21)
+    at /home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:10734:39
+    at JSXParserMixin.allowInAnd (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:12361:12)
+    at JSXParserMixin.parseMaybeAssignAllowIn (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:10734:17)
+    at JSXParserMixin.parseObjectProperty (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:11885:83)
+    at JSXParserMixin.parseObjPropValue (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:11913:100)
+    at JSXParserMixin.parsePropertyDefinition (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:11850:17)
+    at JSXParserMixin.parseObjectLike (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:11765:21)
+    at JSXParserMixin.parseExprAtom (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:11270:23)
+    at JSXParserMixin.parseExprAtom (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:4776:20)
+    at JSXParserMixin.parseExprSubscripts (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:11012:23)
+    at JSXParserMixin.parseUpdate (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:10997:21)
+    at JSXParserMixin.parseMaybeUnary (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:10977:23)
+    at JSXParserMixin.parseMaybeUnaryOrPrivate (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:10830:61)
+    at JSXParserMixin.parseExprOps (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:10835:23)
+    at JSXParserMixin.parseMaybeConditional (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:10812:23)
+    at JSXParserMixin.parseMaybeAssign (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:10765:21)
+    at /home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:10734:39
+    at JSXParserMixin.allowInAnd (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:12356:16)
+    at JSXParserMixin.parseMaybeAssignAllowIn (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:10734:17)
+    at JSXParserMixin.parseVar (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:13303:91)
+    at JSXParserMixin.parseVarStatement (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:13149:10)
+    at JSXParserMixin.parseStatementContent (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:12770:23)
+    at JSXParserMixin.parseStatementLike (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:12685:17)
+    at JSXParserMixin.parseStatementListItem (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:12665:17)
+    at JSXParserMixin.parseBlockOrModuleBlockBody (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:13235:61)
+    at JSXParserMixin.parseBlockBody (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:13228:10)
+    at JSXParserMixin.parseBlock (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:13216:10)
+ @ ./src/App.js 9:0-87 183:30-55 243:26-51 277:16-47
+ @ ./src/index.js 5:0-34 11:32-45
+
+webpack 5.99.9 compiled with 1 error in 84 ms
+assets by status 1.98 KiB [cached] 1 asset
+assets by path *.js 3.07 MiB
+  asset bundle.js 3.07 MiB [emitted] (name: main)
+  asset main.d48d0abece28dc9d5bc6.hot-update.js 854 bytes [emitted] [immutable] [hmr] (name: main)
+asset main.d48d0abece28dc9d5bc6.hot-update.json 28 bytes [emitted] [immutable] [hmr]
+Entrypoint main 3.07 MiB = bundle.js 3.07 MiB main.d48d0abece28dc9d5bc6.hot-update.js 854 bytes
+cached modules 2.79 MiB [cached] 633 modules
+runtime modules 27.5 KiB 14 modules
+./src/GoogleCalendarUtils.js 39 bytes [built] [1 error]
+
+ERROR in ./src/GoogleCalendarUtils.js
+Module build failed (from ./node_modules/babel-loader/lib/index.js):
+SyntaxError: /home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/src/GoogleCalendarUtils.js: Unterminated string constant. (322:11)
+
+  320 |     source: {
+  321 |       title: "Goalie App",
+> 322 |       url: "https:/**
+      |            ^
+  323 |  * ========= GOOGLE CALENDAR UTILS DEBUG CHECKLIST =========
+  324 |  * 
+  325 |  * - Requires valid access_token with calendar.events scope in localStorage ("goalie-google-oauth")
+    at constructor (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:363:19)
+    at JSXParserMixin.raise (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:6609:19)
+    at Object.unterminated (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:5674:20)
+    at readStringContents (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:5416:16)
+    at JSXParserMixin.readString (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:6508:9)
+    at JSXParserMixin.getTokenFromCode (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:6268:14)
+    at JSXParserMixin.getTokenFromCode (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:4809:11)
+    at JSXParserMixin.nextToken (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:5792:10)
+    at JSXParserMixin.next (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:5702:10)
+    at JSXParserMixin.eat (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:5706:12)
+    at JSXParserMixin.parseObjectProperty (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:11884:14)
+    at JSXParserMixin.parseObjPropValue (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:11913:100)
+    at JSXParserMixin.parsePropertyDefinition (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:11850:17)
+    at JSXParserMixin.parseObjectLike (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:11765:21)
+    at JSXParserMixin.parseExprAtom (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:11270:23)
+    at JSXParserMixin.parseExprAtom (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:4776:20)
+    at JSXParserMixin.parseExprSubscripts (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:11012:23)
+    at JSXParserMixin.parseUpdate (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:10997:21)
+    at JSXParserMixin.parseMaybeUnary (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:10977:23)
+    at JSXParserMixin.parseMaybeUnaryOrPrivate (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:10830:61)
+    at JSXParserMixin.parseExprOps (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:10835:23)
+    at JSXParserMixin.parseMaybeConditional (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:10812:23)
+    at JSXParserMixin.parseMaybeAssign (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:10765:21)
+    at /home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:10734:39
+    at JSXParserMixin.allowInAnd (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:12361:12)
+    at JSXParserMixin.parseMaybeAssignAllowIn (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:10734:17)
+    at JSXParserMixin.parseObjectProperty (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:11885:83)
+    at JSXParserMixin.parseObjPropValue (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:11913:100)
+    at JSXParserMixin.parsePropertyDefinition (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:11850:17)
+    at JSXParserMixin.parseObjectLike (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:11765:21)
+    at JSXParserMixin.parseExprAtom (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:11270:23)
+    at JSXParserMixin.parseExprAtom (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:4776:20)
+    at JSXParserMixin.parseExprSubscripts (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:11012:23)
+    at JSXParserMixin.parseUpdate (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:10997:21)
+    at JSXParserMixin.parseMaybeUnary (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:10977:23)
+    at JSXParserMixin.parseMaybeUnaryOrPrivate (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:10830:61)
+    at JSXParserMixin.parseExprOps (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:10835:23)
+    at JSXParserMixin.parseMaybeConditional (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:10812:23)
+    at JSXParserMixin.parseMaybeAssign (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:10765:21)
+    at /home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:10734:39
+    at JSXParserMixin.allowInAnd (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:12356:16)
+    at JSXParserMixin.parseMaybeAssignAllowIn (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:10734:17)
+    at JSXParserMixin.parseVar (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:13303:91)
+    at JSXParserMixin.parseVarStatement (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:13149:10)
+    at JSXParserMixin.parseStatementContent (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:12770:23)
+    at JSXParserMixin.parseStatementLike (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:12685:17)
+    at JSXParserMixin.parseStatementListItem (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:12665:17)
+    at JSXParserMixin.parseBlockOrModuleBlockBody (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:13235:61)
+    at JSXParserMixin.parseBlockBody (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:13228:10)
+    at JSXParserMixin.parseBlock (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:13216:10)
+ @ ./src/App.js 9:0-87 183:30-55 243:26-51 277:16-47
+ @ ./src/index.js 5:0-34 11:32-45
+
+webpack 5.99.9 compiled with 1 error in 89 ms
+assets by status 3.07 MiB [cached] 2 assets
+cached modules 2.79 MiB (javascript) 27.5 KiB (runtime) [cached] 647 modules
+./src/GoogleCalendarUtils.js 39 bytes [built] [1 error]
+
+ERROR in ./src/GoogleCalendarUtils.js
+Module build failed (from ./node_modules/babel-loader/lib/index.js):
+SyntaxError: /home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/src/GoogleCalendarUtils.js: Unterminated string constant. (322:11)
+
+  320 |     source: {
+  321 |       title: "Goalie App",
+> 322 |       url: "https:/**
+      |            ^
+  323 |  * ========= GOOGLE CALENDAR UTILS DEBUG CHECKLIST =========
+  324 |  * 
+  325 |  * - Requires valid access_token with calendar.events scope in localStorage ("goalie-google-oauth")
+    at constructor (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:363:19)
+    at JSXParserMixin.raise (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:6609:19)
+    at Object.unterminated (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:5674:20)
+    at readStringContents (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:5416:16)
+    at JSXParserMixin.readString (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:6508:9)
+    at JSXParserMixin.getTokenFromCode (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:6268:14)
+    at JSXParserMixin.getTokenFromCode (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:4809:11)
+    at JSXParserMixin.nextToken (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:5792:10)
+    at JSXParserMixin.next (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:5702:10)
+    at JSXParserMixin.eat (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:5706:12)
+    at JSXParserMixin.parseObjectProperty (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:11884:14)
+    at JSXParserMixin.parseObjPropValue (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:11913:100)
+    at JSXParserMixin.parsePropertyDefinition (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:11850:17)
+    at JSXParserMixin.parseObjectLike (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:11765:21)
+    at JSXParserMixin.parseExprAtom (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:11270:23)
+    at JSXParserMixin.parseExprAtom (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:4776:20)
+    at JSXParserMixin.parseExprSubscripts (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:11012:23)
+    at JSXParserMixin.parseUpdate (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:10997:21)
+    at JSXParserMixin.parseMaybeUnary (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:10977:23)
+    at JSXParserMixin.parseMaybeUnaryOrPrivate (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:10830:61)
+    at JSXParserMixin.parseExprOps (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:10835:23)
+    at JSXParserMixin.parseMaybeConditional (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:10812:23)
+    at JSXParserMixin.parseMaybeAssign (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:10765:21)
+    at /home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:10734:39
+    at JSXParserMixin.allowInAnd (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:12361:12)
+    at JSXParserMixin.parseMaybeAssignAllowIn (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:10734:17)
+    at JSXParserMixin.parseObjectProperty (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:11885:83)
+    at JSXParserMixin.parseObjPropValue (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:11913:100)
+    at JSXParserMixin.parsePropertyDefinition (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:11850:17)
+    at JSXParserMixin.parseObjectLike (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:11765:21)
+    at JSXParserMixin.parseExprAtom (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:11270:23)
+    at JSXParserMixin.parseExprAtom (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:4776:20)
+    at JSXParserMixin.parseExprSubscripts (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:11012:23)
+    at JSXParserMixin.parseUpdate (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:10997:21)
+    at JSXParserMixin.parseMaybeUnary (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:10977:23)
+    at JSXParserMixin.parseMaybeUnaryOrPrivate (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:10830:61)
+    at JSXParserMixin.parseExprOps (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:10835:23)
+    at JSXParserMixin.parseMaybeConditional (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:10812:23)
+    at JSXParserMixin.parseMaybeAssign (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:10765:21)
+    at /home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:10734:39
+    at JSXParserMixin.allowInAnd (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:12356:16)
+    at JSXParserMixin.parseMaybeAssignAllowIn (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:10734:17)
+    at JSXParserMixin.parseVar (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:13303:91)
+    at JSXParserMixin.parseVarStatement (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:13149:10)
+    at JSXParserMixin.parseStatementContent (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:12770:23)
+    at JSXParserMixin.parseStatementLike (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:12685:17)
+    at JSXParserMixin.parseStatementListItem (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:12665:17)
+    at JSXParserMixin.parseBlockOrModuleBlockBody (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:13235:61)
+    at JSXParserMixin.parseBlockBody (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:13228:10)
+    at JSXParserMixin.parseBlock (/home/kavia/workspace/code-generation/goalsaver-60277-e7338376/goal_saver/node_modules/@babel/parser/lib/index.js:13216:10)
+ @ ./src/App.js 9:0-87 183:30-55 243:26-51 277:16-47
+ @ ./src/index.js 5:0-34 11:32-45
+
+webpack 5.99.9 compiled with 1 error in 68 ms
+assets by status 1.98 KiB [cached] 1 asset
+assets by path *.js 3.09 MiB
+  asset bundle.js 3.07 MiB [emitted] (name: main)
+  asset main.fd9ad894131738f2c41b.hot-update.js 11.7 KiB [emitted] [immutable] [hmr] (name: main)
+asset main.fd9ad894131738f2c41b.hot-update.json 28 bytes [emitted] [immutable] [hmr]
+Entrypoint main 3.09 MiB = bundle.js 3.07 MiB main.fd9ad894131738f2c41b.hot-update.js 11.7 KiB
+cached modules 2.72 MiB [cached] 631 modules
+runtime modules 27.5 KiB 14 modules
+javascript modules 78.7 KiB
+  ./src/App.js 54.8 KiB [code generated]
+  ./src/GoogleCalendarUtils.js 9.71 KiB [built] [code generated]
+  ./src/CalendarNudges.js 14.1 KiB [code generated]
+webpack 5.99.9 compiled successfully in 179 ms

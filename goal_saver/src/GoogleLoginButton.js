@@ -1,3 +1,19 @@
+/**
+ * =========== GOOGLE LOGIN BUTTON INTEGRATION CHECKLIST ===========
+ * 
+ * 1. Confirm CLIENT_ID is set to your valid credentials from Google Cloud Console.
+ * 2. Ensure 'gsi/client' loads from https://accounts.google.com/gsi/client and window.google.accounts/oauth2 is visible.
+ * 3. All OAuth flows request `calendar.events` scope + `openid`, handling all callback outcomes.
+ * 4. Access tokens are stored in localStorage. Check expiration (expires_at).
+ * 5. On callback errors, detailed logging appears in both UI and browser console.
+ * 6. Re-login/refresh and disconnect states are handled and reflected in UI.
+ * 
+ * Debugging tips:
+ * - If button is disabled, GSI script load likely failed – check network/console.
+ * - If authentication fails, double check client ID, OAuth consent screen config, and allowed JS origins.
+ * - See README for full OAuth instructions and troubleshooting.
+ */
+
 import React, { useEffect, useState } from "react";
 
 /**
@@ -15,6 +31,11 @@ import React, { useEffect, useState } from "react";
  * Replace the below CLIENT_ID with your actual Google OAuth 2.0 Client ID for Web from
  * https://console.cloud.google.com/apis/credentials (create OAuth client, type: Web, authorized JS origins).
  * See the Goalie README OAuth section for more details.
+ */
+/**
+ * IMPORTANT: Set your Google OAuth 2.0 Client ID for Web below.
+ * To debug, use a test client id if available and document the change for revert in prod.
+ * If left as 'YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com', auth will fail.
  */
 const CLIENT_ID = "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com"; // TODO: Replace with your actual Google OAuth client id
 
@@ -52,6 +73,7 @@ function GoogleLoginButton({ onLogin }) {
 
   // Load Google Identity Services script on first mount
   useEffect(() => {
+    // Prevent double inclusion
     if (window.google && window.google.accounts) {
       setGsiLoaded(true);
       return;
@@ -60,8 +82,14 @@ function GoogleLoginButton({ onLogin }) {
     script.src = "https://accounts.google.com/gsi/client";
     script.async = true;
     script.defer = true;
-    script.onload = () => setGsiLoaded(true);
-    script.onerror = () => setError("Failed to load Google login.");
+    script.onload = () => {
+      if (window.google && window.google.accounts) {
+        setGsiLoaded(true);
+      } else {
+        setError("Google Identity Services failed to load (no google.accounts).");
+      }
+    };
+    script.onerror = () => setError("Failed to load Google login script.");
     document.body.appendChild(script);
     return () => {
       if (script.parentNode) script.parentNode.removeChild(script);
@@ -104,17 +132,27 @@ function GoogleLoginButton({ onLogin }) {
             setAuth(creds);
             setError(null);
             if (typeof onLogin === "function") onLogin(creds);
+          } else if (resp && resp.error) {
+            setError("Google OAuth error: " + (resp.error_description || resp.error));
+            // Logging error for debugging
+            console.error("Google OAuth token client error response:", resp);
           } else {
-            setError(resp.error_description || "Authentication failed.");
+            setError("Authentication failed, no access token returned.");
+            // Logging error for debugging
+            console.error("Empty or invalid response from Google OAuth token client:", resp);
           }
         },
         error_callback: (err) => {
           setError(err && err.error ? err.error : "Google login error");
+          // Logging error for debugging
+          console.error("Google OAuth error_callback:", err);
         }
       });
       tokenClient.requestAccessToken();
     } catch (err) {
       setError("Google login failed: " + (err.message || err));
+      // Logging error for debugging
+      console.error("Google login exception:", err);
     }
   };
 
@@ -154,6 +192,10 @@ function GoogleLoginButton({ onLogin }) {
       {error && (
         <div style={{ color: "#d94343", marginBottom: 7, fontWeight: 500, fontSize: 15 }}>
           {error}
+          <br />
+          <small style={{ color: "#b35532" }}>
+            Please check the browser console for technical logs if the issue persists.
+          </small>
         </div>
       )}
       {auth && isTokenValid(auth) ? (

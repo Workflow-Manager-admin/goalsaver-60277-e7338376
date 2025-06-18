@@ -1,6 +1,18 @@
 //
 // GoogleCalendarUtils.js
 /**
+ * ========= GOOGLE CALENDAR UTILS DEBUG CHECKLIST =========
+ * 
+ * - Requires valid access_token with calendar.events scope in localStorage ("goalie-google-oauth")
+ * - All fetches to Google Calendar (read/add/del) check token validity; error if expired/invalid.
+ * - All API error/invalid/401 responses provide clear UI messages and log error to browser console for diagnosis.
+ * - When troubleshooting:
+ *   - Check for correct client id use at login.
+ *   - Ensure token is current and properly formatted.
+ *   - Inspect error.message and network responses.
+ */
+
+/**
  * Utility module to interact with Google Calendar API using OAuth tokens stored from login
  *
  * Provides functions to add, fetch or delete reminder events to user's primary calendar for goal reminders, and fetch upcoming events for context-aware nudges.
@@ -85,6 +97,8 @@ export async function fetchUpcomingCalendarEvents(options = {}) {
     }
     if (!resp.ok) {
       const err = await resp.json();
+      // Verbose debug log:
+      console.error("Google Calendar fetch error:", err);
       return {
         status: "error",
         message: err.error && err.error.message
@@ -198,6 +212,8 @@ export async function addGoalReminderToCalendar(goal, whenType = "created") {
         };
       }
       const err = await resp.json();
+      // Verbose log for troubleshooting:
+      console.error("Google Calendar add event error:", err);
       return {
         status: "error",
         message: err.error && err.error.message
@@ -260,12 +276,17 @@ export async function deleteCalendarEvent(eventId) {
         message: "Google token expired. Please reconnect Calendar.",
       };
     } else {
+      // Unexpected response
+      const errMsg = `Unexpected response code ${resp.status} from Google Calendar DELETE`;
+      console.error(errMsg);
       return {
         status: "error",
         message: "Could not remove event from Calendar.",
       };
     }
   } catch (error) {
+    // Verbose log for troubleshooting:
+    console.error("Google Calendar delete event error:", error);
     return {
       status: "error",
       message: "Failed to delete calendar event: " + (error.message || error),
