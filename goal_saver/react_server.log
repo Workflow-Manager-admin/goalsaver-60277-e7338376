@@ -24,3 +24,43 @@ modules by path ./.ve/ 15.1 KiB
     ./node_modules/css-loader/dist/cjs.js!./.ve/EditorOverlay.css 697 bytes [built] [code generated]
   ./.ve/EditorOverlay.jsx 1.58 KiB [built] [code generated]
 webpack 5.99.9 compiled successfully in 2332 ms
+Injecting EditorRootWrapper import: ../.ve/EditorRootWrapper
+assets by status 3.03 MiB [cached] 1 asset
+asset index.html 1.98 KiB [emitted]
+cached modules 2.68 MiB (javascript) 27.5 KiB (runtime) [cached] 635 modules
+javascript modules 82.6 KiB
+  modules by path ./src/*.js 70.4 KiB
+    ./src/index.js 550 bytes [built]
+    ./src/App.js 49.3 KiB [built]
+    ./src/TipToSave.js 2.48 KiB [built]
+    ./src/SavingsPieChart.js 4.58 KiB [built]
+    ./src/Tooltip.js 1.39 KiB [built]
+    ./src/LoadingOverlay.js 2.99 KiB [built]
+    ./src/SmartHelper.js 9.19 KiB [built]
+  modules by path ./.ve/ 12.2 KiB
+    ./.ve/EditorRootWrapper.js 2.68 KiB [built]
+    ./.ve/EditorOverlay.jsx 1.58 KiB [built]
+    ./.ve/SidePanel.js 7.93 KiB [built]
+webpack 5.99.9 compiled successfully in 510 ms
+assets by status 1.98 KiB [cached] 1 asset
+assets by path *.js 3.11 MiB
+  asset bundle.js 3.04 MiB [emitted] (name: main)
+  asset main.66445b25c10285a7f642.hot-update.js 72.3 KiB [emitted] [immutable] [hmr] (name: main)
+asset main.66445b25c10285a7f642.hot-update.json 28 bytes [emitted] [immutable] [hmr]
+Entrypoint main 3.11 MiB = bundle.js 3.04 MiB main.66445b25c10285a7f642.hot-update.js 72.3 KiB
+cached modules 2.71 MiB [cached] 630 modules
+runtime modules 27.5 KiB 14 modules
+javascript modules 56.9 KiB
+  ./src/App.js 49.3 KiB [built] [code generated]
+  ./src/GoogleLoginButton.js 7.56 KiB [built] [code generated]
+webpack 5.99.9 compiled successfully in 341 ms
+assets by status 1.98 KiB [cached] 1 asset
+assets by path *.js 3.1 MiB
+  asset bundle.js 3.04 MiB [emitted] (name: main)
+  asset main.244d5be92179f4d678cc.hot-update.js 63.1 KiB [emitted] [immutable] [hmr] (name: main)
+asset main.244d5be92179f4d678cc.hot-update.json 28 bytes [emitted] [immutable] [hmr]
+Entrypoint main 3.1 MiB = bundle.js 3.04 MiB main.244d5be92179f4d678cc.hot-update.js 63.1 KiB
+cached modules 2.72 MiB [cached] 631 modules
+runtime modules 27.5 KiB 14 modules
+./src/App.js 49.7 KiB [built] [code generated]
+webpack 5.99.9 compiled successfully in 239 ms

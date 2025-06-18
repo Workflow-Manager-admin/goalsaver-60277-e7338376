@@ -5,6 +5,7 @@ import SavingsPieChart from "./SavingsPieChart";
 import Tooltip from "./Tooltip";
 import LoadingOverlay from "./LoadingOverlay";
 import SmartHelper from "./SmartHelper";
+import GoogleLoginButton from "./GoogleLoginButton";
 
 /* Goalie Brand Palette */
 const BRAND = {
@@ -494,6 +495,12 @@ function MainContainer() {
               Set financial goals, plan your savings, track your progress, and build saving habits—
               all in one simple, offline-friendly virtual piggy bank.
             </p>
+            {/* Integrate Google Calendar login */}
+            <GoogleLoginButton onLogin={(auth) => {
+              // Provide the OAuth token for downstream calendar use (reminders, insights)
+              // Could trigger fetch calendar events or display auth-based features here
+              // Example: setGoogleAuth(auth); // Implement if needed
+            }} />
             {/* Show dynamic helper if no goals yet */}
             {(goals.length === 0 && !showGoalForm) && (
               <div style={{
