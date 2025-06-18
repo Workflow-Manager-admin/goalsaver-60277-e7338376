@@ -3,11 +3,11 @@ import "./App.css";
 import TipToSave from "./TipToSave";
 import SavingsPieChart from "./SavingsPieChart";
 
-/* Goalie Dark Mode Brand Palette */
+/* Goalie Brand Palette */
 const BRAND = {
   primary: "var(--goalie-brand)",
   secondary: "var(--goalie-accent)",
-  accent: "var(--goalie-light)"
+  accent: "var(--goalie-light)",
 };
 
 const MOTIVATION = [
@@ -18,24 +18,46 @@ const MOTIVATION = [
   "Congratulations, you've reached your goal!",
 ];
 
+// Frequency utility table
+const frequencyTable = {
+  daily: { label: "Day", toDays: 1 },
+  weekly: { label: "Week", toDays: 7 },
+  monthly: { label: "Month", toDays: 30 },
+};
+
 // PUBLIC_INTERFACE
 function MainContainer() {
+  // Frequency State: persisted in localStorage
+  const [frequency, setFrequency] = useState(() => {
+    return (
+      localStorage.getItem("goalie-savings-frequency") || ""
+    );
+  });
+
   // State for all goals
   const [goals, setGoals] = useState(() => {
     const saved = localStorage.getItem("goalie-goals");
     return saved ? JSON.parse(saved) : [];
   });
-  // Reminders (in-app only, as offline PWA)
+
+  // Reminders (in-app only)
   const [reminders, setReminders] = useState([]);
   // Form state
   const [showGoalForm, setShowGoalForm] = useState(false);
 
-  // Save goals to localStorage for offline usage
+  // Save goals to localStorage
   useEffect(() => {
     localStorage.setItem("goalie-goals", JSON.stringify(goals));
   }, [goals]);
 
-  // Simulate reminders for habit formation (study intervals, PWA app only)
+  // Persist savings frequency
+  useEffect(() => {
+    if (frequency) {
+      localStorage.setItem("goalie-savings-frequency", frequency);
+    }
+  }, [frequency]);
+
+  // Simulate reminders
   useEffect(() => {
     const outstandingGoals = goals.filter(
       (g) =>
@@ -45,7 +67,6 @@ function MainContainer() {
         g.remindersEnabled
     );
     if (outstandingGoals.length > 0) {
-      // Set a reminder in 15 seconds for demonstration (in real app, customizable/flexible)
       const timer = setTimeout(() => {
         setReminders(
           outstandingGoals.map((g) => ({
@@ -59,20 +80,67 @@ function MainContainer() {
     }
   }, [goals]);
 
+  // Frequency selection handler
+  function handleSetFrequency(value) {
+    setFrequency(value);
+  }
+
+  // --- Core savings calculation logic by frequency ---
+  function calculatePerGoalAmounts(goalsArr, currFreqKey) {
+    if (!currFreqKey || !frequencyTable[currFreqKey]) return [];
+    const periodInDays = frequencyTable[currFreqKey].toDays;
+
+    return goalsArr.map((g) => {
+      const today = new Date();
+      const end = new Date(g.deadline);
+      const totalDays = Math.max(
+        1,
+        Math.ceil((end - today) / (1000 * 60 * 60 * 24))
+      );
+      const periodsRemaining = Math.ceil(totalDays / periodInDays);
+
+      // Calculate per-goal suggestion logic
+      let newSmartEst;
+      if (goalsArr.length > 1 && g.income && g.spending && g.income > 0) {
+        // Multi-goal income split
+        const totalGoalsAmount = goalsArr.reduce((s, gi) => s + Number(gi.amount || 0), 0);
+        const totalDisposable = g.income - g.spending;
+        const share = Number(g.amount) / totalGoalsAmount;
+        const splitSmart = totalDisposable * share;
+        newSmartEst = Math.min(splitSmart / periodInDays, Number(g.amount) / periodsRemaining);
+      } else {
+        newSmartEst = Number(g.amount) / periodsRemaining;
+      }
+      newSmartEst = Math.max(0.01, Math.round(newSmartEst * 100) / 100);
+
+      return {
+        ...g,
+        calcPeriod: currFreqKey,
+        periodLabel: frequencyTable[currFreqKey].label,
+        currentEst: newSmartEst,
+        periodsRemaining,
+      };
+    });
+  }
+
+  // Maintain per-goal recommendation state based on goals & frequency
+  const [goalsWithCurrentEst, setGoalsWithCurrentEst] = useState([]);
+  useEffect(() => {
+    setGoalsWithCurrentEst(calculatePerGoalAmounts(goals, frequency));
+    // eslint-disable-next-line
+  }, [goals, frequency]);
+
   // Public: Add new goal
   function addGoal(goal) {
-    setGoals([
-      ...goals,
-      {
-        ...goal,
-        id: Date.now(),
-        progress: 0,
-        completed: false,
-        remindersEnabled: true,
-        isActive: true,
-        savingsHistory: [],
-      },
-    ]);
+    setGoals((prev) => [...prev, {
+      ...goal,
+      id: Date.now(),
+      progress: 0,
+      completed: false,
+      remindersEnabled: true,
+      isActive: true,
+      savingsHistory: [],
+    }]);
     setShowGoalForm(false);
   }
 
@@ -131,7 +199,89 @@ function MainContainer() {
     setReminders(reminders.filter((r) => r.id !== reminderId));
   }
 
-  // Render
+  // --- FREQUENCY SELECTION PROMPT ---
+  if (!frequency) {
+    return (
+      <div
+        className="goalie-main"
+        style={{
+          background: "var(--goalie-darkest)",
+          minHeight: "100vh",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          paddingTop: 90,
+        }}
+      >
+        <nav className="navbar" style={{
+          backgroundColor: "var(--goalie-dark)",
+          borderBottom: "2px solid var(--border-color)",
+          color: "var(--text-heading)",
+          boxShadow: "var(--shadow-navbar)"
+        }}>
+          <div className="container" style={{
+            maxWidth: 940, gap: 12, display: "flex",
+            justifyContent: "space-between", alignItems: "center"
+          }}>
+            <span
+              className="logo"
+              style={{ fontWeight: 700, color: "var(--goalie-brand)", fontSize: "1.37em" }}
+            >
+              <span className="logo-symbol" style={{ color: "var(--goalie-accent)" }}>🥅</span>
+              Goalie
+            </span>
+          </div>
+        </nav>
+        <div style={{
+          background: "linear-gradient(97deg,#f9fbff 72%,var(--goalie-accent) 120%)",
+          borderRadius: 18,
+          marginTop: 38,
+          padding: 38,
+          marginBottom: 24,
+          boxShadow: "0 2px 16px #c8d5ef33",
+          minWidth: 285,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center"
+        }}>
+          <h2 style={{ color: "var(--goalie-blue)", fontSize: 28, fontWeight: 700, marginBottom: 15 }}>
+            First, how often do you want to save?
+          </h2>
+          <div style={{ color: "#667295", fontSize: 16, marginBottom: 24, textAlign: "center" }}>
+            Choose a savings plan frequency. You can change this any time.
+          </div>
+          <div style={{ display: "flex", gap: 20, margin: "10px 0" }}>
+            <button
+              className="btn btn-large"
+              style={{ background: "var(--goalie-blue)", color: "#263232" }}
+              onClick={() => handleSetFrequency("daily")}
+            >
+              Daily
+            </button>
+            <button
+              className="btn btn-large"
+              style={{ background: "var(--goalie-accent)", color: "#872a6a" }}
+              onClick={() => handleSetFrequency("weekly")}
+            >
+              Weekly
+            </button>
+            <button
+              className="btn btn-large"
+              style={{ background: "var(--goalie-brand)", color: "#245252" }}
+              onClick={() => handleSetFrequency("monthly")}
+            >
+              Monthly
+            </button>
+          </div>
+        </div>
+        <div style={{ color: "#b7bbc6", fontSize: 13, maxWidth: 320, textAlign: "center" }}>
+          This determines how your savings recommendations are distributed.
+        </div>
+      </div>
+    );
+  }
+
+  // --- MAIN DASHBOARD ---
   return (
     <div className="goalie-main" style={{ background: "var(--goalie-darkest)", minHeight: "100vh" }}>
       {/* Main Navbar */}
@@ -149,18 +299,43 @@ function MainContainer() {
             className="logo"
             style={{ fontWeight: 700, color: "var(--goalie-brand)", fontSize: "1.37em" }}
           >
-            <span className="logo-symbol" style={{color: "var(--goalie-accent)"}}>🥅</span>
+            <span className="logo-symbol" style={{ color: "var(--goalie-accent)" }}>🥅</span>
             Goalie
           </span>
-          <button
-            className="btn btn-brand"
-            style={{
-              marginLeft: 12,
-            }}
-            onClick={() => setShowGoalForm((x) => !x)}
-          >
-            {showGoalForm ? "Cancel" : "New Goal"}
-          </button>
+          {/* Change frequency dropdown */}
+          <div>
+            <label htmlFor="freq" style={{
+              color: "var(--goalie-blue)",
+              fontWeight: 600,
+              fontSize: 14,
+              marginRight: 8,
+              verticalAlign: "middle"
+            }}>Plan:</label>
+            <select
+              id="freq"
+              value={frequency}
+              onChange={e => setFrequency(e.target.value)}
+              style={{
+                fontSize: 14,
+                padding: "5px 8px",
+                borderRadius: 6,
+                border: "1px solid #b9dbfa",
+                background: "var(--goalie-card-alt)",
+                color: "#457057"
+              }}
+            >
+              <option value="daily">Daily</option>
+              <option value="weekly">Weekly</option>
+              <option value="monthly">Monthly</option>
+            </select>
+            <button
+              className="btn btn-brand"
+              style={{ marginLeft: 18 }}
+              onClick={() => setShowGoalForm((x) => !x)}
+            >
+              {showGoalForm ? "Cancel" : "New Goal"}
+            </button>
+          </div>
         </div>
       </nav>
 
@@ -202,11 +377,18 @@ function MainContainer() {
           <SavingsPieChart goals={goals} />
           <TipToSave />
           {/* Goal creation form */}
-          {showGoalForm && <GoalForm onSave={addGoal} onCancel={() => setShowGoalForm(false)} />}
+          {showGoalForm &&
+            <GoalForm
+              onSave={addGoal}
+              onCancel={() => setShowGoalForm(false)}
+              frequency={frequency}
+            />
+          }
           {/* Multiple Goals Management */}
           <section>
             <GoalList
-              goals={goals}
+              goals={goalsWithCurrentEst}
+              savingsFrequency={frequency}
               onProgressAdd={updateGoalProgress}
               onModify={modifyGoal}
               onRemove={removeGoal}
@@ -221,17 +403,16 @@ function MainContainer() {
 }
 
 /**
- * Component: GoalForm
- * Form for creating a new savings goal
+ * GoalForm for new goal creation
  */
-function GoalForm({ onSave, onCancel }) {
+function GoalForm({ onSave, onCancel, frequency }) {
   const [title, setTitle] = useState("");
   const [amount, setAmount] = useState("");
   const [deadline, setDeadline] = useState("");
   const [income, setIncome] = useState("");
   const [spending, setSpending] = useState("");
 
-  // Calculate default suggestion: (amount - saved) / (days until deadline)
+  // Calculate suggestions: base per-day and per-selected-period
   const today = new Date();
   const estPerDay =
     amount && deadline
@@ -242,11 +423,22 @@ function GoalForm({ onSave, onCancel }) {
         )
       : 0;
 
-  // Behavioral adjustment: suggest based on disposable = income - spending
   const disposable = income && spending ? Math.max(0, Number(income) - Number(spending)) : null;
   const smartEst = disposable
     ? Math.min(disposable, estPerDay)
     : estPerDay;
+
+  // For per-frequency period
+  let perPeriodEst = estPerDay;
+  let periodLabel = "day";
+  if (frequency === "weekly") {
+    perPeriodEst = estPerDay * 7;
+    periodLabel = "week";
+  } else if (frequency === "monthly") {
+    perPeriodEst = estPerDay * 30;
+    periodLabel = "month";
+  }
+  perPeriodEst = Math.round(perPeriodEst * 100) / 100;
 
   // PUBLIC_INTERFACE
   function handleSubmit(e) {
@@ -326,8 +518,8 @@ function GoalForm({ onSave, onCancel }) {
         <div style={formStyles.suggestion}>
           <small>
             {disposable
-              ? `Suggestion: ~₹${smartEst}/day (based on your disposable/month)`
-              : `Save ~₹${estPerDay}/day to reach your goal!`}
+              ? `Suggestion: ~₹${Math.round(perPeriodEst * 100) / 100}/${periodLabel} (based on your disposable/month)`
+              : `Save ~₹${Math.round(perPeriodEst * 100) / 100}/${periodLabel} to reach your goal!`}
           </small>
         </div>
       )}
@@ -355,6 +547,7 @@ function GoalForm({ onSave, onCancel }) {
 // Modular: Goal List as container for Goal Cards
 function GoalList({
   goals,
+  savingsFrequency,
   onProgressAdd,
   onModify,
   onRemove,
@@ -381,13 +574,17 @@ function GoalList({
           onActivate={onActivate}
           brand={brand}
           index={idx + 1}
+          currentEst={goal.currentEst}
+          periodLabel={goal.periodLabel}
         />
       ))}
     </div>
   );
 }
 
-// PUBLIC_INTERFACE
+/**
+ * GoalCard displays each goal, with savings guidance per chosen frequency
+ */
 function GoalCard({
   goal,
   isPrimary,
@@ -397,11 +594,12 @@ function GoalCard({
   onActivate,
   brand,
   index,
+  currentEst,
+  periodLabel,
 }) {
   const [showAdd, setShowAdd] = useState(false);
   const [saveVal, setSaveVal] = useState("");
   const [saveNote, setSaveNote] = useState("");
-  // Calculate progress
   const percent = Math.min(100, ((goal.progress / goal.amount) * 100).toFixed(1));
 
   // Milestone motivational message
@@ -419,11 +617,12 @@ function GoalCard({
     Math.ceil((dline - today) / (1000 * 3600 * 24))
   );
 
-  // Smart suggestion for micro-saving
-  const saveSuggestion = Math.max(
+  // Per-period suggestion
+  const suggestionAmt = Number(currentEst) || Math.max(
     0.01,
     Math.round((goal.smartEst || goal.estPerDay || 0) * 100) / 100
   );
+  const suggestionLabel = periodLabel || "Day";
 
   // PUBLIC_INTERFACE
   function handleAddProgress(e) {
@@ -559,7 +758,22 @@ function GoalCard({
           ""
         )}
       </div>
-
+      {/* Recommended savings per FREQUENCY period */}
+      <div style={{
+        marginLeft: 42,
+        marginTop: 6,
+        marginBottom: 2,
+        background: "var(--goalie-blue)",
+        color: "#17425b",
+        fontWeight: 600,
+        fontSize: 15,
+        borderRadius: 8,
+        padding: "6px 13px",
+        display: "inline-block",
+        maxWidth: 370
+      }}>
+        Save ~₹{suggestionAmt} <span style={{ color: "#5779ab", fontWeight: 500 }}>per {suggestionLabel.toLowerCase()}</span>
+      </div>
       {/* Progress Bar + motivation */}
       <ProgressBar percent={percent} color={brand.accent} />
       <div style={{ marginLeft: 42, marginBottom: 5, color: brand.primary }}>
@@ -596,7 +810,7 @@ function GoalCard({
                   required
                   value={saveVal}
                   onChange={(e) => setSaveVal(e.target.value)}
-                  placeholder={`Ex: ₹${saveSuggestion}`}
+                  placeholder={`Ex: ₹${suggestionAmt}`}
                   style={formStyles.inputSmall}
                 />
                 <input
@@ -724,7 +938,7 @@ function ProgressBar({ percent, color }) {
 }
 
 /**
- * Reminder prompt - now pastel, modern, light for light mode.
+ * Minimal Reminder prompt - light UI
  */
 function ReminderPrompt({ title, onDismiss }) {
   return (
@@ -769,9 +983,7 @@ function ReminderPrompt({ title, onDismiss }) {
   );
 }
 
-/**
- * Minimal inline form styling - all pastel backgrounds & borders for light mode.
- */
+// Shared form styles
 const formStyles = {
   form: {
     background: "#f9fcff",
