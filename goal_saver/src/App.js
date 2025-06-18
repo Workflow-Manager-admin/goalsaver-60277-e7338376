@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 
-// Color palette as CSS vars override (for inline, if needed)
+/* Goalie Dark Mode Brand Palette */
 const BRAND = {
-  primary: "#4CAF50",
-  secondary: "#FFC107",
-  accent: "#2196F3",
+  primary: "var(--goalie-brand)",
+  secondary: "var(--goalie-accent)",
+  accent: "var(--goalie-light)"
 };
 
 const MOTIVATION = [
@@ -131,31 +131,29 @@ function MainContainer() {
 
   // Render
   return (
-    <div className="goalie-main" style={{ background: "#101219", minHeight: "100vh" }}>
+    <div className="goalie-main" style={{ background: "var(--goalie-darkest)", minHeight: "100vh" }}>
       {/* Main Navbar */}
       <nav
         className="navbar"
         style={{
-          backgroundColor: "#161933",
-          borderBottom: `2px solid ${BRAND.primary}10`,
-          color: "#eee",
-          boxShadow: "0 1px 8px 0 #111c",
+          backgroundColor: "var(--goalie-dark)",
+          borderBottom: "2px solid var(--border-color)",
+          color: "var(--text-color)",
+          boxShadow: "var(--shadow-navbar)",
         }}
       >
         <div className="container" style={{ maxWidth: 940, gap: 12, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <span
             className="logo"
-            style={{ fontWeight: 700, color: BRAND.primary, fontSize: "1.35em" }}
+            style={{ fontWeight: 700, color: "var(--goalie-brand)", fontSize: "1.37em" }}
           >
-            <span style={{color: BRAND.secondary, fontSize: '2em', marginRight: 6}}>🥅</span>
+            <span className="logo-symbol" style={{color: "var(--goalie-accent)"}}>🥅</span>
             Goalie
           </span>
           <button
-            className="btn"
+            className="btn btn-brand"
             style={{
-              background: BRAND.accent,
-              color: "#fff",
-              marginLeft: 12,
+              marginLeft: 12
             }}
             onClick={() => setShowGoalForm((x) => !x)}
           >
@@ -178,11 +176,22 @@ function MainContainer() {
       <main style={{ paddingTop: 100, maxWidth: 940, margin: "0 auto" }}>
         <div className="container">
           {/* Welcome & summary */}
-          <section style={{ marginBottom: 30, padding: 16 }}>
-            <h2 style={{ fontWeight: 600, marginBottom: 8, color: BRAND.primary }}>
+          <section style={{
+            marginBottom: 30,
+            padding: "18px 14px",
+            background: "linear-gradient(91deg,var(--goalie-darkest),var(--goalie-card-alt) 98%)",
+            borderRadius: 12,
+            boxShadow: "0 1.5px 10px 0 #23254f13",
+          }}>
+            <h2 style={{
+              fontWeight: 700,
+              marginBottom: 8,
+              color: "var(--goalie-brand)",
+              letterSpacing: "0.5px"
+            }}>
               Welcome to Goalie!
             </h2>
-            <p style={{ color: "#b7bbc6", fontSize: 16, margin: 0 }}>
+            <p style={{ color: "var(--text-secondary)", fontSize: 16, margin: 0 }}>
               Set financial goals, plan your savings, track your progress, and build saving habits—
               all in one simple, offline-friendly virtual piggy bank.
             </p>
