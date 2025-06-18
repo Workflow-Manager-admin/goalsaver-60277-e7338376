@@ -23,6 +23,7 @@ const SAVINGS_TIPS = [
 
 /**
  * Choose a random tip, or use a static one if you wish.
+ * Used only for generic tips, NOT for smart helpers.
  */
 function getRandomTip() {
   const index = Math.floor(Math.random() * SAVINGS_TIPS.length);
@@ -31,7 +32,7 @@ function getRandomTip() {
 
 /**
  * PUBLIC_INTERFACE
- * Render a pastel tip card in the new light theme.
+ * Render a pastel tip card with a generic savings tip (used as fallback or for unused area).
  */
 function TipToSave({ tip }) {
   const displayTip = tip || getRandomTip();
@@ -55,7 +56,7 @@ function TipToSave({ tip }) {
       }}>
         💡
       </span>
-      <span style={{flex: 1}}>{displayTip}</span>
+      <span style={{ flex: 1 }}>{displayTip}</span>
     </div>
   );
 }

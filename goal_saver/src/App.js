@@ -4,6 +4,7 @@ import TipToSave from "./TipToSave";
 import SavingsPieChart from "./SavingsPieChart";
 import Tooltip from "./Tooltip";
 import LoadingOverlay from "./LoadingOverlay";
+import SmartHelper from "./SmartHelper";
 
 /* Goalie Brand Palette */
 const BRAND = {
@@ -137,6 +138,17 @@ function MainContainer() {
     // eslint-disable-next-line
   }, [goals, frequency]);
 
+  // Handler for automated frequency adjustment suggestion
+  function handleAdjustPlan() {
+    if (frequency === "monthly") {
+      setFrequency("weekly");
+    } else if (frequency === "weekly") {
+      setFrequency("daily");
+    } else {
+      setFrequency("monthly");
+    }
+  }
+
   // Public: Add new goal
   function addGoal(goal) {
     setGoals((prev) => [...prev, {
@@ -147,6 +159,7 @@ function MainContainer() {
       remindersEnabled: true,
       isActive: true,
       savingsHistory: [],
+      createdAt: new Date().toISOString(), // Store for context-aware helpers!
     }]);
     setShowGoalForm(false);
   }
@@ -208,7 +221,7 @@ function MainContainer() {
 
   // --- FREQUENCY SELECTION PROMPT ---
   if (!frequency) {
-    // Enhanced onboarding overlay for frequency selection, with step indicator and contextual helper
+    // Enhanced onboarding overlay for frequency selection, with step indicator, helper and guide
     return (
       <div
         className="goalie-main"
@@ -301,25 +314,8 @@ function MainContainer() {
               <span role="img" aria-label="calendar">🗓️</span> Monthly
             </button>
           </div>
-
-          <div style={{
-            background: "#fffbe8",
-            borderRadius: 7,
-            color: "#9a8117",
-            fontSize: 14,
-            maxWidth: 340,
-            fontWeight: 500,
-            padding: "10px 13px",
-            marginTop: 8,
-            display: "flex",
-            alignItems: "center",
-            gap: 9
-          }}>
-            <span role="img" aria-label="helper tip">💡</span> 
-            <span>
-              Unsure? We suggest matching your savings frequency to how often you get paid.
-            </span>
-          </div>
+          {/* Smart onboarding helper for guiding savings frequency */}
+          <SmartHelper goals={[]} frequency={frequency} onboarding={true} />
         </div>
         <div style={{ color: "#b7bbc6", fontSize: 13, maxWidth: 330, textAlign: "center", marginTop: 12 }}>
           You can always revisit your plan in the menu above.
@@ -516,7 +512,15 @@ function MainContainer() {
           </section>
           {/* Savings Distribution Pie Chart */}
           <SavingsPieChart goals={goals} />
-          <TipToSave />
+          {/* Context-aware Smart Helper (tips/motivations) */}
+          <SmartHelper
+            goals={goalsWithCurrentEst}
+            frequency={frequency}
+            onboarding={false}
+            onSuggestionAdjust={handleAdjustPlan}
+          />
+          {/* Fallback, only shows if SmartHelper displays nothing */}
+          {(!goalsWithCurrentEst || goalsWithCurrentEst.length === 0) && <TipToSave />}
           {/* Goal creation form */}
           {showGoalForm &&
             <GoalForm
