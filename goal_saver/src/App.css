@@ -202,10 +202,20 @@ body {
   flex-direction: column;
   gap: 10px;
   position: relative;
-  transition: border 0.18s cubic-bezier(.38,0,.39,1), background 0.20s cubic-bezier(.77,0,.44,1);
+  transition:
+    border 0.18s cubic-bezier(.38,0,.39,1),
+    background 0.20s cubic-bezier(.77,0,.44,1),
+    box-shadow 0.19s cubic-bezier(.61,0,.71,1),
+    transform 0.18s cubic-bezier(.47,.19,.64,1.02);
   outline: none;
   will-change: box-shadow, border, background;
+  animation: fadeInCard 0.44s cubic-bezier(.41,.53,.47,.94);
 }
+@keyframes fadeInCard {
+  from { opacity:0; transform: translateY(32px) scale(0.97);}
+  to { opacity:1; transform: none;}
+}
+
 .goal-card .active {
   border-color: var(--goalie-light) !important;
   box-shadow: 0 0 0 2.5px var(--goalie-accent), 0 6px 24px #6de5c220;
@@ -330,4 +340,81 @@ input:focus, select:focus {
   display: flex;
   align-items: center;
   gap: 18px;
+}
+
+/* Responsive tweaks for mobile */
+@media (max-width:680px) {
+  .container {
+    padding: 0 8px;
+  }
+  .goal-form,
+  .goal-card {
+    padding: 9vw 3vw 4vw 3vw;
+    font-size: 15px;
+  }
+  .navbar {
+    padding: 11px 0 11px 0;
+    min-height: 43px;
+    font-size: 15px;
+  }
+  .navbar .logo {
+    font-size: 1.1rem !important;
+  }
+  .btn, .btn-large, .btn-brand {
+    padding: 10px 18px !important;
+    min-width: 24vw;
+    font-size: 1rem;
+  }
+  .goal-card, .goal-card .active {
+    font-size: 1rem;
+    border-radius: 10px;
+  }
+  .pie-chart-section {
+    padding: 2vw 0 2vw 0;
+    border-radius: 13px;
+  }
+  .pie-chart-header {
+    font-size: 1.07em;
+  }
+}
+
+/* Add modern transitions for onboarding overlays, loading overlays, tooltips */
+.btn, .btn-brand, .btn-large {
+  transition:
+    background 0.18s cubic-bezier(.42,0,.3,1),
+    color 0.18s cubic-bezier(.42,0,.3,1),
+    transform 0.13s cubic-bezier(.63,0,.22,1),
+    box-shadow 0.15s,
+    outline 0.13s cubic-bezier(.42,0,.3,1);
+}
+
+/* Global loading spinner animation */
+.loading-spinner,
+.loading-ellipsis:after {
+  display: inline-block;
+  animation: spinload 0.85s linear infinite;
+}
+@keyframes spinload {
+  0% { transform: rotate(-6deg);}
+  100% { transform: rotate(354deg);}
+}
+.loading-ellipsis:after {
+  content: "...";
+  animation: ellipsis-fade 2.1s infinite steps(4);
+  font-weight: 700;
+}
+@keyframes ellipsis-fade {
+  0% { opacity: 1;}
+  70% { opacity: 1;}
+  92% { opacity: 0;}
+  100% { opacity: 1;}
+}
+
+/* Onboarding/fixed overlays fade-in */
+.goalie-main > .onboarding-overlay, .goalie-main > .global-tooltip, .goalie-main > .loading-overlay {
+  animation: fadeOverlay 0.33s cubic-bezier(.59,.14,.7,.7);
+}
+@keyframes fadeOverlay {
+  from { opacity: 0; }
+  to { opacity: 1;}
 }
