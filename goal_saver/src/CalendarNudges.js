@@ -224,26 +224,91 @@ function CalendarNudges({ userConsent, onRequestConsent, frequency, children }) 
   if (nudges.length === 0) {
     return null;
   }
+
+  // Generate context-aware, actionable highlight (icon, action, guidance) for each nudge
+  const contextIcons = [
+    { keyword: "payday", icon: "💸", action: "Boost your savings after payday!" },
+    { keyword: "busy day", icon: "📆", action: "We'll skip reminders on busy days." },
+    { keyword: "holiday", icon: "🏖️", action: "Enjoy your break. No reminders during holidays!" },
+    { keyword: "vacation", icon: "🛫", action: "Pause savings reminders while you travel." },
+    { keyword: "weekend", icon: "📅", action: "Reminders adjusted for your routine." },
+    { keyword: "jam-packed", icon: "⚠️", action: "Reducing reminders for your well-being." },
+  ];
+
+  // Decorate nudge with icon & action if applicable
+  function renderContextNudge(text) {
+    text = String(text || "");
+    const lower = text.toLowerCase();
+    let icon = "🧠";
+    let action = null;
+    for (let ctx of contextIcons) {
+      if (lower.includes(ctx.keyword)) {
+        icon = ctx.icon;
+        action = ctx.action;
+        break;
+      }
+    }
+    return (
+      <li style={{ marginBottom: 12, fontSize: 16, display: "flex", alignItems: "flex-start", gap: 8 }}>
+        <span style={{ fontSize: 21, marginRight: 9 }}>{icon}</span>
+        <span>
+          <b style={{ display: 'block', marginBottom: 1 }}>{action}</b>
+          <span style={{ color: "#347", fontWeight: 500 }}>{text}</span>
+        </span>
+      </li>
+    );
+  }
+
+  // Special intro or CTA for context-aware actionable guidance
+  let mainGuidance = null;
+  if (nudges.some(n => n.toLowerCase().includes("payday"))) {
+    mainGuidance = <b style={{ color: "#259c52" }}>Tip: Boost your savings right after your next payday for faster progress!</b>;
+  } else if (nudges.some(n => n.toLowerCase().includes("holiday") || n.toLowerCase().includes("vacation"))) {
+    mainGuidance = <b style={{ color: "#bb7816" }}>Tip: Relax during your break – Goalie will pause or adjust savings reminders accordingly.</b>;
+  } else if (nudges.some(n => n.toLowerCase().includes("busy") || n.toLowerCase().includes("jam-packed"))) {
+    mainGuidance = <b style={{ color: "#2b74bb" }}>Tip: Your reminders will be intelligently timed to avoid your busiest days.</b>;
+  }
+
   return (
     <div style={{
-      background: "linear-gradient(98deg, #eafcff 77%, #f8f6ed 120%)",
-      borderRadius: 13,
-      fontSize: 15,
-      padding: "16px 19px",
-      color: "#2c5c8f",
-      marginTop: 3,
-      marginBottom: 2,
-      boxShadow: "0 2px 11px #baeaff22"
+      background: "linear-gradient(99deg, #eafcff 70%, #fffbe9 125%)",
+      borderRadius: 15,
+      fontSize: 15.6,
+      padding: "23px 23px 18px 25px",
+      color: "#1a3a66",
+      marginTop: 8,
+      marginBottom: 8,
+      boxShadow: "0 2.5px 13px #baeaff28, 0 1.5px 10px #fff0c318"
     }}>
-      <div style={{ fontWeight: 600, fontSize: 14, color: "#367ac2", marginBottom: 7 }}>
-        <span role="img" aria-label="insight" style={{ fontSize: 19, marginRight: 8 }}>🧠</span>
-        Smart Calendar Nudges
+      <div style={{
+        fontWeight: 700,
+        fontSize: 16,
+        color: "#1576be",
+        marginBottom: 10,
+        letterSpacing: ".01em"
+      }}>
+        <span role="img" aria-label="insight" style={{ fontSize: 23, marginRight: 11 }}>🧠</span>
+        Actionable Calendar Insights
       </div>
-      <ul style={{ margin: 0, padding: "0 0 0 18px" }}>
-        {nudges.map((n, idx) => (
-          <li key={idx} style={{ marginBottom: 7 }}>{n}</li>
-        ))}
+      {mainGuidance && (
+        <div style={{
+          background: "#f5f7ff",
+          padding: "7px 14px",
+          borderRadius: 8,
+          margin: "0 0 12px 2px",
+          color: "#287b91",
+          fontWeight: 600,
+          fontSize: 15
+        }}>
+          {mainGuidance}
+        </div>
+      )}
+      <ul style={{ margin: 0, padding: "0 0 0 4px", listStyle: "none" }}>
+        {nudges.map((n, idx) => renderContextNudge(n))}
       </ul>
+      <div style={{ color: "#b8b8c9", fontSize: 12.4, marginTop: 11, marginLeft: 2 }}>
+        <span style={{ opacity: 0.7 }}>Reminders and nudges are always private and only shown to you.</span>
+      </div>
     </div>
   );
 }
