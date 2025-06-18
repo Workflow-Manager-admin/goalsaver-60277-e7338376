@@ -20,7 +20,7 @@ const MOTIVATION = [
 function MainContainer() {
   // State for all goals
   const [goals, setGoals] = useState(() => {
-    const saved = localStorage.getItem("goalsaver-goals");
+    const saved = localStorage.getItem("goalie-goals");
     return saved ? JSON.parse(saved) : [];
   });
   // Reminders (in-app only, as offline PWA)
@@ -30,7 +30,7 @@ function MainContainer() {
 
   // Save goals to localStorage for offline usage
   useEffect(() => {
-    localStorage.setItem("goalsaver-goals", JSON.stringify(goals));
+    localStorage.setItem("goalie-goals", JSON.stringify(goals));
   }, [goals]);
 
   // Simulate reminders for habit formation (study intervals, PWA app only)
@@ -131,15 +131,15 @@ function MainContainer() {
 
   // Render
   return (
-    <div className="goalsaver-main" style={{ background: "#FAFAFA", minHeight: "100vh" }}>
+    <div className="goalie-main" style={{ background: "#101219", minHeight: "100vh" }}>
       {/* Main Navbar */}
       <nav
         className="navbar"
         style={{
-          backgroundColor: "#fff",
+          backgroundColor: "#161933",
           borderBottom: `2px solid ${BRAND.primary}10`,
-          color: "#222",
-          boxShadow: "0 1px 8px 0 #eee6",
+          color: "#eee",
+          boxShadow: "0 1px 8px 0 #111c",
         }}
       >
         <div className="container" style={{ maxWidth: 940, gap: 12, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
@@ -147,8 +147,8 @@ function MainContainer() {
             className="logo"
             style={{ fontWeight: 700, color: BRAND.primary, fontSize: "1.35em" }}
           >
-            <span style={{color: BRAND.secondary, fontSize: '2em', marginRight: 6}}>🐖</span>
-            GoalSaver
+            <span style={{color: BRAND.secondary, fontSize: '2em', marginRight: 6}}>🥅</span>
+            Goalie
           </span>
           <button
             className="btn"
@@ -180,9 +180,9 @@ function MainContainer() {
           {/* Welcome & summary */}
           <section style={{ marginBottom: 30, padding: 16 }}>
             <h2 style={{ fontWeight: 600, marginBottom: 8, color: BRAND.primary }}>
-              Welcome to GoalSaver!
+              Welcome to Goalie!
             </h2>
-            <p style={{ color: "#444", fontSize: 16, margin: 0 }}>
+            <p style={{ color: "#b7bbc6", fontSize: 16, margin: 0 }}>
               Set financial goals, plan your savings, track your progress, and build saving habits—
               all in one simple, offline-friendly virtual piggy bank.
             </p>
@@ -328,7 +328,7 @@ function GoalForm({ onSave, onCancel }) {
         <button
           type="button"
           className="btn"
-          style={{ background: "#ddd", color: "#333" }}
+          style={{ background: "#31344a", color: "#eee" }}
           onClick={onCancel}
         >
           Cancel
@@ -425,11 +425,11 @@ function GoalCard({
     <div
       className="goal-card"
       style={{
-        background: "#fff",
-        border: `2px solid ${isPrimary ? brand.primary : "#eee"}`,
+        background: "#23263a",
+        border: `2px solid ${isPrimary ? brand.primary : "#3332"}`,
         borderRadius: 12,
         padding: 20,
-        boxShadow: "0 2px 12px 0 #ececec",
+        boxShadow: "0 2px 12px 0 #10121a60",
         display: "flex",
         flexDirection: "column",
         gap: 8,
@@ -487,7 +487,7 @@ function GoalCard({
             className="btn"
             onClick={() => onActivate(goal.id)}
             style={{
-              background: isPrimary ? "#efefef" : brand.primary,
+              background: isPrimary ? "#23263a" : brand.primary,
               color: isPrimary ? brand.primary : "#fff",
               border: "none",
               padding: "4px 10px",
@@ -505,9 +505,9 @@ function GoalCard({
             className="btn"
             onClick={() => onRemove(goal.id)}
             style={{
-              background: "#fff0f0",
+              background: "#3D1C24",
               color: "#e04a43",
-              border: "1px solid #ffcccc",
+              border: "1px solid #8c2e37",
               fontSize: 13,
               padding: "4px 10px",
             }}
@@ -521,7 +521,7 @@ function GoalCard({
       <div
         style={{
           margin: "7px 0 5px 42px",
-          color: "#888",
+          color: "#b7bbc6",
           fontSize: 13,
         }}
       >
@@ -534,7 +534,7 @@ function GoalCard({
         )}{" "}
         | Days Left: <b>{daysLeft}</b>
       </div>
-      <div style={{ margin: "2px 0 10px 42px", color: "#666", fontSize: 13 }}>
+      <div style={{ margin: "2px 0 10px 42px", color: "#888", fontSize: 13 }}>
         {goal.income ? <>Income: ₹{goal.income}</> : ""}
         {goal.spending ? <>, Spending: ₹{goal.spending}</> : ""}
         {goal.income && goal.spending ? (
@@ -551,7 +551,7 @@ function GoalCard({
       <div style={{ marginLeft: 42, marginBottom: 5, color: brand.primary }}>
         {milestoneMsg}
       </div>
-      <div style={{ marginLeft: 42, color: "#222", fontSize: 16 }}>
+      <div style={{ marginLeft: 42, color: "#eee", fontSize: 16 }}>
         Saved: <b>₹{goal.progress}</b> / <b>₹{goal.amount}</b>
       </div>
       {/* Add virtual savings/cash */}
@@ -606,8 +606,8 @@ function GoalCard({
                 <button
                   className="btn"
                   style={{
-                    background: "#eee",
-                    color: "#666",
+                    background: "#23263a",
+                    color: "#eee",
                     fontSize: 13,
                   }}
                   type="button"
@@ -622,7 +622,7 @@ function GoalCard({
       </div>
       {/* Habit builder enable/disable */}
       {!goal.completed && (
-        <label style={{ marginLeft: 42, marginTop: 4, fontSize: 13, color: "#777" }}>
+        <label style={{ marginLeft: 42, marginTop: 4, fontSize: 13, color: "#b7bbc6" }}>
           <input
             type="checkbox"
             checked={goal.remindersEnabled}
@@ -669,7 +669,7 @@ function ProgressBar({ percent, color }) {
   return (
     <div
       style={{
-        background: "#eee",
+        background: "#222634",
         borderRadius: 8,
         height: 16,
         marginLeft: 42,
@@ -697,7 +697,7 @@ function ProgressBar({ percent, color }) {
           left: `${Math.max(10, Math.min(percent, 90))}%`,
           top: 0,
           transform: "translateX(-50%)",
-          color: "#fff",
+          color: "#f7f7fa",
           fontWeight: 700,
           fontSize: 12,
           textShadow: "0 1px 4px #0007",
@@ -714,9 +714,9 @@ function ReminderPrompt({ title, onDismiss }) {
   return (
     <div
       style={{
-        background: "#fffbe7",
-        border: `1px solid #ffe082`,
-        color: "#72582c",
+        background: "#2f1e41ec",
+        border: `1px solid #f7c948`,
+        color: "#f7c948",
         borderRadius: 7,
         padding: "17px 22px",
         position: "fixed",
@@ -724,7 +724,7 @@ function ReminderPrompt({ title, onDismiss }) {
         right: 40,
         zIndex: 102,
         minWidth: 220,
-        boxShadow: "0 2px 16px 0 #eedc99c0",
+        boxShadow: "0 2px 16px 0 #1b1516c0",
         fontWeight: 500,
         fontSize: 16,
         display: "flex",
@@ -739,8 +739,8 @@ function ReminderPrompt({ title, onDismiss }) {
       <button
         className="btn"
         style={{
-          background: "#ffe082",
-          color: "#72582c",
+          background: "#f7c948",
+          color: "#2f1e41",
           fontSize: 13,
           padding: "3px 9px",
           border: "none",
@@ -756,14 +756,14 @@ function ReminderPrompt({ title, onDismiss }) {
 // Minimal inline form styling
 const formStyles = {
   form: {
-    background: "#f6f6fc",
-    border: `2px solid #b5eadd`,
+    background: "#23263a",
+    border: `2px solid #3acae7`,
     borderRadius: 9,
     padding: 24,
     marginBottom: 26,
     marginTop: 10,
     maxWidth: 480,
-    boxShadow: "0 1px 6px 0 #def7fa",
+    boxShadow: "0 1px 6px 0 #1a5671a4",
   },
   title: {
     fontWeight: 600,
@@ -774,7 +774,7 @@ const formStyles = {
   label: {
     display: "block",
     marginBottom: 11,
-    color: "#222",
+    color: "#eee",
     fontSize: "1em",
     fontWeight: 500,
   },
@@ -784,16 +784,17 @@ const formStyles = {
     marginTop: 4,
     width: "100%",
     boxSizing: "border-box",
-    border: "1px solid #ddd",
+    border: "1px solid #23263a",
     borderRadius: 5,
     outline: "none",
-    background: "#fff",
+    background: "#191b25",
+    color: "#eee",
     marginBottom: 7,
   },
   suggestion: {
-    background: "#e3f8ed",
+    background: "#132e26",
     borderRadius: 5,
-    color: "#229e63",
+    color: "#7afe8e",
     fontSize: 13,
     padding: "7px 9px",
     marginBottom: -7,
@@ -808,21 +809,23 @@ const formStyles = {
   inputSmall: {
     width: 70,
     fontSize: 15,
-    border: "1px solid #eee",
+    border: "1px solid #23263a",
     borderRadius: 4,
     padding: "4px 6px",
     outline: "none",
     marginRight: 3,
-    background: "#fff",
+    background: "#191b25",
+    color: "#eee",
   },
   inputNote: {
     flex: 1,
     fontSize: 13,
-    border: "1px solid #eee",
+    border: "1px solid #23263a",
     borderRadius: 4,
     padding: "4px 6px",
     marginRight: 3,
-    background: "#fff",
+    background: "#191b25",
+    color: "#eee",
   },
 };
 

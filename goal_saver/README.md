@@ -1,11 +1,11 @@
-# Lightweight React Template for KAVIA
+# Goalie - Lightweight React Template
 
 This project provides a minimal React template with a clean, modern UI and minimal dependencies.
 
 ## Features
 
 - **Lightweight**: No heavy UI frameworks - uses only vanilla CSS and React
-- **Modern UI**: Clean, responsive design with KAVIA brand styling
+- **Modern UI**: Clean, responsive design with Goalie brand styling
 - **Fast**: Minimal dependencies for quick loading times
 - **Simple**: Easy to understand and modify
 
@@ -51,8 +51,8 @@ The main brand colors are defined as CSS variables in `src/App.css`:
 
 ```css
 :root {
-  --kavia-orange: #E87A41;
-  --kavia-dark: #1A1A1A;
+  --goalie-light: #00ffff;
+  --goalie-dark: #000222;
   --text-color: #ffffff;
   --text-secondary: rgba(255, 255, 255, 0.7);
   --border-color: rgba(255, 255, 255, 0.1);
