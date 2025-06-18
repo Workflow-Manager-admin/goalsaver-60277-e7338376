@@ -7,6 +7,7 @@ import LoadingOverlay from "./LoadingOverlay";
 import SmartHelper from "./SmartHelper";
 import GoogleLoginButton from "./GoogleLoginButton";
 import { addGoalReminderToCalendar, deleteCalendarEvent } from "./GoogleCalendarUtils";
+import CalendarNudges from "./CalendarNudges";
 
 /* Goalie Brand Palette */
 const BRAND = {
@@ -57,6 +58,24 @@ function MainContainer() {
   const [loading, setLoading] = useState(false);
   // Info tooltip for contextual tips (desktop/mobile)
   const [tooltip, setTooltip] = useState({ visible: false, text: "", x: 0, y: 0, mobile: false });
+
+  // --- Calendar/Smart Nudges state ---
+  // Ask the user if they want to allow Goalie to use calendar events for smarter nudges; store consent
+  const [calendarConsent, setCalendarConsent] = useState(() => {
+    // Store explicit opt-in value to localStorage; do not auto-on for login!
+    return localStorage.getItem("goalie-calendar-consent") === "yes";
+  });
+  const handleRequestCalendarConsent = async () => {
+    if (calendarConsent) return true;
+    const should = window.confirm(
+      "Goalie can show you even smarter savings nudges by analyzing your upcoming Google Calendar events (never shared, stays private in your browser). Do you allow Goalie to access your calendar for this purpose?"
+    );
+    if (should) {
+      setCalendarConsent(true);
+      localStorage.setItem("goalie-calendar-consent", "yes");
+    }
+    return should;
+  };
 
   // Save goals to localStorage
   useEffect(() => {
@@ -611,6 +630,14 @@ function MainContainer() {
           </section>
           {/* Savings Distribution Pie Chart */}
           <SavingsPieChart goals={goals} />
+
+          {/* Calendar-based smart nudges (privacy-guarded, opt-in only) */}
+          <CalendarNudges
+            userConsent={calendarConsent}
+            onRequestConsent={handleRequestCalendarConsent}
+            frequency={frequency}
+          />
+
           {/* Context-aware Smart Helper (tips/motivations) */}
           <SmartHelper
             goals={goalsWithCurrentEst}
