@@ -9,22 +9,22 @@ import {
 } from "recharts";
 
 /**
- * Pie chart color palette (Goalie-friendly, colorblind-accessible)
+ * Pie chart color palette (Goalie - modern airy pastel for light theme, accessible)
  */
 const PIE_COLORS = [
-  "#25fff7",
-  "#67ff83",
-  "#ffde6e",
-  "#ff57b2",
-  "#38ffd9",
-  "#50a8ff",
-  "#7e42fa",
-  "#f7c948",
-  "#4caf50",
-  "#fff35e",
-  "#fa5d42",
-  "#be50fc",
-  "#2196f3"
+  "#a5ecec",   // pastel teal
+  "#b9dbfa",   // pastel blue
+  "#fde2e4",   // blush
+  "#fff4d1",   // light yellow
+  "#c4e4b6",   // light mint
+  "#ede2f8",   // lavender
+  "#f2f7ff",   // powder blue
+  "#ffe0e9",   // very soft pink
+  "#ffecd2",   // pale apricot
+  "#eafcfc",   // crystal blue
+  "#ffd4a3",   // light peach
+  "#bee1e6",   // mint sky
+  "#ffe9f0",   // hint pink
 ];
 
 // PUBLIC_INTERFACE
@@ -47,14 +47,13 @@ function SavingsPieChart({ goals }) {
       <section className="pie-chart-section" style={{
         margin: "38px 0 41px 0",
         padding: "30px 0 29px 0",
-        background: "linear-gradient(115deg, var(--goalie-card) 84%, #171d34 100%)",
-        borderRadius: "21px",
-        boxShadow:
-          "0 3.5px 20px 0 #1e243a90, 0 1px 12px #10131b30",
+        background: "linear-gradient(115deg, #f6fbff 90%, #f2f7ff 100%)",
+        borderRadius: "18px",
+        boxShadow: "0 3px 10px 0 #d2e4ff32, 0 1px 6px #fafaff13",
         textAlign: "center"
       }}>
         <div className="pie-chart-header">Savings Distribution</div>
-        <div style={{ color: "#7afe8e", fontWeight: 500, fontSize: 17, padding: "18px 0" }}>
+        <div style={{ color: "#6fc1be", fontWeight: 500, fontSize: 17, padding: "18px 0" }}>
           No savings added yet.<br />Add savings to your goals to see your distribution!
         </div>
       </section>
@@ -68,9 +67,9 @@ function SavingsPieChart({ goals }) {
       style={{
         margin: "38px 0 41px 0",
         padding: "30px 0 29px 0",
-        background: "linear-gradient(115deg, var(--goalie-card) 84%, #171d34 100%)",
-        borderRadius: "21px",
-        boxShadow: "0 3.5px 20px 0 #1e243a90, 0 1px 12px #10131b30",
+        background: "linear-gradient(115deg, #f8fbfd 90%, #f2f7ff 100%)",
+        borderRadius: "18px",
+        boxShadow: "0 3px 10px 0 #d2e4ff32, 0 1px 6px #fafaff13",
       }}
     >
       <div className="pie-chart-header">Savings Distribution</div>
@@ -89,7 +88,7 @@ function SavingsPieChart({ goals }) {
               `${name}: ${(percent * 100).toFixed(1)}%`
             }
             isAnimationActive={true}
-            stroke="#232446"
+            stroke="#e4e8f0"
             strokeWidth={3}
             aria-label="Pie segment"
           >
@@ -105,20 +104,20 @@ function SavingsPieChart({ goals }) {
           <Tooltip
             formatter={(value, name) => [`₹${value.toLocaleString()}`, name]}
             contentStyle={{
-              background: "#2b2947",
+              background: "#f7fafc",
               borderRadius: 7,
-              border: "1px solid #67ff83",
-              color: "#25fff7",
+              border: "1px solid #b2f3e9",
+              color: "#5796bb",
               fontWeight: 600
             }}
-            cursor={{ fill: "#232446" }}
+            cursor={{ fill: "#eff7ff" }}
           />
           <Legend
             iconType="circle"
             verticalAlign="bottom"
             height={36}
             wrapperStyle={{
-              color: "var(--goalie-accent)",
+              color: "#79a8ba",
               fontWeight: 700,
               fontSize: 13,
               marginTop: 14

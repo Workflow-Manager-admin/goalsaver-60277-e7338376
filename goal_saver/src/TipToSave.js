@@ -29,18 +29,21 @@ function getRandomTip() {
   return SAVINGS_TIPS[index];
 }
 
-// PUBLIC_INTERFACE
+/**
+ * PUBLIC_INTERFACE
+ * Render a pastel tip card in the new light theme.
+ */
 function TipToSave({ tip }) {
   const displayTip = tip || getRandomTip();
   return (
     <div className="tip-to-save" style={{
-      background: "linear-gradient(92deg, #262766 55%, #171d2d 100%)",
-      color: "var(--goalie-pink)",
+      background: "linear-gradient(92deg, #fff7e9 55%, #f7f3fa 100%)",
+      color: "#8f5070",
       borderRadius: 12,
       margin: "18px 0 16px 0",
       padding: "15px 22px 14px 19px",
       fontSize: "1.18em",
-      boxShadow: "0 3px 15px 0 #601c7945, 0 2px 7px #25fff712",
+      boxShadow: "0 3px 12px 0 #fce1ff42, 0 2px 7px #bae1fa18",
       display: "flex",
       gap: 14,
       alignItems: "flex-start"
@@ -48,7 +51,7 @@ function TipToSave({ tip }) {
       <span className="tip-icon" role="img" aria-label="light bulb" style={{
         fontSize: "1.5em",
         marginRight: 9,
-        filter: "drop-shadow(0 1px 8px #ff57b230)"
+        filter: "drop-shadow(0 1px 8px #ffe0a570)"
       }}>
         💡
       </span>

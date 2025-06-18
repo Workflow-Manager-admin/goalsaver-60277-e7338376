@@ -140,7 +140,7 @@ function MainContainer() {
         style={{
           backgroundColor: "var(--goalie-dark)",
           borderBottom: "2px solid var(--border-color)",
-          color: "var(--text-color)",
+          color: "var(--text-heading)",
           boxShadow: "var(--shadow-navbar)",
         }}
       >
@@ -155,7 +155,7 @@ function MainContainer() {
           <button
             className="btn btn-brand"
             style={{
-              marginLeft: 12
+              marginLeft: 12,
             }}
             onClick={() => setShowGoalForm((x) => !x)}
           >
@@ -181,14 +181,14 @@ function MainContainer() {
           <section style={{
             marginBottom: 16,
             padding: "18px 14px",
-            background: "linear-gradient(91deg,var(--goalie-darkest),var(--goalie-card-alt) 98%)",
-            borderRadius: 12,
-            boxShadow: "0 1.5px 10px 0 #23254f13",
+            background: "linear-gradient(91deg,#f9fbff 80%,var(--goalie-card-alt) 98%)",
+            borderRadius: 14,
+            boxShadow: "0 2px 12px 0 #e2efee13",
           }}>
             <h2 style={{
               fontWeight: 700,
               marginBottom: 8,
-              color: "var(--goalie-brand)",
+              color: "var(--goalie-blue)",
               letterSpacing: "0.5px"
             }}>
               Welcome to Goalie!
@@ -439,11 +439,11 @@ function GoalCard({
     <div
       className="goal-card"
       style={{
-        background: "#23263a",
-        border: `2px solid ${isPrimary ? brand.primary : "#3332"}`,
-        borderRadius: 12,
+        background: "linear-gradient(128deg, #fcfdff 90%, #f2f7ff 100%)",
+        border: `2px solid ${isPrimary ? brand.primary : "#dde8ef"}`,
+        borderRadius: 13,
         padding: 20,
-        boxShadow: "0 2px 12px 0 #10121a60",
+        boxShadow: "0 2px 11px 0 #e2faff3d",
         display: "flex",
         flexDirection: "column",
         gap: 8,
@@ -683,7 +683,7 @@ function ProgressBar({ percent, color }) {
   return (
     <div
       style={{
-        background: "#222634",
+        background: "#e3eef9",
         borderRadius: 8,
         height: 16,
         marginLeft: 42,
@@ -711,10 +711,10 @@ function ProgressBar({ percent, color }) {
           left: `${Math.max(10, Math.min(percent, 90))}%`,
           top: 0,
           transform: "translateX(-50%)",
-          color: "#f7f7fa",
+          color: "#406080",
           fontWeight: 700,
           fontSize: 12,
-          textShadow: "0 1px 4px #0007",
+          textShadow: "0 1px 1.5px #e2ebfb",
         }}
       >
         {percent}%
@@ -723,27 +723,29 @@ function ProgressBar({ percent, color }) {
   );
 }
 
-// Reminder prompt (in-app only, not push)
+/**
+ * Reminder prompt - now pastel, modern, light for light mode.
+ */
 function ReminderPrompt({ title, onDismiss }) {
   return (
     <div
       style={{
-        background: "#2f1e41ec",
-        border: `1px solid #f7c948`,
-        color: "#f7c948",
-        borderRadius: 7,
-        padding: "17px 22px",
+        background: "linear-gradient(93deg, #fffbe7 80%, #f5f9fe 100%)",
+        border: "1.5px solid #ffe0a5",
+        color: "#8e652b",
+        borderRadius: 8,
+        padding: "15px 20px",
         position: "fixed",
         top: 70,
-        right: 40,
+        right: 38,
         zIndex: 102,
         minWidth: 220,
-        boxShadow: "0 2px 16px 0 #1b1516c0",
+        boxShadow: "0 2px 16px 0 #efe2ba70",
         fontWeight: 500,
         fontSize: 16,
         display: "flex",
         alignItems: "center",
-        gap: 14,
+        gap: 13,
       }}
     >
       <span role="img" aria-label="reminder">
@@ -753,10 +755,10 @@ function ReminderPrompt({ title, onDismiss }) {
       <button
         className="btn"
         style={{
-          background: "#f7c948",
-          color: "#2f1e41",
+          background: "#ffeca5",
+          color: "#73562e",
           fontSize: 13,
-          padding: "3px 9px",
+          padding: "3px 11px",
           border: "none",
         }}
         onClick={onDismiss}
@@ -767,28 +769,30 @@ function ReminderPrompt({ title, onDismiss }) {
   );
 }
 
-// Minimal inline form styling
+/**
+ * Minimal inline form styling - all pastel backgrounds & borders for light mode.
+ */
 const formStyles = {
   form: {
-    background: "#23263a",
-    border: `2px solid #3acae7`,
+    background: "#f9fcff",
+    border: `2px solid #bae6fd`,
     borderRadius: 9,
     padding: 24,
     marginBottom: 26,
     marginTop: 10,
     maxWidth: 480,
-    boxShadow: "0 1px 6px 0 #1a5671a4",
+    boxShadow: "0 1px 7px 0 #e6f4fa98",
   },
   title: {
     fontWeight: 600,
     fontSize: "1.35em",
     marginBottom: 15,
-    color: "#4CAF50",
+    color: "#5796bb",
   },
   label: {
     display: "block",
     marginBottom: 11,
-    color: "#eee",
+    color: "#497093",
     fontSize: "1em",
     fontWeight: 500,
   },
@@ -798,17 +802,17 @@ const formStyles = {
     marginTop: 4,
     width: "100%",
     boxSizing: "border-box",
-    border: "1px solid #23263a",
+    border: "1.2px solid #b9dbfa",
     borderRadius: 5,
     outline: "none",
-    background: "#191b25",
-    color: "#eee",
+    background: "#f6fafc",
+    color: "#324969",
     marginBottom: 7,
   },
   suggestion: {
-    background: "#132e26",
+    background: "#fffbe8",
     borderRadius: 5,
-    color: "#7afe8e",
+    color: "#968015",
     fontSize: 13,
     padding: "7px 9px",
     marginBottom: -7,
@@ -823,23 +827,23 @@ const formStyles = {
   inputSmall: {
     width: 70,
     fontSize: 15,
-    border: "1px solid #23263a",
+    border: "1.2px solid #b9dbfa",
     borderRadius: 4,
     padding: "4px 6px",
     outline: "none",
     marginRight: 3,
-    background: "#191b25",
-    color: "#eee",
+    background: "#f6fafc",
+    color: "#324969",
   },
   inputNote: {
     flex: 1,
     fontSize: 13,
-    border: "1px solid #23263a",
+    border: "1.2px solid #e9dafc",
     borderRadius: 4,
     padding: "4px 6px",
     marginRight: 3,
-    background: "#191b25",
-    color: "#eee",
+    background: "#f7fafc",
+    color: "#325169",
   },
 };
 
