@@ -100,8 +100,48 @@ function CalendarNudges({ userConsent, onRequestConsent, frequency, children }) 
         ? "Your upcoming 10 days are jam-packed. We'll reduce reminders so you can focus on what's important."
         : null;
 
+    // Detect holidays (heuristic: events with "holiday" or marked as all-day and no organizer)
+    const holidayKeywords = /holiday|public holiday|national holiday|bank holiday|festival|leave|休暇|休日|feriado|vacation/i;
+    const holidayEvents = events.filter(ev =>
+      (ev.summary && holidayKeywords.test(ev.summary)) ||
+      (ev.description && holidayKeywords.test(ev.description)) ||
+      (ev.start.date && !ev.organizer) // some all-day holidays have no organizer in Google's feed
+    );
+    const upcomingHoliday = holidayEvents
+      .map(ev => new Date(ev.start.dateTime || ev.start.date))
+      .find(d => (d - today) / (1000 * 3600 * 24) <= 21 && (d - today) / (1000 * 3600 * 24) >= 0);
+    const holidayNudge = upcomingHoliday
+      ? "A holiday or vacation is coming up! Consider putting aside extra savings or taking a break from reminders."
+      : null;
+
+    // Vacation detection: event with "vacation", "trip", "travel" or similar in summary/description, multi-day
+    const vacationKeywords = /vacation|annual leave|leave|trip|travel|out of office|holiday/i;
+    const vacationEvents = events.filter(ev =>
+      (ev.summary && vacationKeywords.test(ev.summary)) ||
+      (ev.description && vacationKeywords.test(ev.description))
+    );
+    // Heuristic: multi-day (or long all-day) events are vacations relevant for savings
+    const multiDayVacationEvent = vacationEvents.find(ev => {
+      if (ev.start.date && ev.end && ev.end.date) {
+        const start = new Date(ev.start.date);
+        const end = new Date(ev.end.date);
+        return (end - start) / (1000 * 3600 * 24) >= 2;
+      }
+      return false;
+    });
+    const vacationNudge = multiDayVacationEvent
+      ? "You're going on vacation soon! Adjust savings or enjoy planned spending—Goalie will avoid reminders during your trip."
+      : null;
+
     setNudges(
-      [paydayNudge, busyNudge, weekendNudge, overwhelmNudge].filter(Boolean)
+      [
+        paydayNudge,
+        busyNudge,
+        holidayNudge,
+        vacationNudge,
+        weekendNudge,
+        overwhelmNudge
+      ].filter(Boolean)
     );
   }, [events]);
 
