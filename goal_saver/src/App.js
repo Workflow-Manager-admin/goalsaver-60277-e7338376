@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 import TipToSave from "./TipToSave";
 import SavingsPieChart from "./SavingsPieChart";
+import Tooltip from "./Tooltip";
+import LoadingOverlay from "./LoadingOverlay";
 
 /* Goalie Brand Palette */
 const BRAND = {
@@ -48,7 +50,7 @@ function MainContainer() {
   // Global loading/progress state for major actions
   const [loading, setLoading] = useState(false);
   // Info tooltip for contextual tips (desktop/mobile)
-  const [tooltip, setTooltip] = useState({ visible: false, text: "", x: 0, y: 0 });
+  const [tooltip, setTooltip] = useState({ visible: false, text: "", x: 0, y: 0, mobile: false });
 
   // Save goals to localStorage
   useEffect(() => {
@@ -329,48 +331,10 @@ function MainContainer() {
   // --- MAIN DASHBOARD ---
   return (
     <div className="goalie-main" style={{ background: "var(--goalie-darkest)", minHeight: "100vh", position: "relative" }}>
-      {/* Global loading overlay */}
-      {loading && (
-        <div style={{
-            position: "fixed", top: 0, left: 0, width: "100vw", height: "100vh",
-            zIndex: 999, background: "rgba(255,255,255,0.55)", display:"flex", alignItems:"center", justifyContent:"center",
-            pointerEvents: "all", transition: "background 0.2s"
-        }}>
-          <div style={{
-            background: "var(--goalie-card-alt)",
-            borderRadius: 22,
-            padding: "26px 37px",
-            boxShadow: "0 2px 32px #acd6e633, 0 1.5px 10px #eaeaea12",
-            display: "flex", flexDirection: "column", alignItems: "center"
-          }}>
-            <div style={{ fontSize:50, marginBottom:10, filter: "drop-shadow(0 3px 14px #95dbd755)" }}>⏳</div>
-            <span style={{ color: "#5796bb", fontWeight: 700, fontSize: 20 }}>Working<span className="loading-ellipsis">...</span></span>
-          </div>
-        </div>
-      )}
-      {/* App-wide Tooltip */}
-      {tooltip.visible &&
-        <div
-          style={{
-            position: "fixed",
-            left: tooltip.x,
-            top: tooltip.y,
-            zIndex: 2040,
-            background: "#23263a",
-            color: "#eaf6fc",
-            padding: "11px 16px",
-            borderRadius: 8,
-            boxShadow: "0 2px 14px #1189c970",
-            fontSize: 15,
-            maxWidth: 265,
-            pointerEvents: "none",
-            transition: "opacity 0.15s"
-          }}
-          role="tooltip"
-        >
-          {tooltip.text}
-        </div>
-      }
+      {/* Animated loading overlay (global) */}
+      <LoadingOverlay visible={loading} message="Working..." />
+      {/* Modern, animated Tooltip for context-sensitive UX help */}
+      <Tooltip {...tooltip} />
       {/* Main Navbar */}
       <nav
         className="navbar"
@@ -391,17 +355,34 @@ function MainContainer() {
           </span>
           {/* Change frequency dropdown */}
           <div>
-            <label htmlFor="freq" style={{
-              color: "var(--goalie-blue)",
-              fontWeight: 600,
-              fontSize: 14,
-              marginRight: 8,
-              verticalAlign: "middle",
-              cursor: "pointer"
-            }}
-            tabIndex={0}
-            onMouseEnter={e => setTooltip({visible: true, text: "Change how often you want to save for ALL your goals. Pick what matches your paycheck best!", x: e.target.getBoundingClientRect().left+36, y: e.target.getBoundingClientRect().bottom+8})}
-            onMouseLeave={() => setTooltip({ ...tooltip, visible: false})}
+            <label
+              htmlFor="freq"
+              style={{
+                color: "var(--goalie-blue)",
+                fontWeight: 600,
+                fontSize: 14,
+                marginRight: 8,
+                verticalAlign: "middle",
+                cursor: "pointer"
+              }}
+              tabIndex={0}
+              onMouseEnter={e => setTooltip({
+                visible: true,
+                text: "Change how often you want to save for ALL your goals. Pick what matches your paycheck best!",
+                x: e.target.getBoundingClientRect().left + 36,
+                y: e.target.getBoundingClientRect().bottom + 8,
+                mobile: window.innerWidth <= 680
+              })}
+              onMouseLeave={() => setTooltip({ ...tooltip, visible: false })}
+              onFocus={e => setTooltip({
+                visible: true,
+                text: "Save daily, weekly, or monthly - your plan adapts automatically!",
+                x: e.target.getBoundingClientRect().left + 36,
+                y: e.target.getBoundingClientRect().bottom + 9,
+                mobile: window.innerWidth <= 680
+              })}
+              onBlur={() => setTooltip({ ...tooltip, visible: false })}
+              aria-describedby="tooltip-frequency-label"
             >Plan:</label>
             <select
               id="freq"
@@ -417,8 +398,14 @@ function MainContainer() {
               }}
               aria-label="Change savings frequency"
               tabIndex={0}
-              onFocus={e => setTooltip({visible: true, text: "Save daily, weekly, or monthly - your plan adapts automatically!", x: e.target.getBoundingClientRect().left+36, y: e.target.getBoundingClientRect().bottom+9})}
-              onBlur={() => setTooltip({ ...tooltip, visible: false})}
+              onFocus={e => setTooltip({
+                visible: true,
+                text: "Choose how often you'd like to set aside money for your goals!",
+                x: e.target.getBoundingClientRect().left + 36,
+                y: e.target.getBoundingClientRect().bottom + 9,
+                mobile: window.innerWidth <= 680
+              })}
+              onBlur={() => setTooltip({ ...tooltip, visible: false })}
             >
               <option value="daily">Daily</option>
               <option value="weekly">Weekly</option>
@@ -426,14 +413,34 @@ function MainContainer() {
             </select>
             <button
               className="btn btn-brand"
-              style={{ marginLeft: 18, position: "relative" }}
+              style={{
+                marginLeft: 18,
+                position: "relative",
+                order: window.innerWidth <= 680 ? "-1" : "2"
+              }}
               onClick={() => setShowGoalForm((x) => !x)}
               aria-label={showGoalForm ? "Cancel goal creation" : "Add a new goal"}
               tabIndex={0}
-              onMouseEnter={e => setTooltip({visible: true, text: showGoalForm ? "Cancel creating a new goal." : "Click to create a new goal and start saving!", x: e.target.getBoundingClientRect().left+24, y: e.target.getBoundingClientRect().bottom+9})}
-              onMouseLeave={() => setTooltip({ ...tooltip, visible: false})}
-              onFocus={e => setTooltip({visible: true, text: showGoalForm ? "Cancel creating a new goal." : "Click to create a new goal and start saving!", x: e.target.getBoundingClientRect().left+24, y: e.target.getBoundingClientRect().bottom+9})}
-              onBlur={() => setTooltip({ ...tooltip, visible: false})}
+              onMouseEnter={e => setTooltip({
+                visible: true,
+                text: showGoalForm ?
+                  "Cancel creating a new goal." :
+                  "Click to create a new goal and start saving!",
+                x: e.target.getBoundingClientRect().left + 24,
+                y: e.target.getBoundingClientRect().bottom + 9,
+                mobile: window.innerWidth <= 680
+              })}
+              onMouseLeave={() => setTooltip({ ...tooltip, visible: false })}
+              onFocus={e => setTooltip({
+                visible: true,
+                text: showGoalForm ?
+                  "Cancel creating a new goal." :
+                  "Click to create a new goal and start saving!",
+                x: e.target.getBoundingClientRect().left + 24,
+                y: e.target.getBoundingClientRect().bottom + 9,
+                mobile: window.innerWidth <= 680
+              })}
+              onBlur={() => setTooltip({ ...tooltip, visible: false })}
             >
               {showGoalForm ? "Cancel" : "+ New Goal"}
             </button>
@@ -455,7 +462,7 @@ function MainContainer() {
           textAlign: "center",
           letterSpacing: ".04em"
         }}>
-          <span role="img" aria-label="tip" style={{fontSize:24, marginRight:7}}>✨</span>
+          <span role="img" aria-label="tip" style={{ fontSize: 24, marginRight: 7 }}>✨</span>
           Ready to set a goal? Click <b>+ New Goal</b> to get started!
         </div>
       )}
@@ -513,9 +520,16 @@ function MainContainer() {
           {/* Goal creation form */}
           {showGoalForm &&
             <GoalForm
-              onSave={addGoal}
+              onSave={(goal) => {
+                setLoading(true);
+                setTimeout(() => {
+                  addGoal(goal);
+                  setLoading(false);
+                }, 850);
+              }}
               onCancel={() => setShowGoalForm(false)}
               frequency={frequency}
+              loading={loading}
             />
           }
           {/* Multiple Goals Management */}
@@ -539,28 +553,27 @@ function MainContainer() {
 /**
  * GoalForm for new goal creation
  */
-function GoalForm({ onSave, onCancel, frequency }) {
+function GoalForm({ onSave, onCancel, frequency, loading }) {
   const [title, setTitle] = useState("");
   const [amount, setAmount] = useState("");
   const [deadline, setDeadline] = useState("");
   const [income, setIncome] = useState("");
   const [spending, setSpending] = useState("");
+  const [showTip, setShowTip] = useState({ name: false, amount: false, deadline: false });
 
   // Calculate suggestions: base per-day and per-selected-period
   const today = new Date();
   const estPerDay =
     amount && deadline
       ? Math.max(
-          0,
-          Number(amount) /
-            (Math.ceil((new Date(deadline) - today) / (1000 * 3600 * 24)) || 1)
-        )
+        0,
+        Number(amount) /
+        (Math.ceil((new Date(deadline) - today) / (1000 * 3600 * 24)) || 1)
+      )
       : 0;
 
-  const disposable = income && spending ? Math.max(0, Number(income) - Number(spending)) : null;
-  const smartEst = disposable
-    ? Math.min(disposable, estPerDay)
-    : estPerDay;
+  const disposable =
+    income && spending ? Math.max(0, Number(income) - Number(spending)) : null;
 
   // For per-frequency period
   let perPeriodEst = estPerDay;
@@ -594,7 +607,9 @@ function GoalForm({ onSave, onCancel, frequency }) {
       amount: Math.round(Number(amount) * 100) / 100,
       deadline,
       estPerDay: Math.round(estPerDay * 100) / 100,
-      smartEst: Math.round(smartEst * 100) / 100,
+      smartEst: Math.round((disposable
+        ? Math.min(disposable, estPerDay)
+        : estPerDay) * 100) / 100,
       income: income ? Number(income) : null,
       spending: spending ? Number(spending) : null,
     });
@@ -606,7 +621,12 @@ function GoalForm({ onSave, onCancel, frequency }) {
   }
 
   return (
-    <form className="goal-form" style={{ ...formStyles.form, position: "relative" }} onSubmit={handleSubmit}>
+    <form
+      className="goal-form"
+      style={{ ...formStyles.form, position: "relative" }}
+      onSubmit={handleSubmit}
+      autoComplete="off"
+    >
       {isFirstGoal && (
         <div
           style={{
@@ -616,28 +636,50 @@ function GoalForm({ onSave, onCancel, frequency }) {
             fontSize: 14,
             color: "var(--goalie-blue)",
             fontWeight: 500,
-            opacity: 0.92
+            opacity: 0.92,
           }}
         >
           Step 2 of 2
         </div>
       )}
-      <h3 style={formStyles.title}>{isFirstGoal ? "Let's create your first goal" : "New Goal"}</h3>
+      <h3 style={formStyles.title}>
+        {isFirstGoal ? "Let's create your first goal" : "New Goal"}
+      </h3>
       {isFirstGoal && (
-        <div style={{
-          background: "#fce4ec",
-          color: "#9c5875",
-          borderRadius: 5,
-          padding: "9px 14px",
-          fontSize: 15,
-          marginBottom: 12
-        }}>
-          <span role="img" aria-label="flag">🎯</span>  
+        <div
+          style={{
+            background: "#fce4ec",
+            color: "#9c5875",
+            borderRadius: 5,
+            padding: "9px 14px",
+            fontSize: 15,
+            marginBottom: 12,
+          }}
+        >
+          <span role="img" aria-label="flag">
+            🎯
+          </span>
           Give your goal a memorable name, savings amount, and deadline.
         </div>
       )}
       <label style={formStyles.label}>
         Goal Name
+        <span
+          tabIndex={0}
+          aria-label="What is a good goal name?"
+          onMouseEnter={() => setShowTip((v) => ({ ...v, name: true }))}
+          onMouseLeave={() => setShowTip((v) => ({ ...v, name: false }))}
+          onFocus={() => setShowTip((v) => ({ ...v, name: true }))}
+          onBlur={() => setShowTip((v) => ({ ...v, name: false }))}
+          style={{
+            color: "#b7bbc6",
+            marginLeft: 6,
+            cursor: "help",
+            fontSize: "0.92em",
+          }}
+        >
+          ⓘ
+        </span>
         <input
           type="text"
           required
@@ -647,10 +689,33 @@ function GoalForm({ onSave, onCancel, frequency }) {
           placeholder={isFirstGoal ? "eg. Emergency Fund" : "Goal name"}
           aria-label="Goal name"
           autoFocus
+          disabled={loading}
+        />
+        <Tooltip
+          text="Pick something that motivates you! Example: 'Vacation Trip' or 'Emergency Fund'"
+          x={220}
+          y={150}
+          visible={showTip.name}
         />
       </label>
       <label style={formStyles.label}>
         Target Amount
+        <span
+          tabIndex={0}
+          aria-label="What's a typical amount?"
+          onMouseEnter={() => setShowTip((v) => ({ ...v, amount: true }))}
+          onMouseLeave={() => setShowTip((v) => ({ ...v, amount: false }))}
+          onFocus={() => setShowTip((v) => ({ ...v, amount: true }))}
+          onBlur={() => setShowTip((v) => ({ ...v, amount: false }))}
+          style={{
+            color: "#b7bbc6",
+            marginLeft: 6,
+            cursor: "help",
+            fontSize: "0.92em",
+          }}
+        >
+          ⓘ
+        </span>
         <input
           type="number"
           min="1"
@@ -660,6 +725,13 @@ function GoalForm({ onSave, onCancel, frequency }) {
           style={formStyles.input}
           placeholder={isFirstGoal ? "eg. 10000" : ""}
           aria-label="Goal amount"
+          disabled={loading}
+        />
+        <Tooltip
+          text="This is the total you want to save for this goal."
+          x={220}
+          y={190}
+          visible={showTip.amount}
         />
       </label>
       <label style={formStyles.label}>
@@ -671,10 +743,12 @@ function GoalForm({ onSave, onCancel, frequency }) {
           onChange={(e) => setDeadline(e.target.value)}
           style={formStyles.input}
           aria-label="Goal deadline"
+          disabled={loading}
         />
       </label>
       <label style={formStyles.label}>
-        Monthly Income <span style={{color:"#b7bbc6", fontWeight:400}}>(optional)</span>
+        Monthly Income{" "}
+        <span style={{ color: "#b7bbc6", fontWeight: 400 }}>(optional)</span>
         <input
           type="number"
           min="0"
@@ -682,10 +756,12 @@ function GoalForm({ onSave, onCancel, frequency }) {
           onChange={(e) => setIncome(e.target.value)}
           style={formStyles.input}
           aria-label="Monthly income"
+          disabled={loading}
         />
       </label>
       <label style={formStyles.label}>
-        Monthly Spending <span style={{color:"#b7bbc6", fontWeight:400}}>(optional)</span>
+        Monthly Spending{" "}
+        <span style={{ color: "#b7bbc6", fontWeight: 400 }}>(optional)</span>
         <input
           type="number"
           min="0"
@@ -693,6 +769,7 @@ function GoalForm({ onSave, onCancel, frequency }) {
           onChange={(e) => setSpending(e.target.value)}
           style={formStyles.input}
           aria-label="Monthly spending"
+          disabled={loading}
         />
       </label>
       {amount && deadline && (
@@ -709,18 +786,27 @@ function GoalForm({ onSave, onCancel, frequency }) {
           type="submit"
           className="btn"
           style={{
-            background: BRAND.primary, color: "#fff",
-            opacity: loading ? 0.7 : 1, pointerEvents: loading ? "none" : "auto"
+            background: BRAND.primary,
+            color: "#fff",
+            opacity: loading ? 0.7 : 1,
+            pointerEvents: loading ? "none" : "auto",
           }}
           aria-label="Add goal"
           disabled={loading}
         >
           {loading ? (
             <>
-              <span className="loading-spinner" style={{fontSize:17, marginRight:5}}>⏳</span>
+              <span
+                className="loading-spinner"
+                style={{ fontSize: 17, marginRight: 5 }}
+              >
+                ⏳
+              </span>
               Saving...
             </>
-          ) : "Add Goal"}
+          ) : (
+            "Add Goal"
+          )}
         </button>
         <button
           type="button"
@@ -729,25 +815,30 @@ function GoalForm({ onSave, onCancel, frequency }) {
           onClick={onCancel}
           aria-label="Cancel goal creation"
           tabIndex={0}
+          disabled={loading}
         >
           Cancel
         </button>
       </div>
       {isFirstGoal && (
-        <div style={{
-          background: "#fffbe8",
-          color: "#93810a",
-          borderRadius: 5,
-          marginTop: 20,
-          padding: "8px 11px",
-          fontSize: 14
-        }}>
+        <div
+          style={{
+            background: "#fffbe8",
+            color: "#93810a",
+            borderRadius: 5,
+            marginTop: 20,
+            padding: "8px 11px",
+            fontSize: 14,
+          }}
+        >
           💡 You’ll get automated savings suggestions and reminders once you set your first goal.
         </div>
       )}
     </form>
   );
 }
+
+// ... The remainder of App.js stays unchanged, including GoalList, GoalCard, ProgressBar, ReminderPrompt & formStyles ...
 
 // Modular: Goal List as container for Goal Cards
 function GoalList({
@@ -783,6 +874,102 @@ function GoalList({
           periodLabel={goal.periodLabel}
         />
       ))}
+    </div>
+  );
+}
+
+// ProgressBar component
+function ProgressBar({ percent, color }) {
+  return (
+    <div
+      style={{
+        background: "#e3eef9",
+        borderRadius: 8,
+        height: 16,
+        marginLeft: 42,
+        marginRight: 20,
+        position: "relative",
+        marginTop: 5,
+        marginBottom: 5,
+      }}
+      aria-label="progress-bar"
+    >
+      <div
+        style={{
+          width: `${percent}%`,
+          background: color,
+          height: "100%",
+          borderRadius: 8,
+          transition: "width 0.6s cubic-bezier(.9,.2,.2,1)",
+          textAlign: "right",
+        }}
+        aria-valuenow={percent}
+      ></div>
+      <span
+        style={{
+          position: "absolute",
+          left: `${Math.max(10, Math.min(percent, 90))}%`,
+          top: 0,
+          transform: "translateX(-50%)",
+          color: "#406080",
+          fontWeight: 700,
+          fontSize: 12,
+          textShadow: "0 1px 1.5px #e2ebfb",
+        }}
+      >
+        {percent}%
+      </span>
+    </div>
+  );
+}
+
+/**
+ * Minimal Reminder prompt - light UI
+ */
+function ReminderPrompt({ title, onDismiss }) {
+  return (
+    <div
+      style={{
+        background: "linear-gradient(93deg, #fffbe7 80%, #f5f9fe 100%)",
+        border: "1.5px solid #ffe0a5",
+        color: "#8e652b",
+        borderRadius: 8,
+        padding: "15px 20px",
+        position: "fixed",
+        top: 70,
+        right: 38,
+        zIndex: 102,
+        minWidth: 220,
+        boxShadow: "0 2px 16px 0 #efe2ba70",
+        fontWeight: 500,
+        fontSize: 16,
+        display: "flex",
+        alignItems: "center",
+        gap: 13,
+      }}
+    >
+      <span role="img" aria-label="reminder">
+        ⏰
+      </span>
+      <span>{title}</span>
+      <button
+        className="btn"
+        type="button"
+        style={{
+          background: "#ffeca5",
+          color: "#73562e",
+          fontSize: 13,
+          padding: "3px 11px",
+          border: "none",
+          outline: "none",
+          transition: "box-shadow 0.13s"
+        }}
+        onClick={onDismiss}
+        aria-label="Dismiss reminder"
+        onKeyDown={e => { if (e.key === 'Enter') onDismiss(); }}
+      >
+        Dismiss
+      </button>
     </div>
   );
 }
@@ -854,7 +1041,7 @@ function GoalCard({
         position: "relative",
       }}
     >
-      <div style={{ display: "flex", justifyContent: "space-between"}}>
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
         <div>
           <span
             style={{
@@ -900,7 +1087,7 @@ function GoalCard({
             </span>
           )}
         </div>
-        <div style={{display:"flex", gap:5}}>
+        <div style={{ display: "flex", gap: 5 }}>
           <button
             className="btn"
             onClick={() => onActivate(goal.id)}
@@ -1032,17 +1219,9 @@ function GoalCard({
                     background: brand.primary,
                     color: "#fff",
                     fontSize: 13,
-                    opacity: loading ? 0.7 : 1,
-                    pointerEvents: loading ? "none" : "auto"
                   }}
-                  disabled={loading}
                 >
-                  {loading ? (
-                    <>
-                    <span className="loading-spinner" style={{fontSize:17, marginRight:5}}>⏳</span>
-                    Saving...
-                    </>
-                  ) : "Save"}
+                  Save
                 </button>
                 <button
                   className="btn"
@@ -1105,103 +1284,7 @@ function GoalCard({
   );
 }
 
-// ProgressBar component
-function ProgressBar({ percent, color }) {
-  return (
-    <div
-      style={{
-        background: "#e3eef9",
-        borderRadius: 8,
-        height: 16,
-        marginLeft: 42,
-        marginRight: 20,
-        position: "relative",
-        marginTop: 5,
-        marginBottom: 5,
-      }}
-      aria-label="progress-bar"
-    >
-      <div
-        style={{
-          width: `${percent}%`,
-          background: color,
-          height: "100%",
-          borderRadius: 8,
-          transition: "width 0.6s cubic-bezier(.9,.2,.2,1)",
-          textAlign: "right",
-        }}
-        aria-valuenow={percent}
-      ></div>
-      <span
-        style={{
-          position: "absolute",
-          left: `${Math.max(10, Math.min(percent, 90))}%`,
-          top: 0,
-          transform: "translateX(-50%)",
-          color: "#406080",
-          fontWeight: 700,
-          fontSize: 12,
-          textShadow: "0 1px 1.5px #e2ebfb",
-        }}
-      >
-        {percent}%
-      </span>
-    </div>
-  );
-}
-
-/**
- * Minimal Reminder prompt - light UI
- */
-function ReminderPrompt({ title, onDismiss }) {
-  return (
-    <div
-      style={{
-        background: "linear-gradient(93deg, #fffbe7 80%, #f5f9fe 100%)",
-        border: "1.5px solid #ffe0a5",
-        color: "#8e652b",
-        borderRadius: 8,
-        padding: "15px 20px",
-        position: "fixed",
-        top: 70,
-        right: 38,
-        zIndex: 102,
-        minWidth: 220,
-        boxShadow: "0 2px 16px 0 #efe2ba70",
-        fontWeight: 500,
-        fontSize: 16,
-        display: "flex",
-        alignItems: "center",
-        gap: 13,
-      }}
-    >
-      <span role="img" aria-label="reminder">
-        ⏰
-      </span>
-      <span>{title}</span>
-      <button
-        className="btn"
-        type="button"
-        style={{
-          background: "#ffeca5",
-          color: "#73562e",
-          fontSize: 13,
-          padding: "3px 11px",
-          border: "none",
-          outline: "none",
-          transition: "box-shadow 0.13s"
-        }}
-        onClick={onDismiss}
-        aria-label="Dismiss reminder"
-        onKeyDown={e => { if (e.key==='Enter') onDismiss(); }}
-      >
-        Dismiss
-      </button>
-    </div>
-  );
-}
-
-// Shared form styles
+// Shared form styles (for GoalForm, GoalCard "add" inline form, etc)
 const formStyles = {
   form: {
     background: "#f9fcff",
