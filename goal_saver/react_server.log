@@ -12,8 +12,8 @@ asset index.html 1.98 KiB [emitted]
 orphan modules 366 KiB [orphan] 145 modules
 runtime modules 27.5 KiB 14 modules
 modules by path ./node_modules/ 2.3 MiB 470 modules
-modules by path ./src/ 121 KiB
-  modules by path ./src/*.js 103 KiB 10 modules
+modules by path ./src/ 125 KiB
+  modules by path ./src/*.js 107 KiB 10 modules
   modules by path ./src/*.css 17.8 KiB
     ./src/index.css 2.23 KiB [built] [code generated]
     + 3 modules
@@ -23,14 +23,14 @@ modules by path ./.ve/ 15.1 KiB
     ./.ve/EditorOverlay.css 2.25 KiB [built] [code generated]
     ./node_modules/css-loader/dist/cjs.js!./.ve/EditorOverlay.css 697 bytes [built] [code generated]
   ./.ve/EditorOverlay.jsx 1.58 KiB [built] [code generated]
-webpack 5.99.9 compiled successfully in 2370 ms
+webpack 5.99.9 compiled successfully in 2464 ms
 assets by status 1.98 KiB [cached] 1 asset
-assets by path *.js 3.09 MiB
+assets by path *.js 3.07 MiB
   asset bundle.js 3.07 MiB [emitted] (name: main)
-  asset main.47de55361947111b1ad6.hot-update.js 18 KiB [emitted] [immutable] [hmr] (name: main)
-asset main.47de55361947111b1ad6.hot-update.json 28 bytes [emitted] [immutable] [hmr]
-Entrypoint main 3.09 MiB = bundle.js 3.07 MiB main.47de55361947111b1ad6.hot-update.js 18 KiB
+  asset main.8d1f0c39e1220931e99f.hot-update.js 854 bytes [emitted] [immutable] [hmr] (name: main)
+asset main.8d1f0c39e1220931e99f.hot-update.json 28 bytes [emitted] [immutable] [hmr]
+Entrypoint main 3.07 MiB = bundle.js 3.07 MiB main.8d1f0c39e1220931e99f.hot-update.js 854 bytes
 cached modules 2.78 MiB [cached] 633 modules
 runtime modules 27.5 KiB 14 modules
-./src/CalendarNudges.js 14.1 KiB [built] [code generated]
-webpack 5.99.9 compiled successfully in 217 ms
+./src/GoogleLoginButton.js 7.86 KiB [built]
+webpack 5.99.9 compiled successfully in 220 ms
