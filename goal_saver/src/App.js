@@ -6,7 +6,7 @@ import Tooltip from "./Tooltip";
 import LoadingOverlay from "./LoadingOverlay";
 import SmartHelper from "./SmartHelper";
 import GoogleLoginButton from "./GoogleLoginButton";
-import { addGoalReminderToCalendar } from "./GoogleCalendarUtils";
+import { addGoalReminderToCalendar, deleteCalendarEvent } from "./GoogleCalendarUtils";
 
 /* Goalie Brand Palette */
 const BRAND = {
@@ -156,8 +156,8 @@ function MainContainer() {
 
   // Public: Add new goal
   async function addGoal(goal) {
-    // Add the goal first
-    const newGoal = {
+    // Prepare new goal object
+    const newGoalBase = {
       ...goal,
       id: Date.now(),
       progress: 0,
@@ -167,16 +167,19 @@ function MainContainer() {
       savingsHistory: [],
       createdAt: new Date().toISOString(),
     };
-    setGoals((prev) => [...prev, newGoal]);
-    setShowGoalForm(false);
-
     // Send Google Calendar event if OAuth connected (async, show notification)
-    const calendarRes = await addGoalReminderToCalendar(newGoal, "created");
-    if (calendarRes.status === "success") {
+    let eventId = undefined;
+    const calendarRes = await addGoalReminderToCalendar(newGoalBase, "created");
+    if (calendarRes.status === "success" && calendarRes.data && calendarRes.data.id) {
+      eventId = calendarRes.data.id;
       setCalendarMsg({ status: "success", message: calendarRes.message });
     } else if (calendarRes.status === "error" && calendarRes.message) {
       setCalendarMsg({ status: "error", message: calendarRes.message });
     }
+    // Add goal to state, including its eventId if available
+    const newGoal = { ...newGoalBase, eventId };
+    setGoals((prev) => [...prev, newGoal]);
+    setShowGoalForm(false);
     // Timeout to hide notification
     setTimeout(() => setCalendarMsg(null), 4000);
   }
@@ -210,15 +213,24 @@ function MainContainer() {
 
   // Modify goal (edit, activate/deactivate etc)
   async function modifyGoal(goalId, data) {
-    setGoals((prev) =>
-      prev.map((g) => (g.id === goalId ? { ...g, ...data } : g))
-    );
     // Only create a Calendar event if data contains fields relevant to reminder (could be improved)
     const theGoal = goals.find((g) => g.id === goalId);
-    if (theGoal && (data.title || data.amount || data.deadline)) {
+    let updatedGoal = theGoal ? { ...theGoal, ...data } : null;
+    let eventId = theGoal && theGoal.eventId;
+    let calendarRes = { status: undefined, message: null, data: null };
+    if (
+      updatedGoal &&
+      (data.title || data.amount || data.deadline || data.remindersEnabled !== undefined)
+    ) {
       // After updating, add/refresh calendar reminder
-      const updatedGoal = { ...theGoal, ...data };
-      const calendarRes = await addGoalReminderToCalendar(updatedGoal, "updated");
+      calendarRes = await addGoalReminderToCalendar(updatedGoal, "updated");
+      if (
+        calendarRes.status === "success" &&
+        calendarRes.data &&
+        calendarRes.data.id
+      ) {
+        eventId = calendarRes.data.id;
+      }
       if (calendarRes.status === "success") {
         setCalendarMsg({ status: "success", message: calendarRes.message });
       } else if (calendarRes.status === "error" && calendarRes.message) {
@@ -226,11 +238,33 @@ function MainContainer() {
       }
       setTimeout(() => setCalendarMsg(null), 4200);
     }
+    // Always merge in updated eventId (even if unchanged) for consistency
+    setGoals((prev) =>
+      prev.map((g) =>
+        g.id === goalId ? { ...g, ...data, eventId } : g
+      )
+    );
   }
 
-  // Remove goal
-  function removeGoal(goalId) {
+  // Remove goal, delete calendar reminder if eventId present
+  async function removeGoal(goalId) {
+    // Find the goal to see if there's an eventId for calendar deletion
+    const theGoal = goals.find((g) => g.id === goalId);
+    let calendarMsgTimeout = null;
+    if (theGoal && theGoal.eventId) {
+      // Dynamic import to avoid circular dependency
+      const { deleteCalendarEvent } = await import("./GoogleCalendarUtils");
+      const calendarRes = await deleteCalendarEvent(theGoal.eventId);
+      if (calendarRes.status === "success") {
+        setCalendarMsg({ status: "success", message: calendarRes.message });
+      } else if (calendarRes.status === "error" && calendarRes.message) {
+        setCalendarMsg({ status: "error", message: calendarRes.message });
+      }
+      calendarMsgTimeout = setTimeout(() => setCalendarMsg(null), 4200);
+    }
     setGoals(goals.filter((g) => g.id !== goalId));
+    // Clear any old calendar message timeout
+    if (calendarMsgTimeout) clearTimeout(calendarMsgTimeout);
   }
 
   // Handle multi-goal activation/prioritization
