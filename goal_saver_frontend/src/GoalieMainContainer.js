@@ -735,24 +735,68 @@ function GoalieMainContainer() {
           <div style={{
               display: "flex",
               alignItems: "center",
-              gap: 24,
+              gap: 16,
               width: "100%",
               justifyContent: "center",
               position: "relative"
             }}>
-            {/* Large, visually central goalpost icon */}
+            {/* Large, visually central goalpost icon, flush to the left of Goalie text */}
             <span
               style={{
                 display: "flex",
                 alignItems: "center",
-                marginRight: 14,
-                filter: "drop-shadow(0px 0px 13px #ffecc744)",
-                background: "radial-gradient(circle at 64% 30%, #fffad861 70%, #f6df7677 100%)",
-                borderRadius: "53%",
-                padding: 10,
-                boxShadow: "0 8px 28px #ffd25633",
+                marginRight: 9,
+                background: "none",
+                padding: 0,
+                borderRadius: 0,
+                minWidth: 62,
+                minHeight: 38,
+                justifyContent: "center",
+                // boxShadow: "0 8px 28px #ffd25633",
               }}>
-              <GoalPostIcon size={55} animated={true} />
+              {/* Soccer goalpost SVG visually prominent */}
+              <svg
+                width="62"
+                height="33"
+                viewBox="0 0 130 70"
+                style={{
+                  verticalAlign: "middle",
+                  aspectRatio: "130/70",
+                  display: "block"
+                }}
+                aria-hidden="true"
+              >
+                {/* Bold front goalposts and crossbar */}
+                <rect x="8" y="10" width="12" height="50" rx="3.8" fill="#8CBDFF" stroke="#467faa" strokeWidth="1.7"/>
+                <rect x="110" y="10" width="12" height="50" rx="3.8" fill="#8CBDFF" stroke="#467faa" strokeWidth="1.7"/>
+                <rect x="20" y="4" width="90" height="10" rx="3.5" fill="#ffe15b" stroke="#d4d096" strokeWidth="2.5"/>
+                {/* Perspective side net supports */}
+                <polygon points="20,14 20,62 13,60 13,12" fill="#c6ecff" opacity="0.44"/>
+                <polygon points="110,14 110,62 122,60 122,12" fill="#c6ecff" opacity="0.44"/>
+                {/* Soft base shadow */}
+                <ellipse cx="65" cy="65" rx="56" ry="6" fill="#b2ffc9" opacity="0.18"/>
+                {/* Rear bars (3D effect) */}
+                <rect x="23" y="56.5" width="84" height="3.5" rx="1.6" fill="#b0d8fa" opacity="0.54"/>
+                <rect x="26.5" y="13.5" width="5" height="45" rx="2.3" fill="#e4e8f3" opacity="0.57"/>
+                <rect x="98.5" y="13.5" width="5" height="45" rx="2.3" fill="#e4e8f3" opacity="0.57"/>
+                {/* Net (horizontals) */}
+                <rect x="28" y="20" width="74" height="1.6" rx="0.7" fill="#dde9f6" opacity="0.74"/>
+                <rect x="28" y="28" width="74" height="1.6" rx="0.7" fill="#dde9f6" opacity="0.74"/>
+                <rect x="28" y="36" width="74" height="1.6" rx="0.7" fill="#dde9f6" opacity="0.74"/>
+                <rect x="28" y="44" width="74" height="1.6" rx="0.7" fill="#dde9f6" opacity="0.74"/>
+                <rect x="28" y="52" width="74" height="1.6" rx="0.7" fill="#dde9f6" opacity="0.74"/>
+                {/* Net (verticals) */}
+                <rect x="35" y="16" width="1.4" height="43" rx="0.6" fill="#dae7f6" opacity="0.67"/>
+                <rect x="47" y="16" width="1.4" height="43" rx="0.6" fill="#dae7f6" opacity="0.67"/>
+                <rect x="59" y="16" width="1.4" height="43" rx="0.6" fill="#dae7f6" opacity="0.67"/>
+                <rect x="71" y="16" width="1.4" height="43" rx="0.6" fill="#dae7f6" opacity="0.67"/>
+                <rect x="83" y="16" width="1.4" height="43" rx="0.6" fill="#dae7f6" opacity="0.67"/>
+                <rect x="95" y="16" width="1.4" height="43" rx="0.6" fill="#dae7f6" opacity="0.67"/>
+                {/* Soccer ball, slightly tucked in to right post */}
+                <circle cx="99" cy="57" r="7" fill="#fff" stroke="#aac8dd" strokeWidth="2.1" opacity="0.94"/>
+                <circle cx="99" cy="57" r="2.8" fill="#dde9f6"/>
+                <line x1="99" y1="54" x2="99" y2="60" stroke="#bfc3d5" strokeWidth="1" opacity="0.9"/>
+              </svg>
             </span>
             <span style={{
               fontSize: 39,
@@ -762,11 +806,12 @@ function GoalieMainContainer() {
               color: "#1D301B",
               fontFamily: "'Nunito', 'Inter', 'Roboto', 'Helvetica', sans-serif",
               display: "flex",
-              alignItems: "center"
+              alignItems: "center",
+              marginLeft: 0,
+              marginRight: 0,
             }}>
               Goalie
             </span>
-            {/* Show frequency and change option if set */}
             {savingsFrequency &&
               <button
                 onClick={handleChangeFrequency}
