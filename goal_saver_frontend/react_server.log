@@ -7,64 +7,19 @@
 <i> [webpack-dev-server] On Your Network (IPv4): http://172.17.0.2:3000/
 <i> [webpack-dev-server] Content not from webpack is served from './public' directory
 Injecting EditorRootWrapper import: ../.ve/EditorRootWrapper
-asset bundle.js 1.42 MiB [emitted] (name: main)
+asset bundle.js 1.44 MiB [emitted] (name: main)
 asset index.html 1.98 KiB [emitted]
 runtime modules 27.5 KiB 14 modules
-modules by path ./node_modules/ 1.24 MiB 31 modules
-modules by path ./src/ 31.4 KiB
-  modules by path ./src/*.css 7.49 KiB 4 modules
-  modules by path ./src/*.js 23.9 KiB
-    ./src/index.js 530 bytes [built] [code generated]
-    + 2 modules
+modules by path ./node_modules/ 1.25 MiB 33 modules
+modules by path ./src/ 38.6 KiB
+  modules by path ./src/*.js 31.1 KiB 5 modules
+  modules by path ./src/*.css 7.49 KiB
+    ./src/index.css 2.23 KiB [built] [code generated]
+    + 3 modules
 modules by path ./.ve/ 15.1 KiB
-  modules by path ./.ve/*.js 10.6 KiB
-    ./.ve/EditorRootWrapper.js 2.68 KiB [built] [code generated]
-    ./.ve/SidePanel.js 7.93 KiB [built] [code generated]
+  modules by path ./.ve/*.js 10.6 KiB 2 modules
   modules by path ./.ve/*.css 2.93 KiB
     ./.ve/EditorOverlay.css 2.25 KiB [built] [code generated]
     ./node_modules/css-loader/dist/cjs.js!./.ve/EditorOverlay.css 697 bytes [built] [code generated]
   ./.ve/EditorOverlay.jsx 1.58 KiB [built] [code generated]
-webpack 5.99.9 compiled successfully in 1306 ms
-assets by status 1.98 KiB [cached] 1 asset
-assets by path *.js 1.47 MiB
-  asset bundle.js 1.44 MiB [emitted] (name: main)
-  asset main.422d48ed90da47f44196.hot-update.js 30 KiB [emitted] [immutable] [hmr] (name: main)
-asset main.422d48ed90da47f44196.hot-update.json 28 bytes [emitted] [immutable] [hmr]
-Entrypoint main 1.47 MiB = bundle.js 1.44 MiB main.422d48ed90da47f44196.hot-update.js 30 KiB
-cached modules 1.28 MiB [cached] 42 modules
-runtime modules 27.5 KiB 14 modules
-javascript modules 21.1 KiB
-  modules by path ./src/*.js 7.57 KiB
-    ./src/App.js 2.66 KiB [built] [code generated]
-    ./src/GoogleSignIn.js 4.64 KiB [built] [code generated]
-    ./src/env.js 287 bytes [built] [code generated]
-  modules by path ./node_modules/ 13.6 KiB
-    ./node_modules/@react-oauth/google/dist/index.esm.js 11.9 KiB [built] [code generated]
-    ./node_modules/jwt-decode/build/esm/index.js 1.66 KiB [built] [code generated]
-
-WARNING in ./src/GoogleSignIn.js 35:19-29
-export 'default' (imported as 'jwt_decode') was not found in 'jwt-decode' (possible exports: InvalidTokenError, jwtDecode)
- @ ./src/App.js 4:0-42 59:38-50
- @ ./src/index.js 5:0-24 11:32-35
-
-webpack 5.99.9 compiled with 1 warning in 79 ms
-assets by status 1.98 KiB [cached] 1 asset
-assets by path *.js 1.45 MiB
-  asset bundle.js 1.44 MiB [emitted] (name: main)
-  asset main.cedd43a3972ce1280aac.hot-update.js 7.74 KiB [emitted] [immutable] [hmr] (name: main)
-asset main.cedd43a3972ce1280aac.hot-update.json 28 bytes [emitted] [immutable] [hmr]
-Entrypoint main 1.45 MiB = bundle.js 1.44 MiB main.cedd43a3972ce1280aac.hot-update.js 7.74 KiB
-cached modules 1.3 MiB [cached] 46 modules
-runtime modules 27.5 KiB 14 modules
-./src/GoogleSignIn.js 4.64 KiB [built] [code generated]
-webpack 5.99.9 compiled successfully in 81 ms
-assets by status 1.98 KiB [cached] 1 asset
-assets by path *.js 1.45 MiB
-  asset bundle.js 1.44 MiB [emitted] (name: main)
-  asset main.c04045c87e9adea4cb5c.hot-update.js 7.79 KiB [emitted] [immutable] [hmr] (name: main)
-asset main.c04045c87e9adea4cb5c.hot-update.json 28 bytes [emitted] [immutable] [hmr]
-Entrypoint main 1.45 MiB = bundle.js 1.44 MiB main.c04045c87e9adea4cb5c.hot-update.js 7.79 KiB
-cached modules 1.3 MiB [cached] 46 modules
-runtime modules 27.5 KiB 14 modules
-./src/GoogleSignIn.js 4.64 KiB [built] [code generated]
-webpack 5.99.9 compiled successfully in 69 ms
+webpack 5.99.9 compiled successfully in 1421 ms
