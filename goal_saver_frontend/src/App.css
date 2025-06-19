@@ -1,9 +1,17 @@
 :root {
-  --base-light: #00ffff;
-  --base-dark: #00008b;
-  --text-color: #ffffff;
-  --text-secondary: rgba(255, 255, 255, 0.7);
-  --border-color: rgba(255, 255, 255, 0.1);
+  /* Modern & harmonious color palette */
+  --primary: #6894ee;         /* Soft blue (primary) */
+  --primary-dark: #3b5aaa;
+  --secondary: #f5f6fa;       /* Light neutral (secondary/background) */
+  --accent: #b592ff;          /* Lavender accent */
+  --accent-alt: #ffb7b0;      /* Gentle coral (alt accent) */
+  --surface: #ffffff;         /* Card/content surface */
+  --surface-light: #f4f6fb;
+  --border-color: #dde6f2;
+  --progress-bg: #e9eaf6;
+  --progress-fg: #6894ee;
+  --text-color: #21243c;
+  --text-secondary: #5e6580;
 }
 
 body {
