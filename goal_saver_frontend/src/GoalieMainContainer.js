@@ -272,43 +272,54 @@ function GoalieMainContainer() {
     );
   }
 
-  // Goal post SVG component: a clear, visually appealing soccer goal
+  // Goal post SVG component: a visually explicit football/soccer goal for branding
   function GoalPostIcon({ size = 48, animated }) {
-    // By default, slightly bigger for more brand impact in header
+    // Dimensions set to be visually bold and readable beside "Goalie"
+    // Simplified net and perspective for clarity and "goal" shape
     return (
       <span style={{ display: "inline-block" }}>
         <svg
           width={size}
-          height={size * 0.52}
-          viewBox="0 0 130 68"
+          height={size * 0.54}
+          viewBox="0 0 130 70"
           style={{
+            aspectRatio: "130/70",
             verticalAlign: "middle",
-            aspectRatio: "130/68",
-            ...(animated ? { transform: "translateY(-1.5px) scale(1.06)", transition: "all .19s" } : {}),
+            ...(animated ? { transform: "translateY(-2px) scale(1.08)", transition: "all .19s" } : {}),
+            filter: "drop-shadow(0 2px 7px #aee2ffd8)"
           }}
           aria-hidden="true"
         >
-          {/* Main goal post frame */}
-          <rect x="6" y="8" width="18" height="50" rx="3.8" fill="#8CBDFF" />
-          <rect x="106" y="8" width="18" height="50" rx="3.8" fill="#8CBDFF" />
-          <rect x="16" y="4" width="98" height="14" rx="5.6" fill="#FFE15B" stroke="#B4B299" strokeWidth="1.7"/>
-          
-          {/* Net: horizontal lines */}
-          <rect x="34" y="20" width="62" height="2.3" rx="1" fill="#dbecfb" opacity="0.75"/>
-          <rect x="34" y="28" width="62" height="2.3" rx="1" fill="#dbecfb" opacity="0.75"/>
-          <rect x="34" y="36" width="62" height="2.3" rx="1" fill="#dbecfb" opacity="0.75"/>
-          <rect x="34" y="44" width="62" height="2.3" rx="1" fill="#dbecfb" opacity="0.75"/>
-          {/* Net: vertical lines */}
-          <rect x="36" y="18" width="2.3" height="30" rx="1" fill="#dbecfb" opacity="0.7"/>
-          <rect x="48" y="18" width="2.3" height="30" rx="1" fill="#dbecfb" opacity="0.7"/>
-          <rect x="60" y="18" width="2.3" height="30" rx="1" fill="#dbecfb" opacity="0.7"/>
-          <rect x="72" y="18" width="2.3" height="30" rx="1" fill="#dbecfb" opacity="0.7"/>
-          <rect x="84" y="18" width="2.3" height="30" rx="1" fill="#dbecfb" opacity="0.7"/>
-          <rect x="96" y="18" width="2.3" height="30" rx="1" fill="#dbecfb" opacity="0.7"/>
-          {/* Goal field/ground shadow */}
-          <ellipse cx="65" cy="62" rx="55" ry="6" fill="#d0ffe9" opacity="0.25"/>
-          {/* Goal "back" post */}
-          <rect x="24" y="55" width="80" height="3.6" rx="2" fill="#70aadf" opacity="0.59"/>
+          {/* Goal frame - front posts */}
+          <rect x="8" y="10" width="12" height="50" rx="3.8" fill="#8CBDFF" stroke="#467faa" strokeWidth="1.2"/>
+          <rect x="110" y="10" width="12" height="50" rx="3.8" fill="#8CBDFF" stroke="#467faa" strokeWidth="1.2"/>
+          <rect x="20" y="4" width="90" height="10" rx="3.5" fill="#ffe15b" stroke="#d4d096" strokeWidth="2"/>
+          {/* Goal crossbar net supports (side depth perspective) */}
+          <polygon points="20,14 20,62 13,60 13,12" fill="#c6ecff" opacity="0.44"/>
+          <polygon points="110,14 110,62 122,60 122,12" fill="#c6ecff" opacity="0.44"/>
+          {/* Ground shadow (subtle) */}
+          <ellipse cx="65" cy="65" rx="56" ry="6" fill="#b2ffc9" opacity="0.18"/>
+          {/* Backbar and rear posts (3D depth illusion) */}
+          <rect x="23" y="56.5" width="84" height="3.5" rx="1.6" fill="#b0d8fa" opacity="0.54"/>
+          <rect x="26.5" y="13.5" width="5" height="45" rx="2.3" fill="#e4e8f3" opacity="0.57"/>
+          <rect x="98.5" y="13.5" width="5" height="45" rx="2.3" fill="#e4e8f3" opacity="0.57"/>
+          {/* Net - horizontal lines */}
+          <rect x="28" y="20" width="74" height="1.6" rx="0.9" fill="#dde9f6" opacity="0.86"/>
+          <rect x="28" y="28" width="74" height="1.6" rx="0.9" fill="#dde9f6" opacity="0.86"/>
+          <rect x="28" y="36" width="74" height="1.6" rx="0.9" fill="#dde9f6" opacity="0.86"/>
+          <rect x="28" y="44" width="74" height="1.6" rx="0.9" fill="#dde9f6" opacity="0.86"/>
+          <rect x="28" y="52" width="74" height="1.6" rx="0.9" fill="#dde9f6" opacity="0.86"/>
+          {/* Net - vertical lines */}
+          <rect x="35" y="16" width="1.4" height="43" rx="0.7" fill="#dae7f6" opacity="0.7"/>
+          <rect x="47" y="16" width="1.4" height="43" rx="0.7" fill="#dae7f6" opacity="0.7"/>
+          <rect x="59" y="16" width="1.4" height="43" rx="0.7" fill="#dae7f6" opacity="0.7"/>
+          <rect x="71" y="16" width="1.4" height="43" rx="0.7" fill="#dae7f6" opacity="0.7"/>
+          <rect x="83" y="16" width="1.4" height="43" rx="0.7" fill="#dae7f6" opacity="0.7"/>
+          <rect x="95" y="16" width="1.4" height="43" rx="0.7" fill="#dae7f6" opacity="0.7"/>
+          {/* Ball (optional, subtle, to reinforce soccer/football theme) */}
+          <circle cx="98" cy="57" r="7" fill="#fff" stroke="#aac8dd" strokeWidth="2.1" opacity="0.92" />
+          <circle cx="98" cy="57" r="2.8" fill="#dde9f6"/>
+          <line x1="98" y1="54" x2="98" y2="60" stroke="#bfc3d5" strokeWidth="1" opacity="0.9"/>
         </svg>
       </span>
     );
