@@ -11,8 +11,8 @@ asset bundle.js 1.48 MiB [emitted] (name: main)
 asset index.html 1.98 KiB [emitted]
 runtime modules 27.5 KiB 14 modules
 modules by path ./node_modules/ 1.24 MiB 31 modules
-modules by path ./src/ 82.9 KiB
-  modules by path ./src/*.js 75 KiB 4 modules
+modules by path ./src/ 81.6 KiB
+  modules by path ./src/*.js 73.8 KiB 4 modules
   modules by path ./src/*.css 7.85 KiB
     ./src/index.css 2.23 KiB [built] [code generated]
     + 3 modules
@@ -22,14 +22,37 @@ modules by path ./.ve/ 15.1 KiB
     ./.ve/EditorOverlay.css 2.25 KiB [built] [code generated]
     ./node_modules/css-loader/dist/cjs.js!./.ve/EditorOverlay.css 697 bytes [built] [code generated]
   ./.ve/EditorOverlay.jsx 1.58 KiB [built] [code generated]
-webpack 5.99.9 compiled successfully in 1524 ms
+webpack 5.99.9 compiled successfully in 1481 ms
 assets by status 1.98 KiB [cached] 1 asset
-assets by path *.js 1.5 MiB
-  asset bundle.js 1.48 MiB [emitted] (name: main)
-  asset main.dbe8980e9222f1689411.hot-update.js 21.2 KiB [emitted] [immutable] [hmr] (name: main)
-asset main.dbe8980e9222f1689411.hot-update.json 28 bytes [emitted] [immutable] [hmr]
-Entrypoint main 1.5 MiB = bundle.js 1.48 MiB main.dbe8980e9222f1689411.hot-update.js 21.2 KiB
-cached modules 1.32 MiB [cached] 43 modules
+assets by path *.js 1.6 MiB
+  asset bundle.js 1.5 MiB [emitted] (name: main)
+  asset main.5f0de4178b2d1583ad72.hot-update.js 97 KiB [emitted] [immutable] [hmr] (name: main)
+asset main.5f0de4178b2d1583ad72.hot-update.json 28 bytes [emitted] [immutable] [hmr]
+Entrypoint main 1.6 MiB = bundle.js 1.5 MiB main.5f0de4178b2d1583ad72.hot-update.js 97 KiB
+cached modules 1.28 MiB [cached] 43 modules
 runtime modules 27.5 KiB 14 modules
-./src/PieChart.js 17.3 KiB [built] [code generated]
-webpack 5.99.9 compiled successfully in 161 ms
+javascript modules 79.5 KiB
+  ./src/GoalieMainContainer.js 73.1 KiB [built] [code generated]
+  ./src/googleCalendarIntegration.js 6.41 KiB [built] [code generated]
+webpack 5.99.9 compiled successfully in 391 ms
+Injecting EditorRootWrapper import: ../.ve/EditorRootWrapper
+assets by path *.js 1.5 MiB
+  asset bundle.js 1.5 MiB [emitted] (name: main)
+  asset main.5fe75e4dff8b3b4acabd.hot-update.js 854 bytes [emitted] [immutable] [hmr] (name: main)
+asset index.html 1.98 KiB [emitted]
+asset main.5fe75e4dff8b3b4acabd.hot-update.json 28 bytes [emitted] [immutable] [hmr]
+Entrypoint main 1.5 MiB = bundle.js 1.5 MiB main.5fe75e4dff8b3b4acabd.hot-update.js 854 bytes
+cached modules 1.25 MiB [cached] 37 modules
+runtime modules 27.5 KiB 14 modules
+javascript modules 110 KiB
+  modules by path ./src/*.js 97.7 KiB
+    ./src/index.js 530 bytes [built]
+    ./src/App.js 371 bytes [built]
+    ./src/GoalieMainContainer.js 73.1 KiB [built]
+    ./src/PieChart.js 17.3 KiB [built]
+    ./src/googleCalendarIntegration.js 6.41 KiB [built]
+  modules by path ./.ve/ 12.2 KiB
+    ./.ve/EditorRootWrapper.js 2.68 KiB [built]
+    ./.ve/EditorOverlay.jsx 1.58 KiB [built]
+    ./.ve/SidePanel.js 7.93 KiB [built]
+webpack 5.99.9 compiled successfully in 331 ms

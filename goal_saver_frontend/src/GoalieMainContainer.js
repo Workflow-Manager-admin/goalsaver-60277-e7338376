@@ -1,5 +1,15 @@
 import React, { useState, useEffect } from "react";
 import PieChart from "./PieChart";
+import {
+  googleSignIn,
+  getAccessToken,
+  signOutGoogle,
+  fetchCalendars,
+  createCalendar,
+  syncCalendarEvent,
+  deleteCalendarEvent,
+  makeGoalEvent
+} from "./googleCalendarIntegration";
 
 // PUBLIC_INTERFACE
 /**
@@ -14,6 +24,21 @@ import PieChart from "./PieChart";
  */
 function GoalieMainContainer() {
   // Savings frequency state and persistence
+
+  // Google Calendar Integration State
+  const [gcalStatus, setGcalStatus] = useState("idle"); // idle|signed_out|signing_in|signed_in|error
+  const [gcalError, setGcalError] = useState("");
+  const [gcalAccessToken, setGcalAccessToken] = useState(() => getAccessToken());
+  const [showGcalSetup, setShowGcalSetup] = useState(false);
+  const [gcalCalendars, setGcalCalendars] = useState([]);
+  const [gcalCalendarId, setGcalCalendarId] = useState(localStorage.getItem("GCAL_SELECTED_CALENDAR") || "");
+  const [showCalendarPicker, setShowCalendarPicker] = useState(false);
+  const [gcalSyncMap, setGcalSyncMap] = useState(() => {
+    // Maps goal.id to gcal eventId (for updating/deleting)
+    const obj = localStorage.getItem("GOAL_GCAL_MAP");
+    return obj ? JSON.parse(obj) : {};
+  });
+
   const SAVINGS_FREQUENCY_KEY = "savingsFrequency";
   const [savingsFrequency, setSavingsFrequency] = useState(() => {
     return localStorage.getItem(SAVINGS_FREQUENCY_KEY) || null;
@@ -59,6 +84,18 @@ function GoalieMainContainer() {
     localStorage.setItem("goals", JSON.stringify(goals));
   }, [goals]);
 
+  // Persist gcalSyncMap to localStorage
+  useEffect(() => {
+    localStorage.setItem("GOAL_GCAL_MAP", JSON.stringify(gcalSyncMap));
+  }, [gcalSyncMap]);
+
+  // Track access token changes
+  useEffect(() => {
+    if (gcalAccessToken) setGcalStatus("signed_in");
+    else setGcalStatus("signed_out");
+  }, [gcalAccessToken]);
+
+
   // Automatic simulated reminders & motivational prompts
   useEffect(() => {
     if (goals.length === 0) return;
@@ -102,10 +139,259 @@ function GoalieMainContainer() {
     }
   }, [notification]);
 
+  // Refresh calendar list on login
+  useEffect(() => {
+    async function loadCals() {
+      if (!gcalAccessToken) return;
+      try {
+        setGcalStatus("signed_in");
+        setGcalError("");
+        const calendars = await fetchCalendars();
+        setGcalCalendars(calendars);
+      } catch (e) {
+        setGcalError("Failed to load calendars. Try signing in again.");
+        setGcalStatus("error");
+      }
+    }
+    if (gcalAccessToken) loadCals();
+  }, [gcalAccessToken]);
+
+
   // PUBLIC_INTERFACE
   function handleNotification(message) {
     setNotification(message);
   }
+
+  // PUBLIC_INTERFACE
+  async function handleGcalConnectClick() {
+    setGcalStatus("signing_in");
+    setGcalError("");
+    try {
+      const clientId = localStorage.getItem("GCAL_CLIENT_ID") || "";
+      if (!clientId) {
+        setGcalStatus("error");
+        setGcalError("Google OAuth Client ID not set. See settings or docs.");
+        return;
+      }
+      const token = await googleSignIn(clientId);
+      setGcalAccessToken(token);
+      setGcalStatus("signed_in");
+      handleNotification("Google Calendar connected!");
+      // Automatically ask to pick calendar
+      setShowCalendarPicker(true);
+    } catch (e) {
+      setGcalStatus("error");
+      setGcalError("Failed to sign in: " + (e.message || e));
+    }
+  }
+
+  // PUBLIC_INTERFACE
+  function handleGcalSignOut() {
+    signOutGoogle();
+    setGcalAccessToken(null);
+    setGcalStatus("signed_out");
+    setGcalCalendarId("");
+    localStorage.removeItem("GCAL_SELECTED_CALENDAR");
+    handleNotification("Disconnected from Google Calendar.");
+    setGcalSyncMap({});
+  }
+
+  // After calendar is selected
+  function onCalendarSelected(calId) {
+    setGcalCalendarId(calId);
+    localStorage.setItem("GCAL_SELECTED_CALENDAR", calId);
+    handleNotification("Google Calendar selected.");
+  }
+
+  // PUBLIC_INTERFACE
+  async function handleCalendarPicker() {
+    if (!gcalAccessToken) {
+      handleNotification("Sign in to Google first.");
+      setShowGcalSetup(true);
+      return;
+    }
+    setShowCalendarPicker(true);
+  }
+
+  // Handle calendar creation
+  async function handleCreateNewCalendar() {
+    let calName = window.prompt("Enter name for new calendar:", "Goalie Reminders");
+    if (!calName) return;
+    try {
+      const newCal = await createCalendar(calName);
+      setGcalCalendars(prev => [...prev, newCal]);
+      setGcalCalendarId(newCal.id);
+      localStorage.setItem("GCAL_SELECTED_CALENDAR", newCal.id);
+      handleNotification("Created new calendar!");
+    } catch (e) {
+      setGcalError("Failed to create calendar: " + (e.message || e));
+    }
+  }
+
+  // Sync single goal to Google Calendar (insert/update)
+  async function syncGoalToGcal(goal) {
+    if (!gcalAccessToken || !gcalCalendarId) return;
+    setGcalStatus("syncing");
+    const eventObj = makeGoalEvent(goal);
+    try {
+      const existingId = gcalSyncMap[goal.id] || null;
+      const eventId = await syncCalendarEvent(gcalCalendarId, eventObj, existingId);
+      setGcalSyncMap(prev => ({ ...prev, [goal.id]: eventId }));
+      setGcalStatus("signed_in");
+    } catch (e) {
+      setGcalStatus("error");
+      setGcalError("Fail to sync reminder: " + (e.message || e));
+    }
+  }
+
+  // Remove goal from Google Calendar
+  async function removeGoalFromGcal(goalId) {
+    if (!gcalAccessToken || !gcalCalendarId) return;
+    const evtId = gcalSyncMap[goalId];
+    if (!evtId) return;
+    try {
+      await deleteCalendarEvent(gcalCalendarId, evtId);
+      setGcalSyncMap(prev => {
+        const next = { ...prev };
+        delete next[goalId];
+        return next;
+      });
+    } catch (e) {
+      // Swallow errors
+    }
+  }
+
+  // Sync on add/modify/delete goal
+  useEffect(() => {
+    // On add/update, push to calendar; on deletion, remove.
+    if (!gcalAccessToken || !gcalCalendarId) return;
+    // Find deleted IDs
+    const existingIds = Object.keys(gcalSyncMap);
+    const goalIds = goals.map(g => g.id + "");
+    const deleted = existingIds.filter(id => !goalIds.includes(id));
+    // Remove deleted from Google Calendar
+    deleted.forEach(id => removeGoalFromGcal(id));
+    // Sync/Update active (quick best effort)
+    goals.forEach(goal => {
+      syncGoalToGcal(goal);
+    });
+    // eslint-disable-next-line
+  }, [goals, gcalAccessToken, gcalCalendarId]);
+
+  // User helper: setup Client ID for OAuth (basic, for demo/dev flow)
+  function GcalSetupPrompt({ open, onClose }) {
+    const [input, setInput] = useState(localStorage.getItem("GCAL_CLIENT_ID") || "");
+    if (!open) return null;
+    return (
+      <div style={{
+        position: "fixed", zIndex: 1600, inset: 0, background: "rgba(44,68,93,0.17)", display: "flex",
+        alignItems: "center", justifyContent: "center", backdropFilter: "blur(2.5px)"
+      }}>
+        <div style={{
+          background: "#fff", padding: 32, borderRadius: 16, boxShadow: "0 7px 33px #a9e9e8aa",
+          minWidth: 340, maxWidth: "80vw", display: "flex", flexDirection: "column", alignItems: "flex-start"
+        }}>
+          <div style={{ fontWeight: 700, fontSize: 19, marginBottom: 7 }}>Google API Setup</div>
+          <div style={{ fontSize: 15, color: "#888", marginBottom: 10 }}>
+            Enter your Google OAuth Client ID for Goalie (see <a href="https://console.cloud.google.com/apis/credentials" target="_blank" rel="noopener noreferrer">Google Console</a>).<br />
+            <span style={{ color: "#e6913e" }}>Do not share secret keys here.</span>
+          </div>
+          <input
+            style={{ border: "1.7px solid #bfcbe6", borderRadius: 7, fontSize: 16, width: "100%", marginBottom: 13, padding: "9px 14px" }}
+            value={input}
+            onChange={e => setInput(e.target.value)}
+            placeholder="Google OAuth Client ID (example.apps.googleusercontent.com)" />
+          <div style={{ display: "flex", gap: 12 }}>
+            <button
+              onClick={() => {
+                localStorage.setItem("GCAL_CLIENT_ID", input);
+                onClose();
+                window.location.reload();
+              }}
+              style={{ background: "#637be7", color: "#fff", padding: "8px 22px", borderRadius: 8, fontWeight: 650, border: 0, fontSize: 16, cursor: "pointer" }}
+              disabled={!input.trim()}
+            >Save & Refresh</button>
+            <button onClick={onClose} style={{ background: "#fff", color: "#787878", padding: "8px 24px", border: "1.3px solid #dbdbe8", borderRadius: 8, fontSize: 16, cursor: "pointer" }}>Cancel</button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  function GcalStatusBar() {
+    return (
+      <div style={{
+        background: "#e6e7fa",
+        color: "#384775",
+        fontSize: 15.2,
+        padding: "8px 17px 8px 13px",
+        borderRadius: 9,
+        marginBottom: 13,
+        marginTop: 7,
+        boxShadow: "0 2px 7px #e7eaf545",
+        border: "1.4px solid #bfcbe6",
+        display: "flex",
+        alignItems: "center",
+        gap: 14,
+        minHeight: 33
+      }}>
+        <span style={{ color: "#637be7", fontWeight: 700, fontSize: 15.7 }}>Google Calendar: </span>
+        {
+          gcalStatus === "signed_in" && gcalCalendarId
+            ? <span>Connected ✅ – <b>selected calendar:</b> {gcalCalendars.find(c => c.id === gcalCalendarId)?.summary || "(Loading…)"}</span>
+            : gcalStatus === "signed_in"
+              ? <span>Connected ✅ – <i>No calendar selected.</i></span>
+              : gcalStatus === "signing_in"
+                ? <span>Signing in...</span>
+                : <span>Not connected</span>
+        }
+        {
+          gcalError && <span style={{ color: "#b2381d", fontWeight: 600 }}>Error: {gcalError}</span>
+        }
+        {gcalStatus === "signed_in" &&
+          <button onClick={handleGcalSignOut}
+            style={{ marginLeft: "auto", background: "#fff", color: "#b2381d", border: "1px solid #ccc", borderRadius: 7, padding: "3px 15px", fontWeight: 600, cursor: "pointer" }}>
+            Sign out
+          </button>
+        }
+      </div>
+    );
+  }
+
+  function GcalCalendarPicker() {
+    if (!showCalendarPicker) return null;
+    return (
+      <div style={{
+        position: "fixed", zIndex: 1700, inset: 0, background: "rgba(32,48,61,0.17)", display: "flex",
+        alignItems: "center", justifyContent: "center", backdropFilter: "blur(2.2px)"
+      }}>
+        <div style={{
+          background: "#fff", padding: 32, borderRadius: 16, boxShadow: "0 7px 35px #b7f5ffa9", minWidth: 320, maxWidth: "80vw"
+        }}>
+          <div style={{ fontWeight: 700, fontSize: 17.8, color: "#637be7" }}>Select Calendar for Goalie Reminders</div>
+          <div style={{ fontSize: 14, color: "#385" }}>Pick where Goalie will sync your savings reminders.</div>
+          <div style={{ marginTop: 17, marginBottom: 21 }}>
+            <select
+              value={gcalCalendarId}
+              onChange={e => { onCalendarSelected(e.target.value); setShowCalendarPicker(false); }}
+              style={{ width: "100%", fontSize: 16, padding: "10px", borderRadius: 7, border: "1.1px solid #c8c8e6" }}
+            >
+              <option value="">-- Select --</option>
+              {gcalCalendars.map((c, idx) => <option value={c.id} key={c.id + idx}>{c.summary}</option>)}
+            </select>
+          </div>
+          <button onClick={handleCreateNewCalendar} style={{
+            background: "#ffd768", color: "#384775", border: "none", fontWeight: 700, padding: "8px 22px", borderRadius: 8, fontSize: 15, cursor: "pointer"
+          }}>+ Create New Calendar</button>
+          <button onClick={() => setShowCalendarPicker(false)}
+            style={{ marginLeft: 11, background: "#fff", color: "#838383", border: "1.2px solid #dbdbe8", borderRadius: 7, padding: "8px 18px", fontSize: 15, cursor: "pointer" }}>
+            Cancel
+          </button>
+        </div>
+      </div>
+    );
+  }
+
 
   // PUBLIC_INTERFACE
   function handleNewGoalChange(e) {
@@ -918,6 +1204,41 @@ function GoalieMainContainer() {
       >
 
         {/* OVERALL AGGREGATE PIE CHART */}
+        {/* GOOGLE CALENDAR INTEGRATION UI */}
+        <section style={{ margin: "0 0 34px 0", paddingTop: 14 }}>
+          <GcalStatusBar />
+          <div style={{ display: "flex", gap: 17 }}>
+            {gcalStatus !== "signed_in" &&
+              <button
+                className="btn"
+                style={{ background: "#637be7", color: "#fff" }}
+                onClick={() => setShowGcalSetup(true)}
+              >Google Setup
+              </button>
+            }
+            {gcalStatus === "signed_out" &&
+              <button
+                className="btn"
+                style={{ background: "#43a75b", color: "#fff" }}
+                onClick={handleGcalConnectClick}
+              >Connect Google Calendar
+              </button>
+            }
+            {gcalStatus === "signed_in" &&
+              <button
+                className="btn"
+                style={{ background: "#ffd768", color: "#27332b" }}
+                onClick={handleCalendarPicker}
+              >Choose Calendar
+              </button>
+            }
+            <button className="btn"
+              style={{ background: "#fff", color: "#637be7", border: "1.5px solid #ddd" }}
+              onClick={() => window.open("https://developers.google.com/calendar/api/quickstart/js", "_blank")}
+            >Google Calendar API Docs
+            </button>
+          </div>
+        </section>
         <section
           style={{
             marginTop: -22,
@@ -1188,6 +1509,10 @@ function GoalieMainContainer() {
           current={savingsFrequency}
         />
       )}
+      {/* Google Calendar Setup Modal */}
+      <GcalSetupPrompt open={showGcalSetup} onClose={() => setShowGcalSetup(false)} />
+      {/* Google Calendar picker modal */}
+      <GcalCalendarPicker />
       {/* Decorative large faint soccer ball (just for fun) */}
       <div
         aria-hidden="true"
