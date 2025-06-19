@@ -248,6 +248,13 @@ function GoalieMainContainer() {
     headerGradient: "linear-gradient(90deg, #ffe15b 0%, #a7e078 70%, #3cd0ff 105%)",
   };
 
+  // Calculate aggregate completion percent for all goals (weighted)
+  // Only include goals with targetAmount > 0
+  const overallTotalTarget = goals.reduce((sum, g) => sum + (g.targetAmount > 0 ? g.targetAmount : 0), 0);
+  const overallTotalSaved = goals.reduce((sum, g) => sum + (g.targetAmount > 0 ? Math.min(g.savedAmount, g.targetAmount) : 0), 0);
+  const overallPercent = overallTotalTarget > 0 ? Math.round((overallTotalSaved / overallTotalTarget) * 100) : 0;
+
+
   // PUBLIC_INTERFACE
   function ProgressBar({ value, max }) {
     const percent = Math.min(100, Math.round((value / max) * 100));
@@ -909,6 +916,88 @@ function GoalieMainContainer() {
           padding: "0 24px",
         }}
       >
+
+        {/* OVERALL AGGREGATE PIE CHART */}
+        <section
+          style={{
+            marginTop: -22,
+            marginBottom: 37,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            background: palette.card,
+            borderRadius: 28,
+            boxShadow: "0 8px 38px 2px #b0fedb33",
+            border: `2.2px solid ${palette.accentAlt}`,
+            padding: "36px 5vw 28px 5vw",
+            maxWidth: 520,
+            minWidth: 250,
+            width: "100%",
+            marginLeft: "auto",
+            marginRight: "auto",
+            position: "relative",
+            zIndex: 30
+          }}
+        >
+          <div
+            style={{
+              fontWeight: 740,
+              fontSize: 22.7,
+              color: palette.primaryDark,
+              letterSpacing: ".6px",
+              textAlign: "center",
+              marginBottom: 8,
+              display: "flex",
+              alignItems: "center",
+              gap: 11,
+              userSelect: "none"
+            }}
+          >
+            <span
+              style={{
+                fontSize: 23,
+                color: palette.accentAlt,
+                verticalAlign: "middle"
+              }}
+              aria-hidden="true"
+            >🏅</span>
+            Overall Goals Progress
+          </div>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              marginTop: 12,
+              marginBottom: 8,
+              width: "100%",
+            }}
+          >
+            <PieChart
+              percent={overallPercent}
+              size={135}
+              fgColor={overallPercent === 100 ? "#43a75b" : palette.accent}
+              bgColor={palette.progressBg}
+              strokeWidth={15}
+              showLabel={true}
+            />
+          </div>
+          <div style={{
+            color: palette.textSecondary,
+            fontSize: 15.3,
+            fontWeight: 500,
+            textAlign: "center",
+            marginTop: 6,
+            lineHeight: 1.38,
+            minHeight: 20
+          }}>
+            {goals.length === 0
+              ? "No goals set yet. Add a new goal below!"
+              : (overallPercent === 100
+                ? "Amazing! You've reached all your current savings goals. 🎉"
+                : `You have saved ₹${overallTotalSaved.toLocaleString()} out of ₹${overallTotalTarget.toLocaleString()} so far.`)}
+          </div>
+        </section>
         {/* New Goal Planner */}
         <section
           style={{
