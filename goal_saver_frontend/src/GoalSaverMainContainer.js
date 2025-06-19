@@ -12,6 +12,12 @@ import React, { useState, useEffect } from "react";
  * Style: Clean, minimal, light theme; colors: primary #4CAF50, secondary #FFC107, accent #2196F3
  */
 function GoalSaverMainContainer() {
+  // Savings frequency state and persistence
+  const SAVINGS_FREQUENCY_KEY = "savingsFrequency";
+  const [savingsFrequency, setSavingsFrequency] = useState(() => {
+    return localStorage.getItem(SAVINGS_FREQUENCY_KEY) || null;
+  });
+
   // State for managing all goals
   const [goals, setGoals] = useState(() => {
     // Load from localStorage for persistence; fallback to example
@@ -37,6 +43,15 @@ function GoalSaverMainContainer() {
     deadline: "",
   });
   const [notification, setNotification] = useState(null);
+  const [showFrequencySelector, setShowFrequencySelector] = useState(() => savingsFrequency === null);
+
+  // Save savings frequency to localStorage when it is set
+  useEffect(() => {
+    if (savingsFrequency) {
+      localStorage.setItem(SAVINGS_FREQUENCY_KEY, savingsFrequency);
+      setShowFrequencySelector(false);
+    }
+  }, [savingsFrequency]);
 
   // Save changes to localStorage
   useEffect(() => {
@@ -169,23 +184,48 @@ function GoalSaverMainContainer() {
   }
 
   // PUBLIC_INTERFACE
+  function handleSelectSavingsFrequency(freq) {
+    setSavingsFrequency(freq);
+    setShowFrequencySelector(false);
+    handleNotification(`Savings contribution frequency set to "${freq.charAt(0).toUpperCase() + freq.slice(1)}"!`);
+  }
+
+  // PUBLIC_INTERFACE
+  function handleChangeFrequency() {
+    setShowFrequencySelector(true);
+  }
+
+  // PUBLIC_INTERFACE
   function getContributionSuggestion(goal) {
-    // Suggest default monthly/weekly to reach goal before deadline, based on user's provided goal and remaining time
+    /**
+     * Calculates the required amount per selected savings frequency
+     * (daily/weekly/monthly) to reach the user's goal by the deadline.
+     */
     const now = new Date();
     const deadline = new Date(goal.deadline);
+    const amountLeft = goal.targetAmount - goal.savedAmount;
+    if (amountLeft <= 0) return 0;
     const diffDays = Math.ceil((deadline - now) / (1000 * 60 * 60 * 24));
-    if (diffDays <= 0) return goal.targetAmount - goal.savedAmount;
+    if (diffDays <= 0) return amountLeft;
 
-    // If less than a month, suggest daily
-    if (diffDays < 30) {
-      return Math.ceil((goal.targetAmount - goal.savedAmount) / diffDays);
+    let perContribution;
+    if (savingsFrequency === "daily") {
+      perContribution = Math.ceil(amountLeft / diffDays);
+    } else if (savingsFrequency === "weekly") {
+      // Number of weeks (fractional weeks count as full week)
+      const diffWeeks = Math.ceil(diffDays / 7);
+      perContribution = Math.ceil(amountLeft / diffWeeks);
+    } else if (savingsFrequency === "monthly") {
+      const months =
+        (deadline.getFullYear() - now.getFullYear()) * 12 +
+        (deadline.getMonth() - now.getMonth()) +
+        1;
+      perContribution = Math.ceil(amountLeft / months);
+    } else {
+      // If frequency not set or unknown fallback to daily
+      perContribution = Math.ceil(amountLeft / diffDays);
     }
-    // Otherwise, suggest monthly
-    const months =
-      (deadline.getFullYear() - now.getFullYear()) * 12 +
-      (deadline.getMonth() - now.getMonth()) +
-      1;
-    return Math.ceil((goal.targetAmount - goal.savedAmount) / months);
+    return perContribution;
   }
 
   // Color palette according to requirements
@@ -226,6 +266,74 @@ function GoalSaverMainContainer() {
   }
 
   // PUBLIC_INTERFACE
+  function FrequencySelectorModal({ onSelect, onCancel, current }) {
+    // Shows on first load, or if triggered from header/settings
+    return (
+      <div
+        style={{
+          position: "fixed",
+          zIndex: 1500,
+          inset: 0,
+          background: "rgba(34,42,46,0.25)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+        aria-modal="true"
+        role="dialog"
+      >
+        <div style={{
+          background: "#fff",
+          color: "#222",
+          borderRadius: 14,
+          padding: "36px 36px 30px 36px",
+          minWidth: 320,
+          maxWidth: '90vw',
+          boxShadow: "0 6px 32px 3px rgba(33, 150, 243, 0.07)",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}>
+          <div style={{fontWeight:700, fontSize: 21, marginBottom:10, letterSpacing:0.1}}>
+            {current ? "Change Savings Contribution Frequency" : "Welcome to GoalSaver! 🎉"}
+          </div>
+          {!current && (
+            <div style={{color:"#1462ad", fontWeight: 400, fontSize: 15, marginBottom: 12, textAlign:"center"}}>
+              Choose how you want to save towards your goals. <br/>
+              You can change this preference anytime.
+            </div>
+          )}
+          <div style={{display:"flex", gap:12, margin:"12px 0 17px 0"}}>
+            {["daily","weekly","monthly"].map(f=>(
+              <button
+                key={f}
+                onClick={()=>onSelect(f)}
+                style={{
+                  background: current === f ? "#4CAF50" : "#e6f7f7",
+                  color: current === f ? "#fff" : "#007",
+                  border: current === f ? "2px solid #2196F3" : "1px solid #bde1ea",
+                  borderRadius:7,padding:"12px 22px", fontWeight:550,
+                  fontSize:16, cursor:"pointer", boxShadow: current===f?"0 3px 12px 0 #aed4bf1a":"none"
+                }}
+                aria-label={`Select ${f} contributions`}
+              >
+                {f.charAt(0).toUpperCase()+f.slice(1)}
+              </button>
+            ))}
+          </div>
+          <div style={{color: "#668", fontSize: 13, marginBottom: 17, textAlign: "center"}}>
+            Your suggested plan and reminders will be shown in the frequency you pick.
+          </div>
+          {current &&
+            <button onClick={onCancel} style={{
+                color:"#2196f3",background:"transparent",
+                border:"none",fontSize:15,cursor:"pointer" }}>Cancel</button>}
+        </div>
+      </div>
+    );
+  }
+
+  // PUBLIC_INTERFACE
   function GoalCard({ goal }) {
     const percent = Math.min(100, Math.round((goal.savedAmount / goal.targetAmount) * 100));
     const left = Math.max(0, goal.targetAmount - goal.savedAmount);
@@ -233,6 +341,12 @@ function GoalSaverMainContainer() {
 
     // If deadline passed
     const passed = new Date(goal.deadline) < new Date();
+
+    // Show frequency human label
+    const freqLabels = { daily: "day", weekly: "week", monthly: "month" };
+    const freqText = savingsFrequency && freqLabels[savingsFrequency]
+      ? ` / ${freqLabels[savingsFrequency]}`
+      : "";
 
     return (
       <div
@@ -413,7 +527,7 @@ function GoalSaverMainContainer() {
               Add
             </button>
             <span style={{ color: palette.accent, fontSize: 13, marginLeft: 6 }}>
-              Smart Suggestion: ₹{suggestion}
+              Smart Suggestion: ₹{suggestion}{freqText}
             </span>
           </form>
         )}
@@ -480,8 +594,32 @@ function GoalSaverMainContainer() {
             gap: 8,
           }}
         >
-          <div style={{ fontSize: 30, fontWeight: 700, letterSpacing: 0.5 }}>
-            GoalSaver <span style={{ fontWeight: 400, color: palette.secondary }}>🐷</span>
+          <div style={{ display: "flex", alignItems: "center", gap: 10, width: "100%", justifyContent:"center", position:"relative"}}>
+            <span style={{ fontSize: 30, fontWeight: 700, letterSpacing: 0.5 }}>
+              GoalSaver <span style={{ fontWeight: 400, color: palette.secondary }}>🐷</span>
+            </span>
+            {/* Show frequency and change option if set */}
+            {savingsFrequency &&
+              <button
+                onClick={handleChangeFrequency}
+                style={{
+                  fontSize: 14,
+                  color: palette.secondary,
+                  background: "rgba(255,193,7,0.17)",
+                  border: "none",
+                  borderRadius: 6,
+                  padding: "7px 16px",
+                  fontWeight: 600,
+                  marginLeft: 16,
+                  cursor: "pointer",
+                  transition: "background 0.15s"
+                }}
+                title="Change savings contribution frequency"
+              >
+                Contribution: {savingsFrequency.charAt(0).toUpperCase()+savingsFrequency.slice(1)}
+                {" "}
+                <span style={{color:palette.accent, fontWeight: 400, fontSize:15}}>✎</span>
+              </button>}
           </div>
           <div style={{ fontSize: 15, opacity: 0.86, color: "#e5fbee" }}>
             Personalize, plan and reach all your goals — no bank required!
@@ -636,6 +774,14 @@ function GoalSaverMainContainer() {
           )}
         </section>
       </div>
+      {/* Frequency selection modal (overlays anything else) */}
+      {showFrequencySelector && (
+        <FrequencySelectorModal
+          onSelect={handleSelectSavingsFrequency}
+          onCancel={() => setShowFrequencySelector(false)}
+          current={savingsFrequency}
+        />
+      )}
     </div>
   );
 }
