@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { GoogleOAuthProvider, GoogleLogin, googleLogout } from "@react-oauth/google";
-import jwt_decode from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import { getGoogleClientId } from "./env";
 
 /**
@@ -27,7 +27,7 @@ function GoogleSignIn({ onSuccess, onLogout }) {
   function handleLoginSuccess(credentialResponse) {
     try {
       // Decode JWT credential for user info.
-      const user = jwt_decode(credentialResponse.credential);
+      const user = jwtDecode(credentialResponse.credential);
       setGoogleUser(user);
       setToken(credentialResponse.credential);
       setError(null);
