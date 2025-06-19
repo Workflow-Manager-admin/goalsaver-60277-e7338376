@@ -24,4 +24,32 @@ modules by path ./.ve/ 15.1 KiB
     ./.ve/EditorOverlay.css 2.25 KiB [built] [code generated]
     ./node_modules/css-loader/dist/cjs.js!./.ve/EditorOverlay.css 697 bytes [built] [code generated]
   ./.ve/EditorOverlay.jsx 1.58 KiB [built] [code generated]
-webpack 5.99.9 compiled successfully in 1347 ms
+webpack 5.99.9 compiled successfully in 1417 ms
+Injecting EditorRootWrapper import: ../.ve/EditorRootWrapper
+assets by status 1.42 MiB [cached] 1 asset
+asset index.html 1.98 KiB [emitted]
+cached modules 1.25 MiB (javascript) 27.5 KiB (runtime) [cached] 51 modules
+javascript modules 36.1 KiB
+  modules by path ./src/*.js 23.9 KiB
+    ./src/index.js 530 bytes [built]
+    ./src/App.js 362 bytes [built]
+    ./src/GoalSaverMainContainer.js 23 KiB [built]
+  modules by path ./.ve/ 12.2 KiB
+    ./.ve/EditorRootWrapper.js 2.68 KiB [built]
+    ./.ve/EditorOverlay.jsx 1.58 KiB [built]
+    ./.ve/SidePanel.js 7.93 KiB [built]
+webpack 5.99.9 compiled successfully in 177 ms
+Injecting EditorRootWrapper import: ../.ve/EditorRootWrapper
+assets by status 1.42 MiB [cached] 1 asset
+asset index.html 1.98 KiB [emitted]
+cached modules 1.25 MiB (javascript) 27.5 KiB (runtime) [cached] 51 modules
+javascript modules 36.1 KiB
+  modules by path ./src/*.js 23.9 KiB
+    ./src/index.js 530 bytes [built]
+    ./src/App.js 362 bytes [built]
+    ./src/GoalSaverMainContainer.js 23 KiB [built]
+  modules by path ./.ve/ 12.2 KiB
+    ./.ve/EditorRootWrapper.js 2.68 KiB [built]
+    ./.ve/EditorOverlay.jsx 1.58 KiB [built]
+    ./.ve/SidePanel.js 7.93 KiB [built]
+webpack 5.99.9 compiled successfully in 222 ms
