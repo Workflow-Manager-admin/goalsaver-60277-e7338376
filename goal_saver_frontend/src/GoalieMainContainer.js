@@ -974,11 +974,25 @@ function GoalieMainContainer() {
             }}
           >
             <PieChart
-              goals={goals.filter(g => g.targetAmount > 0).map((g, i) => ({
-                name: g.title,
-                percent: Math.round(100 * Math.min(1, g.savedAmount / g.targetAmount)),
-                // Palette is matched to PieChart, fallback is branding accent
-              }))}
+              goalSegments={
+                (() => {
+                  // For each goal: the value is *actual progress value* (saved up to target), total is sum of all
+                  const goalsList = goals.filter(g => g.targetAmount > 0);
+                  const segs = goalsList.map((g, i) => {
+                    const valueRaw = Math.min(g.savedAmount, g.targetAmount);
+                    return {
+                      name: g.title,
+                      value: valueRaw,
+                      color: undefined, // let PieChart auto-palette
+                      displayPercent:
+                        overallTotalTarget > 0
+                          ? `${Math.round((valueRaw / overallTotalTarget) * 100)}%`
+                          : "0%",
+                    };
+                  });
+                  return segs;
+                })()
+              }
               size={135}
               bgColor={palette.progressBg}
               strokeWidth={15}
