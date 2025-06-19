@@ -11,7 +11,7 @@ asset bundle.js 1.48 MiB [emitted] (name: main)
 asset index.html 1.98 KiB [emitted]
 runtime modules 27.5 KiB 14 modules
 modules by path ./node_modules/ 1.24 MiB 31 modules
-modules by path ./src/ 82.6 KiB
+modules by path ./src/ 82.5 KiB
   modules by path ./src/*.js 74.7 KiB 4 modules
   modules by path ./src/*.css 7.85 KiB
     ./src/index.css 2.23 KiB [built] [code generated]
@@ -22,34 +22,14 @@ modules by path ./.ve/ 15.1 KiB
     ./.ve/EditorOverlay.css 2.25 KiB [built] [code generated]
     ./node_modules/css-loader/dist/cjs.js!./.ve/EditorOverlay.css 697 bytes [built] [code generated]
   ./.ve/EditorOverlay.jsx 1.58 KiB [built] [code generated]
-webpack 5.99.9 compiled successfully in 1647 ms
+webpack 5.99.9 compiled successfully in 1506 ms
 assets by status 1.98 KiB [cached] 1 asset
 assets by path *.js 1.5 MiB
   asset bundle.js 1.48 MiB [emitted] (name: main)
-  asset main.e283c2eca88ec60a31ec.hot-update.js 22.3 KiB [emitted] [immutable] [hmr] (name: main)
-asset main.e283c2eca88ec60a31ec.hot-update.json 28 bytes [emitted] [immutable] [hmr]
-Entrypoint main 1.5 MiB = bundle.js 1.48 MiB main.e283c2eca88ec60a31ec.hot-update.js 22.3 KiB
+  asset main.e013fb7ea61127122c03.hot-update.js 22.6 KiB [emitted] [immutable] [hmr] (name: main)
+asset main.e013fb7ea61127122c03.hot-update.json 28 bytes [emitted] [immutable] [hmr]
+Entrypoint main 1.5 MiB = bundle.js 1.48 MiB main.e013fb7ea61127122c03.hot-update.js 22.6 KiB
 cached modules 1.32 MiB [cached] 43 modules
 runtime modules 27.5 KiB 14 modules
-./src/PieChart.js 18.2 KiB [built] [code generated]
-webpack 5.99.9 compiled successfully in 89 ms
-assets by status 1.98 KiB [cached] 1 asset
-assets by path *.js 1.5 MiB
-  asset bundle.js 1.48 MiB [emitted] (name: main)
-  asset main.60b7c20c137b2b23d4e0.hot-update.js 22.3 KiB [emitted] [immutable] [hmr] (name: main)
-asset main.60b7c20c137b2b23d4e0.hot-update.json 28 bytes [emitted] [immutable] [hmr]
-Entrypoint main 1.5 MiB = bundle.js 1.48 MiB main.60b7c20c137b2b23d4e0.hot-update.js 22.3 KiB
-cached modules 1.32 MiB [cached] 43 modules
-runtime modules 27.5 KiB 14 modules
-./src/PieChart.js 18.2 KiB [built] [code generated]
-webpack 5.99.9 compiled successfully in 142 ms
-assets by status 1.98 KiB [cached] 1 asset
-assets by path *.js 1.5 MiB
-  asset bundle.js 1.48 MiB [emitted] (name: main)
-  asset main.d90abe8f9b9094671b70.hot-update.js 22.2 KiB [emitted] [immutable] [hmr] (name: main)
-asset main.d90abe8f9b9094671b70.hot-update.json 28 bytes [emitted] [immutable] [hmr]
-Entrypoint main 1.5 MiB = bundle.js 1.48 MiB main.d90abe8f9b9094671b70.hot-update.js 22.2 KiB
-cached modules 1.32 MiB [cached] 43 modules
-runtime modules 27.5 KiB 14 modules
-./src/PieChart.js 18.1 KiB [built] [code generated]
-webpack 5.99.9 compiled successfully in 111 ms
+./src/PieChart.js 18.5 KiB [built] [code generated]
+webpack 5.99.9 compiled successfully in 220 ms
