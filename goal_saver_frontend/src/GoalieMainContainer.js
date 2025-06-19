@@ -789,68 +789,68 @@ function GoalieMainContainer() {
           <div style={{
               display: "flex",
               alignItems: "center",
-              gap: 16,
+              gap: 18,
               width: "100%",
               justifyContent: "center",
               position: "relative"
             }}>
-            {/* Large, visually explicit goalpost icon; clear soccer/football goal SVG */}
-            <span
-              style={{
-                display: "flex",
-                alignItems: "center",
-                marginRight: 9,
-                background: "none",
-                padding: 0,
-                borderRadius: 0,
-                minWidth: 70,
-                minHeight: 42,
-                justifyContent: "center"
-              }}>
-              {/* SVG is distinct, bold, and unmistakably a football/soccer goalpost */}
+            {/* Prominent hand-crafted football goal post SVG for branding (no ambiguity) */}
+            <span style={{
+              display: "flex",
+              alignItems: "center",
+              marginRight: 7,
+              minWidth: 76,
+              minHeight: 46,
+              background: "none",
+              padding: 0,
+              borderRadius: 0,
+              justifyContent: "center"
+            }}>
+              {/* Unambiguous football/soccer goal icon */}
               <svg
-                width="70"
-                height="38"
-                viewBox="0 0 140 76"
+                width="76"
+                height="46"
+                viewBox="0 0 152 92"
                 style={{
                   verticalAlign: "middle",
-                  aspectRatio: "140/76",
+                  aspectRatio: "152/92",
                   display: "block",
                   filter: "drop-shadow(0 2px 7px #aee2ffd8)"
                 }}
                 aria-hidden="true"
               >
-                {/* Strong front goalposts and crossbar */}
-                <rect x="11" y="13" width="15" height="54" rx="4.9" fill="#87bbf6" stroke="#547fae" strokeWidth="2.2"/>
-                <rect x="114" y="13" width="15" height="54" rx="4.9" fill="#87bbf6" stroke="#547fae" strokeWidth="2.2"/>
-                <rect x="26" y="6" width="88" height="10.5" rx="4.5" fill="#ffe15b" stroke="#d4d096" strokeWidth="3"/>
-                {/* Side and depth perspective */}
-                <polygon points="26,16 26,65 13,63 13,13" fill="#c6ecff" opacity="0.42"/>
-                <polygon points="114,16 114,65 128,63 128,13" fill="#c6ecff" opacity="0.42"/>
-                {/* 3D rear bars */}
-                <rect x="32" y="62.5" width="80" height="4" rx="1.7" fill="#b0d8fa" opacity="0.54"/>
-                <rect x="37" y="16" width="5.5" height="41" rx="2.7" fill="#e4e8f3" opacity="0.56"/>
-                <rect x="99.5" y="16" width="5.5" height="41" rx="2.7" fill="#e4e8f3" opacity="0.56"/>
-                {/* Net - horizontal */}
-                <rect x="43" y="22" width="54" height="2" rx="1" fill="#dde9f6" opacity="0.85"/>
-                <rect x="43" y="30" width="54" height="2" rx="1" fill="#dde9f6" opacity="0.85"/>
-                <rect x="43" y="38" width="54" height="2" rx="1" fill="#dde9f6" opacity="0.85"/>
-                <rect x="43" y="46" width="54" height="2" rx="1" fill="#dde9f6" opacity="0.85"/>
-                <rect x="43" y="54" width="54" height="2" rx="1" fill="#dde9f6" opacity="0.85"/>
-                {/* Net - vertical */}
-                <rect x="52" y="18" width="1.7" height="42" rx="0.7" fill="#dae7f6" opacity="0.76"/>
-                <rect x="62" y="18" width="1.7" height="42" rx="0.7" fill="#dae7f6" opacity="0.76"/>
-                <rect x="72" y="18" width="1.7" height="42" rx="0.7" fill="#dae7f6" opacity="0.76"/>
-                <rect x="82" y="18" width="1.7" height="42" rx="0.7" fill="#dae7f6" opacity="0.76"/>
-                <rect x="92" y="18" width="1.7" height="42" rx="0.7" fill="#dae7f6" opacity="0.76"/>
-                {/* Subtle ground shadow */}
-                <ellipse cx="70" cy="71" rx="55" ry="6.5" fill="#91efce" opacity="0.15"/>
-                {/* Ball accent, very secondary, to right front post */}
-                <circle cx="116" cy="60" r="7" fill="#fff" stroke="#aac8dd" strokeWidth="2.1" opacity="0.94"/>
-                <circle cx="116" cy="60" r="2.8" fill="#dde9f6"/>
-                <line x1="116" y1="57" x2="116" y2="63" stroke="#bfc3d5" strokeWidth="1" opacity="0.9"/>
+                {/* Main posts and crossbar */}
+                <rect x="16" y="18" width="15" height="64" rx="5" fill="#74b5f9" stroke="#496fa0" strokeWidth="2.8"/>
+                <rect x="121" y="18" width="15" height="64" rx="5" fill="#74b5f9" stroke="#496fa0" strokeWidth="2.8"/>
+                <rect x="31" y="8" width="90" height="12" rx="4.5" fill="#ffe15b" stroke="#d4d096" strokeWidth="3.6"/>
+                {/* Perspective net/sides */}
+                <polygon points="31,20 31,80 18,78 18,18" fill="#c8defc" opacity="0.34"/>
+                <polygon points="121,20 121,80 136,78 136,18" fill="#c8defc" opacity="0.34"/>
+                {/* Ground shadow */}
+                <ellipse cx="76" cy="87" rx="66" ry="7" fill="#91efce" opacity="0.18"/>
+                {/* 3D rear posts */}
+                <rect x="39" y="80" width="74" height="5" rx="2.1" fill="#b0d8fa" opacity="0.50"/>
+                <rect x="44" y="20" width="6" height="62" rx="2.8" fill="#e4e8f3" opacity="0.52"/>
+                <rect x="102" y="20" width="6" height="62" rx="2.8" fill="#e4e8f3" opacity="0.52"/>
+                {/* Net horizontal lines */}
+                <rect x="48" y="30" width="56" height="2" rx="1" fill="#dde9f6" opacity="0.78"/>
+                <rect x="48" y="40" width="56" height="2" rx="1" fill="#dde9f6" opacity="0.78"/>
+                <rect x="48" y="50" width="56" height="2" rx="1" fill="#dde9f6" opacity="0.78"/>
+                <rect x="48" y="60" width="56" height="2" rx="1" fill="#dde9f6" opacity="0.78"/>
+                <rect x="48" y="70" width="56" height="2" rx="1" fill="#dde9f6" opacity="0.78"/>
+                {/* Net vertical lines */}
+                <rect x="56" y="22" width="1.8" height="57" rx="0.7" fill="#dae7f6" opacity="0.62"/>
+                <rect x="67" y="22" width="1.8" height="57" rx="0.7" fill="#dae7f6" opacity="0.62"/>
+                <rect x="78" y="22" width="1.8" height="57" rx="0.7" fill="#dae7f6" opacity="0.62"/>
+                <rect x="89" y="22" width="1.8" height="57" rx="0.7" fill="#dae7f6" opacity="0.62"/>
+                <rect x="100" y="22" width="1.8" height="57" rx="0.7" fill="#dae7f6" opacity="0.62"/>
+                {/* Optional football accent - bottom right, subtle */}
+                <circle cx="131" cy="75" r="7" fill="#fff" stroke="#aac8dd" strokeWidth="2.1" opacity="0.85" />
+                <circle cx="131" cy="75" r="2.4" fill="#dde9f6"/>
+                <line x1="131" y1="71.7" x2="131" y2="78.3" stroke="#bfc3d5" strokeWidth="1" opacity="0.7"/>
               </svg>
             </span>
+
             <span style={{
               fontSize: 39,
               fontWeight: 850,
