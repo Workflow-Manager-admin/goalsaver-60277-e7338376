@@ -1,12 +1,13 @@
 import React from "react";
 import "./App.css";
-import GoalSaverMainContainer from "./GoalSaverMainContainer";
+import GoalieMainContainer from "./GoalieMainContainer";
 
 /**
- * App entrypoint - renders the GoalSaver main container.
+ * App entrypoint - renders the Goalie main container.
  */
+// PUBLIC_INTERFACE
 function App() {
-  return <GoalSaverMainContainer />;
+  return <GoalieMainContainer />;
 }
 
 export default App;

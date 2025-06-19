@@ -1,29 +1,16 @@
-# Lightweight React Template for KAVIA
+# Goalie – Friendly Savings Planner App
 
-This project provides a minimal React template with a clean, modern UI and minimal dependencies.
+> Previously named "GoalSaver" – now with a lively look and branding! 🎉
+
+This project implements **Goalie**, a personal finance app to help you set goals, plan smart savings, and build good money habits in a playful, visually engaging way.
 
 ## Features
 
-- **Lightweight**: No heavy UI frameworks - uses only vanilla CSS and React
-- **Modern UI**: Clean, responsive design with KAVIA brand styling
-- **Fast**: Minimal dependencies for quick loading times
-- **Simple**: Easy to understand and modify
-
-## Important Note: Babel Configuration
-
-This project’s `package.json` includes a `babel` section with a plugin:
-
-```json
-"babel": {
-"plugins": ["./.ve/babel-plugin-jsx-editor-id.js"]
-}
-```
-
-This plugin enables **visual editing functionality** in supported tools.
-
-**Warning for AI code agents and contributors:**
-**DO NOT** remove or modify this section - it is ESSENTIAL for proper operation.
-Removing it will break editor integration and visual editing features.
+- **Goal-Based Savings Planner**: Set financial goals and plan your savings.
+- **Friendly, lively UI**: Modern, fluid design with playful graphics and a goal post symbol in the branding.
+- **Smart Contribution Calculator**: Get suggestions on how much to save.
+- **Motivational Notifier**: Habit-building nudges, reminders, and progress celebration.
+- **Multiple Goals Support**: Manage several goals, prioritize, and activate/deactivate.
 
 ## Getting Started
 
@@ -45,54 +32,21 @@ It correctly bundles React in production mode and optimizes the build for the be
 
 ## Customization
 
-### Colors
+- The main look, colors, and layout can be changed in `src/App.css` and the main container component.
+- The Goalie branding and design is defined in `src/GoalieMainContainer.js`.
 
-The main brand colors are defined as CSS variables in `src/App.css`:
+## Important Note: Babel Configuration
 
-```css
-:root {
-  --kavia-orange: #E87A41;
-  --kavia-dark: #1A1A1A;
-  --text-color: #ffffff;
-  --text-secondary: rgba(255, 255, 255, 0.7);
-  --border-color: rgba(255, 255, 255, 0.1);
+This project’s `package.json` includes a `babel` section with a plugin:
+
+```json
+"babel": {
+"plugins": ["./.ve/babel-plugin-jsx-editor-id.js"]
 }
 ```
 
-### Components
+**Do NOT remove or change this. It is required for visual editing.**
 
-This template uses pure HTML/CSS components instead of a UI framework. You can find component styles in `src/App.css`. 
-
-Common components include:
-- Buttons (`.btn`, `.btn-large`)
-- Container (`.container`)
-- Navigation (`.navbar`)
-- Typography (`.title`, `.subtitle`, `.description`)
-
-## Learn More
+## More
 
 To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)

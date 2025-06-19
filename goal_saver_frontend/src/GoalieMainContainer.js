@@ -2,16 +2,16 @@ import React, { useState, useEffect } from "react";
 
 // PUBLIC_INTERFACE
 /**
- * The main container for the GoalSaver application.
+ * The main container for the Goalie application.
  * Features:
  * - Goal-Based Savings Planner
  * - Smart Contribution Calculator
  * - Auto Reminders & Habit Builder (simulated)
  * - Progress Tracker
  * - Multiple Goals Management (virtual piggy bank)
- * Style: Clean, minimal, light theme; colors: primary #4CAF50, secondary #FFC107, accent #2196F3
+ * Enhanced Design: Friendly, lively, engaging UI. Goal post branding. Playful gradients and interactivity.
  */
-function GoalSaverMainContainer() {
+function GoalieMainContainer() {
   // Savings frequency state and persistence
   const SAVINGS_FREQUENCY_KEY = "savingsFrequency";
   const [savingsFrequency, setSavingsFrequency] = useState(() => {
@@ -77,7 +77,7 @@ function GoalSaverMainContainer() {
           Date.now() - leastSaved.lastNotified > 1000 * 60 * 60 * 12)
       ) {
         handleNotification(
-          `Don't forget to make progress on "${leastSaved.title}". Small contributions add up!`
+          `Don’t forget to make progress on "${leastSaved.title}". Small contributions add up!`
         );
         setGoals((prev) =>
           prev.map((goal) =>
@@ -228,21 +228,23 @@ function GoalSaverMainContainer() {
     return perContribution;
   }
 
-  // Updated harmonious, modern palette (matches App.css variables)
+  // Brighter, friendlier palette with playful background
   const palette = {
-    primary: "#6894ee",      // Soft blue
-    primaryDark: "#3b5aaa",
-    secondary: "#f5f6fa",    // Gentle neutral (bg)
-    accent: "#b592ff",       // Lavender
-    accentAlt: "#ffb7b0",    // Coral/pink (alt accent)
-    background: "#f5f6fa",
-    card: "#fff",
-    text: "#21243c",
-    textSecondary: "#5e6580",
-    border: "#dde6f2",
+    primary: "#6bbd53",
+    primaryDark: "#338a2e",
+    secondary: "#fffbe9",
+    accent: "#637be7",
+    accentAlt: "#ffd768",
+    background: "linear-gradient(135deg, #FFFBE9 0%, #C6F9F6 53%, #AEE1F9 100%)",
+    card: "#ffffffee",
+    text: "#17212b",
+    textSecondary: "#4b6682",
+    border: "#cdeadb",
     light: "#fff",
-    progressBg: "#e9eaf6",
-    progressFg: "#6894ee",
+    progressBg: "#e6e7fa",
+    progressFg: "#6bbd53",
+    shadowCard: "0 4px 20px 0 #9ffde440",
+    headerGradient: "linear-gradient(90deg, #ffe15b 0%, #a7e078 70%, #3cd0ff 105%)",
   };
 
   // PUBLIC_INTERFACE
@@ -253,18 +255,38 @@ function GoalSaverMainContainer() {
         width: "100%",
         background: palette.progressBg,
         borderRadius: 12,
-        height: 14,
+        height: 16,
         margin: "8px 0 4px 0",
-        overflow: "hidden"
+        overflow: "hidden",
+        boxShadow: "0 1px 12px #72e3eb1e"
       }}>
         <div style={{
           width: `${percent}%`,
-          background: palette.progressFg,
+          background: `linear-gradient(to right, #6bbd53 70%, #ffd768)`,
           height: "100%",
           borderRadius: 12,
-          transition: "width 0.5s"
+          transition: "width 0.5s",
+          boxShadow: percent === 100 ? "0 0 10px #ffe15b55" : "none",
         }} />
       </div>
+    );
+  }
+
+  // Goal post SVG component
+  function GoalPostIcon({ size = 29, animated }) {
+    return (
+      <span style={{display:"inline-block"}}>
+        <svg width={size} height={size} viewBox="0 0 40 40" style={{
+          verticalAlign: "middle",
+          ...(animated ? {transform: "translateY(-1.5px) scale(1.07)", transition: "all .18s"} : {}),
+        }}>
+          <rect x="10" y="7" width="3.5" height="23" rx="1.25" fill="#8CBDFF"/>
+          <rect x="26.5" y="7" width="3.5" height="23" rx="1.25" fill="#8CBDFF"/>
+          <rect x="10" y="7" width="20" height="3.7" rx="1" fill="#FFDF5B"/>
+          <rect x="17.7" y="25.7" width="5.6" height="2.3" rx="1.1" fill="#FFD34E"/>
+          <circle cx="20" cy="28.5" r="2.4" fill="#43A75B" stroke="#89E37A" strokeWidth="1.1"/>
+        </svg>
+      </span>
     );
   }
 
@@ -277,10 +299,11 @@ function GoalSaverMainContainer() {
           position: "fixed",
           zIndex: 1500,
           inset: 0,
-          background: "rgba(34, 42, 46, 0.17)",
+          background: "rgba(34, 42, 46, 0.19)",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
+          backdropFilter: "blur(1.5px)"
         }}
         aria-modal="true"
         role="dialog"
@@ -289,24 +312,25 @@ function GoalSaverMainContainer() {
           background: palette.card,
           color: palette.text,
           borderRadius: 14,
-          padding: "36px 36px 30px 36px",
-          minWidth: 320,
+          padding: "42px 40px 32px 40px",
+          minWidth: 340,
           maxWidth: '90vw',
-          boxShadow: "0 6px 32px 3px #b592ff18",
+          boxShadow: "0 8px 40px 4px #87e7fd31",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
         }}>
-          <div style={{fontWeight:700, fontSize: 21, marginBottom:10, letterSpacing:0.1, color: palette.primary}}>
-            {current ? "Change Savings Contribution Frequency" : "Welcome to GoalSaver! 🎉"}
+          <div style={{fontWeight:700, fontSize: 23, marginBottom:12, letterSpacing:0.1, color: palette.primary}}>
+            {current ? "Change Savings Contribution Frequency" : "Welcome to Goalie! "}
+            <GoalPostIcon size={28}/>
           </div>
           {!current && (
-            <div style={{color:palette.accent, fontWeight: 400, fontSize: 15, marginBottom: 12, textAlign:"center"}}>
-              Choose how you want to save towards your goals. <br/>
+            <div style={{color:palette.accent, fontWeight: 400, fontSize: 15, marginBottom: 13, textAlign:"center"}}>
+              Choose how you want to save towards your goals.<br/>
               You can change this preference anytime.
             </div>
           )}
-          <div style={{display:"flex", gap:12, margin:"12px 0 17px 0"}}>
+          <div style={{display:"flex", gap:14, margin:"14px 0 17px 0"}}>
             {["daily","weekly","monthly"].map(f=>(
               <button
                 key={f}
@@ -315,9 +339,9 @@ function GoalSaverMainContainer() {
                   background: current === f ? palette.primary : palette.secondary,
                   color: current === f ? "#fff" : palette.textSecondary,
                   border: current === f ? `2px solid ${palette.accent}` : `1px solid ${palette.border}`,
-                  borderRadius:7, padding:"12px 22px", fontWeight:550,
-                  fontSize:16, cursor:"pointer", boxShadow: current===f?"0 3px 12px 0 #6894ee18":"none",
-                  transition: "background 0.2s"
+                  borderRadius:9, padding:"13px 25px", fontWeight:570,
+                  fontSize:18, cursor:"pointer", boxShadow: current===f?"0 4px 18px 0 #b0eeff28":"none",
+                  transition: "all 0.18s"
                 }}
                 aria-label={`Select ${f} contributions`}
               >
@@ -325,8 +349,8 @@ function GoalSaverMainContainer() {
               </button>
             ))}
           </div>
-          <div style={{color: palette.textSecondary, fontSize: 13, marginBottom: 17, textAlign: "center"}}>
-            Your suggested plan and reminders will be shown in the frequency you pick.
+          <div style={{color: palette.textSecondary, fontSize: 14, marginBottom: 19, textAlign: "center"}}>
+            Your plan and reminders will be personalized for the picked frequency.
           </div>
           {current &&
             <button onClick={onCancel} style={{
@@ -352,75 +376,90 @@ function GoalSaverMainContainer() {
       ? ` / ${freqLabels[savingsFrequency]}`
       : "";
 
+    // Animation pop for cards with recent changes
+    const [pop, setPop] = useState(false);
+    useEffect(() => {
+      if (goal.lastContribution) {
+        setPop(true);
+        const timer = setTimeout(() => setPop(false), 450);
+        return () => clearTimeout(timer);
+      }
+    }, [goal.lastContribution]);
+
     return (
       <div
         style={{
           background: palette.card,
           color: palette.text,
-          border: `1px solid ${palette.border}`,
-          borderRadius: 16,
-          padding: 24,
-          marginBottom: 16,
+          border: `1.5px solid ${palette.border}`,
+          borderRadius: 19,
+          padding: 26,
+          marginBottom: 20,
           boxShadow: goal.priority
-            ? `0 2px 12px 1px rgba(33, 150, 243, 0.13)`
-            : `0 2px 8px 0 rgba(33, 150, 243, 0.06)`,
-          opacity: goal.active ? 1 : 0.7,
+            ? `0 3px 21px 2px #aacffd23`
+            : palette.shadowCard,
+          opacity: goal.active ? 1 : 0.5,
           position: "relative",
+          transform: pop ? "scale(1.03) rotate(-0.4deg)" : "scale(1)",
+          transition: "all 0.32s cubic-bezier(.15,.83,.53,.99)"
         }}
       >
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <h3 style={{ margin: 0, fontWeight: 700 }}>
+          <h3 style={{ margin: 0, fontWeight: 700, fontSize: 22, letterSpacing: 0.5 }}>
             {goal.title}
             {goal.priority && (
               <span
                 title="Priority"
                 style={{
                   marginLeft: 10,
-                  color: palette.accentAlt, // coral for priority star
-                  fontSize: 18,
+                  color: palette.accentAlt,
+                  fontSize: 19,
                   verticalAlign: "middle",
+                  textShadow: "0 1px 5px #ffd25694"
                 }}
               >
                 ★
               </span>
             )}
           </h3>
-          <div>
+          <div style={{display: "flex", alignItems: "center", gap: 5}}>
             <button
               onClick={() => handleQuickSave(goal.id)}
               style={{
                 background: palette.accent,
                 color: "#fff",
                 border: "none",
-                borderRadius: 5,
-                padding: "6px 14px",
-                marginRight: 8,
+                borderRadius: 7,
+                padding: "7px 13px",
+                marginRight: 5,
                 fontWeight: 500,
                 cursor: goal.active ? "pointer" : "default",
-                opacity: goal.active ? 1 : 0.65,
-                fontSize: 15,
-                boxShadow: goal.active ? "0 2px 8px 0 #b592ff33" : "none",
+                opacity: goal.active ? 1 : 0.55,
+                fontSize: 15.5,
+                boxShadow: goal.active ? "0 4px 10px 0 #b9cafd44" : "none",
                 transition: "background 0.2s",
+                outline: "none",
               }}
               disabled={!goal.active || passed}
               title="Quick Save (build your savings habit)"
             >
-              Quick Save
+              Quickly Save
             </button>
             <button
               onClick={() => handleToggleActive(goal.id)}
               style={{
-                background: goal.active ? palette.primary : palette.surfaceLight,
+                background: goal.active ? palette.primary : palette.progressBg,
                 color: goal.active ? "#fff" : palette.textSecondary,
                 border: "none",
-                borderRadius: 5,
-                padding: "4px 12px",
-                marginRight: 7,
-                fontSize: 15,
+                borderRadius: 7,
+                padding: "4px 13px",
+                fontSize: 15.5,
                 cursor: "pointer",
                 fontWeight: 500,
-                boxShadow: goal.active ? "0 2px 8px 0 #6894ee22" : "none",
+                marginRight: 4,
+                boxShadow: goal.active ? "0 2px 8px 0 #6bbd5342" : "none",
                 transition: "background 0.2s",
+                outline: "none"
               }}
               title={goal.active ? "Deactivate Goal" : "Activate Goal"}
             >
@@ -432,14 +471,15 @@ function GoalSaverMainContainer() {
                 background: goal.priority ? palette.accentAlt : palette.secondary,
                 color: goal.priority ? "#fff" : palette.text,
                 border: "none",
-                borderRadius: 5,
-                padding: "4px 12px",
-                fontSize: 15,
+                borderRadius: 7,
+                padding: "4px 13px",
+                fontSize: 15.5,
                 cursor: "pointer",
-                marginRight: 7,
+                marginRight: 4,
                 fontWeight: 500,
-                boxShadow: goal.priority ? "0 2px 8px 0 #ffb7b044" : "none",
+                boxShadow: goal.priority ? "0 3px 9px 0 #ffd76888" : "none",
                 transition: "background 0.2s",
+                outline: "none"
               }}
               title="Toggle Priority"
             >
@@ -448,15 +488,16 @@ function GoalSaverMainContainer() {
             <button
               onClick={() => handleDeleteGoal(goal.id)}
               style={{
-                background: palette.surfaceLight,
-                color: palette.textSecondary,
+                background: "#fff5f5",
+                color: "#d25b4c",
                 border: "none",
-                borderRadius: 5,
+                borderRadius: 7,
                 padding: "4px 12px",
-                fontSize: 15,
+                fontSize: 15.5,
                 cursor: "pointer",
                 fontWeight: 500,
                 transition: "background 0.2s",
+                outline: "none"
               }}
               title="Delete Goal"
             >
@@ -464,17 +505,17 @@ function GoalSaverMainContainer() {
             </button>
           </div>
         </div>
-        <div style={{ marginTop: 10, fontSize: 15, color: palette.textSecondary }}>
+        <div style={{ marginTop: 10, fontSize: 15.5, color: palette.textSecondary }}>
           <b>Target:</b> ₹{goal.targetAmount.toLocaleString()}{" "}
           <span style={{ marginLeft: 18 }}>
             <b>Deadline:</b> {goal.deadline}
           </span>
         </div>
         <ProgressBar value={goal.savedAmount} max={goal.targetAmount} />
-        <div style={{ fontSize: 14, marginTop: 2 }}>
+        <div style={{ fontSize: 15, marginTop: 2 }}>
           Saved <b>₹{goal.savedAmount.toLocaleString()}</b>{" "}
           {percent >= 100 ? (
-            <span style={{ color: palette.accentAlt, fontWeight: 600 }}>
+            <span style={{ color: palette.primary, fontWeight: 600 }}>
               🏆 Goal reached!
             </span>
           ) : (
@@ -486,17 +527,18 @@ function GoalSaverMainContainer() {
           )}
           {passed && percent < 100 && (
             <span style={{ color: "#e06e6e", marginLeft: 8 }}>
-              (Deadline over)
+              (Deadline overdue)
             </span>
           )}
         </div>
         {percent < 100 && !passed && (
           <form
             style={{
-              marginTop: 18,
+              marginTop: 21,
               display: "flex",
               alignItems: "center",
               gap: 10,
+              justifyContent: "flex-start"
             }}
             onSubmit={(e) => {
               e.preventDefault();
@@ -515,15 +557,15 @@ function GoalSaverMainContainer() {
               placeholder={`Contribute (suggest: ₹${suggestion})`}
               style={{
                 border: `1px solid ${palette.border}`,
-                borderRadius: 6,
-                padding: "7px 12px",
+                borderRadius: 7,
+                padding: "8px 14px",
                 fontSize: 16,
                 outline: "none",
-                flex: "0 0 160px",
-                boxShadow: "0 2px 8px 0 #dde6f205",
+                flex: "0 0 140px",
                 background: palette.secondary,
                 color: palette.text,
-                transition: "border 0.2s",
+                boxShadow: "0 2px 8px 0 #cfdfff06",
+                transition: "border 0.18s"
               }}
               disabled={!goal.active}
             />
@@ -533,14 +575,14 @@ function GoalSaverMainContainer() {
                 background: palette.primary,
                 color: "#fff",
                 border: "none",
-                borderRadius: 6,
-                padding: "7px 20px",
+                borderRadius: 7,
+                padding: "8px 21px",
                 fontWeight: 500,
                 fontSize: 16,
                 cursor: goal.active ? "pointer" : "not-allowed",
                 opacity: goal.active ? 1 : 0.8,
-                boxShadow: goal.active ? "0 2px 8px 0 #6894ee33" : "none",
-                transition: "background 0.2s",
+                boxShadow: goal.active ? "0 2px 8px 0 #6bbd5333" : "none",
+                transition: "background 0.18s"
               }}
               disabled={!goal.active}
             >
@@ -552,7 +594,7 @@ function GoalSaverMainContainer() {
           </form>
         )}
         {goal.lastContribution && (
-          <div style={{ fontSize: 12, color: "#666", marginTop: 9 }}>
+          <div style={{ fontSize: 13, color: "#6b6b6b", marginTop: 11 }}>
             Last contribution: {new Date(goal.lastContribution).toLocaleString()}
           </div>
         )}
@@ -563,13 +605,48 @@ function GoalSaverMainContainer() {
   return (
     <div
       style={{
-        background: palette.background,
         minHeight: "100vh",
-        fontFamily: "'Inter', 'Roboto', 'Helvetica', 'Arial', sans-serif",
+        fontFamily: "'Nunito', 'Inter', 'Roboto', 'Helvetica', 'Arial', sans-serif",
         color: palette.text,
-        paddingBottom: 60,
+        paddingBottom: 70,
+        background: palette.background,
+        position: "relative",
+        boxSizing: "border-box",
+        transition: "background 0.5s"
       }}
     >
+      {/* Animated decorative shapes (background flair) */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: "fixed",
+          top: "-70px",
+          left: "-120px",
+          width: "360px",
+          height: "320px",
+          background: "radial-gradient(circle at 30% 70%, #ffe15b54 0%, #fff2dc00 79%)",
+          borderRadius: "57% 43% 76% 24% / 39% 53% 47% 61%",
+          zIndex: 0,
+          filter: "blur(6px)",
+          opacity: 0.48,
+        }}
+      />
+      <div
+        aria-hidden="true"
+        style={{
+          position: "fixed",
+          bottom: "-100px",
+          right: "-120px",
+          width: "290px",
+          height: "280px",
+          background: "radial-gradient(circle at 50% 20%, #87faff44 0%, #fff2dc00 75%)",
+          borderRadius: "43% 57% 64% 36% / 38% 62% 38% 62%",
+          zIndex: 0,
+          filter: "blur(7px)",
+          opacity: 0.34,
+        }}
+      />
+
       {/* Notification Prompt */}
       {notification && (
         <div
@@ -579,13 +656,14 @@ function GoalSaverMainContainer() {
             right: 36,
             background: palette.accent,
             color: "#fff",
-            fontWeight: 500,
-            borderRadius: 8,
-            padding: "15px 34px",
-            boxShadow: "0 8px 24px 1px #b592ff22",
-            zIndex: 1000,
-            fontSize: 16,
-            transition: "opacity 0.3s",
+            fontWeight: 600,
+            borderRadius: 12,
+            padding: "17px 38px 16px 38px",
+            boxShadow: "0 11px 32px 0 #83eafe52",
+            zIndex: 1400,
+            fontSize: 17,
+            transition: "opacity 0.22s",
+            animation: "popFadeIn .25s cubic-bezier(.41,.52,.19,1.4)"
           }}
           aria-live="polite"
         >
@@ -596,63 +674,76 @@ function GoalSaverMainContainer() {
       {/* Header */}
       <div
         style={{
-          background: palette.primary,
-          color: "#fff",
-          padding: "34px 0 20px 0",
+          background: palette.headerGradient,
+          color: "#27332b",
+          padding: "38px 0 26px 0",
           borderBottom: `5px solid ${palette.accentAlt}`,
-          boxShadow: "0 3px 12px #b592ff10",
+          boxShadow: "0 4px 19px #ffe77338",
+          borderTopLeftRadius: 0,
+          borderTopRightRadius: 0,
+          position: "relative",
+          zIndex: 20
         }}
       >
         <div
           style={{
-            maxWidth: 900,
+            maxWidth: 950,
             margin: "0 auto",
             padding: "0 24px",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            gap: 8,
+            gap: 10,
+            userSelect: "none"
           }}
         >
-          <div style={{ display: "flex", alignItems: "center", gap: 10, width: "100%", justifyContent:"center", position:"relative"}}>
-            <span style={{ fontSize: 30, fontWeight: 700, letterSpacing: 0.5 }}>
-              GoalSaver <span style={{ fontWeight: 400, color: palette.accentAlt }}>🐷</span>
+          <div style={{ display: "flex", alignItems: "center", gap: 18, width: "100%", justifyContent:"center", position:"relative"}}>
+            <span style={{ fontSize: 34, fontWeight: 800, letterSpacing: 1.2, textShadow: "0 2px 9px #fff47c53" }}>
+              <GoalPostIcon size={34} animated={true} /> Goalie
+              <span style={{ fontWeight: 400, color: palette.accent, marginLeft: 8, fontSize:30 }}>🐷</span>
             </span>
             {/* Show frequency and change option if set */}
             {savingsFrequency &&
               <button
                 onClick={handleChangeFrequency}
                 style={{
-                  fontSize: 14,
+                  fontSize: 15.5,
                   color: palette.accent,
                   background: `${palette.secondary}`,
-                  border: "none",
-                  borderRadius: 6,
-                  padding: "7px 16px",
-                  fontWeight: 600,
-                  marginLeft: 16,
+                  border: `2.2px solid ${palette.accentAlt}`,
+                  borderRadius: 8,
+                  padding: "8px 19px",
+                  fontWeight: 700,
+                  marginLeft: 22,
                   cursor: "pointer",
-                  transition: "background 0.15s",
-                  boxShadow: "0 2px 10px 0 #b592ff22"
+                  transition: "background 0.15s, border 0.19s",
+                  boxShadow: "0 3px 10px 0 #ffd76828"
                 }}
                 title="Change savings contribution frequency"
               >
                 Contribution: {savingsFrequency.charAt(0).toUpperCase()+savingsFrequency.slice(1)}
                 {" "}
-                <span style={{color:palette.accentAlt, fontWeight: 400, fontSize:15}}>✎</span>
+                <span style={{color:palette.accentAlt, fontWeight: 400, fontSize:16.5, marginLeft:4}}>✎</span>
               </button>}
           </div>
-          <div style={{ fontSize: 15, opacity: 0.94, color: palette.secondary }}>
-            Personalize, plan and reach all your goals — no bank required!
+          <div style={{
+            fontSize: 17,
+            opacity: 0.92,
+            color: "#324665",
+            fontWeight: 550,
+            fontFamily: "Nunito, Inter, sans-serif",
+            textShadow: "0 1px 8px #fff9e73d"
+          }}>
+            Plan, play, and reach your dreams — with Goalie, your playful savings buddy!
           </div>
         </div>
       </div>
 
       <div
         style={{
-          maxWidth: 900,
+          maxWidth: 950,
           margin: "0 auto",
-          marginTop: 38,
+          marginTop: 41,
           padding: "0 24px",
         }}
       >
@@ -660,11 +751,14 @@ function GoalSaverMainContainer() {
         <section
           style={{
             background: palette.card,
-            borderRadius: 16,
-            boxShadow: "0 2px 12px 1px #6894ee08",
-            padding: "34px 22px 24px 22px",
-            marginBottom: 30,
-            marginTop: 30,
+            borderRadius: 21,
+            boxShadow: "0 6px 29px 2px #70f3c555",
+            padding: "38px 24px 25px 24px",
+            marginBottom: 38,
+            marginTop: 35,
+            border: "1px solid #eef6d9",
+            position: "relative",
+            zIndex: 10,
           }}
         >
           <form
@@ -672,16 +766,17 @@ function GoalSaverMainContainer() {
             style={{
               display: "flex",
               flexDirection: "column",
-              gap: 17,
+              gap: 18,
             }}
+            autoComplete="off"
           >
-            <div style={{ fontWeight: 600, fontSize: 18, color: palette.primary }}>
+            <div style={{ fontWeight: 700, fontSize: 20, color: "#637be7", display:"flex", alignItems:"center", gap:8 }}>
               🎯 Add a New Goal
             </div>
             <div
               style={{
                 display: "flex",
-                gap: 12,
+                gap: 13,
                 flexWrap: "wrap",
               }}
             >
@@ -694,14 +789,18 @@ function GoalSaverMainContainer() {
                 required
                 style={{
                   border: `1px solid ${palette.border}`,
-                  borderRadius: 8,
-                  padding: "10px 18px",
+                  borderRadius: 10,
+                  padding: "12px 20px",
                   fontSize: 16,
                   flex: "1 1 180px",
                   background: palette.secondary,
                   color: palette.text,
-                  transition: "border 0.2s",
+                  transition: "border 0.18s",
+                  fontWeight: 500
                 }}
+                maxLength={25}
+                autoCapitalize="sentences"
+                spellCheck={true}
               />
               <input
                 name="targetAmount"
@@ -714,13 +813,14 @@ function GoalSaverMainContainer() {
                 required
                 style={{
                   border: `1px solid ${palette.border}`,
-                  borderRadius: 8,
-                  padding: "10px 18px",
+                  borderRadius: 10,
+                  padding: "12px 20px",
                   fontSize: 16,
-                  width: 140,
+                  width: 145,
                   background: palette.secondary,
                   color: palette.text,
-                  transition: "border 0.2s",
+                  transition: "border 0.18s",
+                  fontWeight: 500
                 }}
               />
               <input
@@ -731,13 +831,14 @@ function GoalSaverMainContainer() {
                 required
                 style={{
                   border: `1px solid ${palette.border}`,
-                  borderRadius: 8,
-                  padding: "10px 18px",
+                  borderRadius: 10,
+                  padding: "12px 20px",
                   fontSize: 16,
-                  width: 190,
+                  width: 180,
                   background: palette.secondary,
                   color: palette.text,
-                  transition: "border 0.2s",
+                  transition: "border 0.18s",
+                  fontWeight: 500
                 }}
               />
               <button
@@ -746,14 +847,14 @@ function GoalSaverMainContainer() {
                   background: palette.accent,
                   color: "#fff",
                   border: "none",
-                  borderRadius: 8,
-                  padding: "11px 24px",
-                  fontWeight: 600,
+                  borderRadius: 10,
+                  padding: "12px 27px",
+                  fontWeight: 700,
                   fontSize: 17,
                   cursor: "pointer",
-                  minWidth: 100,
-                  boxShadow: "0 2px 12px 1px #b592ff30",
-                  transition: "background 0.2s",
+                  minWidth: 66,
+                  boxShadow: "0 2px 12px 0 #b4fedf44",
+                  transition: "background 0.19s"
                 }}
               >
                 Add Goal
@@ -766,20 +867,18 @@ function GoalSaverMainContainer() {
         <section>
           <div
             style={{
-              marginBottom: 18,
-              fontWeight: 600,
+              marginBottom: 21,
+              fontWeight: 700,
               color: palette.primaryDark,
-              fontSize: 20,
+              fontSize: 22,
               display: "flex",
               alignItems: "center",
               gap: 10,
+              letterSpacing: 0.6,
             }}
           >
             <span>
-              <svg height="19" width="19" style={{ marginRight: 5, verticalAlign: "middle" }} viewBox="0 0 20 20">
-                <circle cx="10" cy="10" r="9" fill={palette.accent} />
-                <text x="6" y="15" fontSize="10" fill={palette.primary} fontWeight="bold">₹</text>
-              </svg>
+              <GoalPostIcon size={23}/>
             </span>
             Your Goals
           </div>
@@ -796,15 +895,19 @@ function GoalSaverMainContainer() {
           ) : (
             <div
               style={{
-                padding: 40,
+                padding: 44,
                 textAlign: "center",
-                color: "#7d7d7d",
+                color: "#67aac2",
                 fontStyle: "italic",
-                fontSize: 18,
+                fontSize: 19,
+                borderRadius: 21,
+                background: "rgba(255,255,255,0.97)",
+                marginTop: 24,
+                boxShadow: "0 5px 25px #87e7fd17"
               }}
             >
-              No goals yet. Add your first goal and start saving!
-              <div>🐷</div>
+              No goals yet. Add your first goal and start saving up!
+              <div style={{fontSize: 32, margin: "14px 0 0 0"}}>🐷</div>
             </div>
           )}
         </section>
@@ -817,8 +920,27 @@ function GoalSaverMainContainer() {
           current={savingsFrequency}
         />
       )}
+      {/* Decorative large faint soccer ball (just for fun) */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: "fixed",
+          left: "-60px",
+          bottom: "-70px",
+          zIndex: 1,
+          opacity: 0.09,
+          filter: "blur(3px)",
+          pointerEvents: "none"
+        }}
+      >
+        <svg width="180" height="180" viewBox="0 0 82 82">
+          <circle cx="41" cy="41" r="39" fill="#99aaf6"/>
+          <polygon points="41,16 31,39 41,62 51,39" fill="#fff"/>
+          <circle cx="41" cy="39" r="12" fill="#e1ece0"/>
+        </svg>
+      </div>
     </div>
   );
 }
 
-export default GoalSaverMainContainer;
+export default GoalieMainContainer;
