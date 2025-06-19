@@ -3,9 +3,9 @@ import React, { useState } from "react";
 /**
  * PieChart renders a visually appealing, interactive progress pie or donut chart:
  *  - SVG container and all internal elements are fully transparent (never filled white).
- *  - Only the data arcs are visible; no opaque <rect> or <circle> backgrounds.
- *  - Includes: drop shadow, smooth rounded ends (pie and donut), and lively slice hover/scale animation.
- *  - All backgrounds/fills for SVG and wrapper are removed or set to transparent/none for "floating" look.
+ *  - Only the pie arcs are visible—absolutely no white or opaque backgrounds, SVG <rect>, <circle> with fill, or CSS backgrounds.
+ *  - Includes: soft drop shadow, rounded arc ends, slice hover/scale animation for visual enhancement.
+ *  - All backgrounds/fills for SVG, group wrappers, and CSS are set to "none" or "transparent" for a truly floating pie.
  *
  * Props:
  * @param {Array} [goalSegments] - [{ name, value, color? }]
@@ -152,11 +152,11 @@ function PieChart({
       <div style={{
         position: "relative",
         display: "inline-block",
-        background: "none",
+        background: "none", // enforce transparent container background
         border: "none",
         borderRadius: "50%",
         overflow: "visible",
-        // Custom soft drop shadow for pie lift
+        // Soft drop shadow for visual lift (kept for visual enhancement, not a background)
         boxShadow: "0 8px 32px 0 #8ffcf029, 0 2px 18px 0 #70c6fd19",
         padding: 0,
         transition: "box-shadow 0.32s cubic-bezier(.24,.71,.48,1.38)",
@@ -168,7 +168,7 @@ function PieChart({
           viewBox={`0 0 ${size} ${size}`}
           style={{
             display: "block",
-            background: "none",
+            background: "none", // SVG background always set to transparent
             border: "none",
             borderRadius: "50%",
             filter: "drop-shadow(0 6px 22px #91f1e626)",
@@ -190,7 +190,7 @@ function PieChart({
               pointerEvents: "none"
             }}
           />
-          {/* Subtle transparent highlight */}
+          {/* Subtle transparent highlight (no background fill ever) */}
           <circle
             cx={cx}
             cy={cy}
@@ -360,7 +360,7 @@ function PieChart({
       <div style={{
         position: "relative",
         display: "inline-block",
-        background: "none",
+        background: "none", // always transparent
         border: "none",
         boxShadow: "0 6px 20px 0 #bed4ff20",
         borderRadius: "50%",
@@ -373,7 +373,7 @@ function PieChart({
           viewBox={`0 0 ${size} ${size}`}
           style={{
             display: "block",
-            background: "none",
+            background: "none", // always transparent
             border: "none",
             borderRadius: "50%",
             filter: "drop-shadow(0 3px 15px #90eaea1a)"
@@ -484,7 +484,7 @@ function PieChart({
   return (
     <div style={{
       display: "inline-block",
-      background: "none",
+      background: "none", // always transparent
       border: "none",
       borderRadius: "50%",
       boxShadow: "0 6px 20px 0 #bed4ff20",
@@ -497,7 +497,7 @@ function PieChart({
         viewBox={`0 0 ${size} ${size}`}
         style={{
           display: "block",
-          background: "none",
+          background: "none", // enforce transparent SVG
           borderRadius: "50%",
           filter: "drop-shadow(0 3px 15px #90eaea1a)"
         }}
