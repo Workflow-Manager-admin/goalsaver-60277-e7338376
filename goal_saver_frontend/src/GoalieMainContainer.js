@@ -697,10 +697,39 @@ function GoalieMainContainer() {
             userSelect: "none"
           }}
         >
-          <div style={{ display: "flex", alignItems: "center", gap: 18, width: "100%", justifyContent:"center", position:"relative"}}>
-            <span style={{ fontSize: 34, fontWeight: 800, letterSpacing: 1.2, textShadow: "0 2px 9px #fff47c53" }}>
-              <GoalPostIcon size={34} animated={true} /> Goalie
-              <span style={{ fontWeight: 400, color: palette.accent, marginLeft: 8, fontSize:30 }}>🐷</span>
+          <div style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 24,
+              width: "100%",
+              justifyContent: "center",
+              position: "relative"
+            }}>
+            {/* Large, visually central goalpost icon */}
+            <span
+              style={{
+                display: "flex",
+                alignItems: "center",
+                marginRight: 14,
+                filter: "drop-shadow(0px 0px 13px #ffecc744)",
+                background: "radial-gradient(circle at 64% 30%, #fffad861 70%, #f6df7677 100%)",
+                borderRadius: "53%",
+                padding: 10,
+                boxShadow: "0 8px 28px #ffd25633",
+              }}>
+              <GoalPostIcon size={55} animated={true} />
+            </span>
+            <span style={{
+              fontSize: 39,
+              fontWeight: 850,
+              letterSpacing: 1.5,
+              textShadow: "0 2px 20px #fff47c22",
+              color: "#1D301B",
+              fontFamily: "'Nunito', 'Inter', 'Roboto', 'Helvetica', sans-serif",
+              display: "flex",
+              alignItems: "center"
+            }}>
+              Goalie
             </span>
             {/* Show frequency and change option if set */}
             {savingsFrequency &&
