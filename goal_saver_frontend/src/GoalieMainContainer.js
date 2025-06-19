@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import PieChart from "./PieChart";
 
 // PUBLIC_INTERFACE
 /**
@@ -421,6 +422,12 @@ function GoalieMainContainer() {
       }
     }, [goal.lastContribution]);
 
+    // Pie chart color tunes
+    const pieFg = percent >= 100 ? "#43a75b" : palette.primary;
+    const pieBg = "#e6e7fa";
+    const pieSize = 48;
+    const pieStroke = 8;
+
     return (
       <div
         style={{
@@ -436,27 +443,74 @@ function GoalieMainContainer() {
           opacity: goal.active ? 1 : 0.5,
           position: "relative",
           transform: pop ? "scale(1.03) rotate(-0.4deg)" : "scale(1)",
-          transition: "all 0.32s cubic-bezier(.15,.83,.53,.99)"
+          transition: "all 0.32s cubic-bezier(.15,.83,.53,.99)",
+          cursor: "pointer",
+        }}
+        tabIndex={0}
+        aria-label={`Goal card: ${goal.title} (${percent}% complete)`}
+        onMouseOver={e => {
+          e.currentTarget.style.boxShadow = "0 7px 38px 3px #befff927";
+        }}
+        onMouseOut={e => {
+          e.currentTarget.style.boxShadow = goal.priority
+            ? `0 3px 21px 2px #aacffd23`
+            : palette.shadowCard;
+        }}
+        onFocus={e => {
+          e.currentTarget.style.boxShadow = "0 7px 38px 3px #befff927";
+        }}
+        onBlur={e => {
+          e.currentTarget.style.boxShadow = goal.priority
+            ? `0 3px 21px 2px #aacffd23`
+            : palette.shadowCard;
         }}
       >
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <h3 style={{ margin: 0, fontWeight: 700, fontSize: 22, letterSpacing: 0.5 }}>
-            {goal.title}
-            {goal.priority && (
-              <span
-                title="Priority"
-                style={{
-                  marginLeft: 10,
-                  color: palette.accentAlt,
-                  fontSize: 19,
-                  verticalAlign: "middle",
-                  textShadow: "0 1px 5px #ffd25694"
-                }}
-              >
-                ★
-              </span>
-            )}
-          </h3>
+          <div style={{display: "flex", alignItems: "center", gap: 16}}>
+            {/* Pie chart indicator */}
+            <div
+              style={{
+                marginRight: 4,
+                flex: "none",
+                width: pieSize,
+                height: pieSize,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                background: "#f7fcff",
+                borderRadius: "50%",
+                boxShadow: percent === 100
+                  ? "0 3px 13px #8dfba422"
+                  : "0 2px 9px #ecf7f399",
+                border: percent === 100
+                  ? "2.4px solid #43a75bbb"
+                  : "2.2px solid #e6e7fa",
+                transition: "border .25s, box-shadow .36s",
+                position: "relative"
+              }}
+              title={`${percent}% of goal saved`}
+              aria-label={`Pie progress: ${percent}%`}
+            >
+              <PieChart percent={percent} size={pieSize-4} fgColor={pieFg} bgColor={pieBg} strokeWidth={pieStroke} showLabel={percent>14 || percent===100}/>
+            </div>
+            <h3 style={{ margin: 0, fontWeight: 700, fontSize: 22, letterSpacing: 0.5, display:"flex", alignItems:"center", gap:8 }}>
+              {goal.title}
+              {goal.priority && (
+                <span
+                  title="Priority"
+                  style={{
+                    marginLeft: 7,
+                    color: palette.accentAlt,
+                    fontSize: 19,
+                    verticalAlign: "middle",
+                    textShadow: "0 1px 5px #ffd25694"
+                  }}
+                >
+                  ★
+                </span>
+              )}
+            </h3>
+          </div>
           <div style={{display: "flex", alignItems: "center", gap: 5}}>
             <button
               onClick={() => handleQuickSave(goal.id)}
