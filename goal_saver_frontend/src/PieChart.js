@@ -5,7 +5,7 @@ import React, { useState } from "react";
  *  - A single overall percent (backward compatible)
  *  - OR: Multiple segments (each with { name, value, color? }),
  *        where each segment's sweep is proportional to its value out of the sum of all segment values.
- * 
+ *
  * If 'goalSegments' prop is provided (array of objects), each is a segment:
  *   { name, value, color? } // value: the number used to build arc size (typically percent-of-total progress)
  * If 'goals' is provided with .percent, it assumes percent-of-goal and creates equal sweep, not suitable for real pie.
@@ -32,19 +32,20 @@ function PieChart({
   strokeWidth = 15,
   showLabel = true,
 }) {
+  // PALETTE can be customized to match app style if needed
   const palette = [
-    "#6bbd53", // green
-    "#637be7", // blue/lavender
-    "#ffd768", // yellow
-    "#ffb46b", // orange
-    "#60d0f5", // blue-cyan
-    "#9e66c7", // purple
-    "#ff929c", // pink
-    "#55d69c", // teal
-    "#85a2ec", // light blue
-    "#efb3fa", // pale purple
-    "#43a75b", // dark green
-    "#ffc268", // gold
+    "#6bbd53",
+    "#637be7",
+    "#ffd768",
+    "#ffb46b",
+    "#60d0f5",
+    "#9e66c7",
+    "#ff929c",
+    "#55d69c",
+    "#85a2ec",
+    "#efb3fa",
+    "#43a75b",
+    "#ffc268",
   ];
 
   // Tooltip state
@@ -57,9 +58,8 @@ function PieChart({
   const cy = size / 2;
   const circ = 2 * Math.PI * r;
 
-  // Draw a "true" pie chart if goalSegments is present and nonempty:
+  // --- MAIN PIE SEGMENTS MODE ---
   if (goalSegments && Array.isArray(goalSegments) && goalSegments.length > 0) {
-    // Compute total, then each arc is value/total * 360 deg.
     let total = goalSegments.reduce((sum, seg) => sum + (typeof seg.value === "number" ? seg.value : 0), 0);
     total = total > 0 ? total : 1; // Prevent divide by 0
     let startAngle = 0;
@@ -77,9 +77,8 @@ function PieChart({
       return entry;
     });
 
-    // Helper for SVG arc path (non-donut, real pie, can be used for real sectors if needed)
+    // SVG arc path for pie sectors with ROUNDED (smoothed) corners
     function describeArcPath(startAngle, sweep) {
-      // If sweep is 0, return nothing
       if (sweep <= 0) return "";
       const rad = angle => (Math.PI / 180) * angle;
       const a1 = rad(startAngle);
@@ -89,15 +88,36 @@ function PieChart({
       const x2 = cx + r * Math.cos(a2);
       const y2 = cy + r * Math.sin(a2);
       const largeArc = sweep > 180 ? 1 : 0;
-      return [
-        `M ${cx} ${cy}`,
-        `L ${x1} ${y1}`,
-        `A ${r} ${r} 0 ${largeArc} 1 ${x2} ${y2}`,
-        `Z`,
-      ].join(" ");
+      // Rounded-edges: draw a small circular arc at each end for smoothness, then sector
+      // Fallback to sharp for too short arcs
+      if (sweep > 0 && sweep < 25) {
+        return [
+          `M ${cx} ${cy}`,
+          `L ${x1} ${y1}`,
+          `A ${r} ${r} 0 ${largeArc} 1 ${x2} ${y2}`,
+          "Z"
+        ].join(" ");
+      } else {
+        // Add arc at both ends for rounded corners
+        const cornerR = strokeWidth * 0.75;
+        // Point near arc start (for edge round)
+        const x1c = cx + (r - cornerR) * Math.cos(a1);
+        const y1c = cy + (r - cornerR) * Math.sin(a1);
+        const x2c = cx + (r - cornerR) * Math.cos(a2);
+        const y2c = cy + (r - cornerR) * Math.sin(a2);
+        return [
+          `M ${cx} ${cy}`,
+          `L ${x1} ${y1}`,
+          `A ${r} ${r} 0 ${largeArc} 1 ${x2} ${y2}`,
+          `A ${cornerR} ${cornerR} 0 0 0 ${x2c} ${y2c}`,
+          `A ${r - cornerR} ${r - cornerR} 0 ${largeArc} 0 ${x1c} ${y1c}`,
+          `A ${cornerR} ${cornerR} 0 0 0 ${x1} ${y1}`,
+          "Z"
+        ].join(" ");
+      }
     }
 
-    // Tooltip
+    // Tooltip (unchanged, still visually clean)
     const tooltip = hoverIdx != null && segments[hoverIdx] ? (
       <div
         style={{
@@ -145,25 +165,48 @@ function PieChart({
       </div>
     ) : null;
 
+    // --- RENDER ---
     return (
-      <div style={{ position: "relative", display: "inline-block" }}>
+      <div style={{
+        position: "relative",
+        display: "inline-block",
+        // Remove any forced backgrounds/borders, add soft shadow under the chart for elevation
+        background: "none",
+        border: "none",
+        boxShadow: "0 6px 24px 0 #bed4ff38",
+        borderRadius: "50%",
+        overflow: "visible",
+        padding: 0,
+      }}>
         <svg
           width={size}
           height={size}
           viewBox={`0 0 ${size} ${size}`}
-          style={{ display: "block" }}
+          style={{
+            display: "block",
+            background: "none",
+            border: "none",
+            borderRadius: "50%",
+            // Drop shadow directly on SVG for "floating" look without white box
+            filter: "drop-shadow(0 2px 22px #51e48716) drop-shadow(0 1px 7px #8eaff316)"
+          }}
         >
-          {/* Empty background circle (if incomplete sum) */}
+          {/* Background shadow ring: subtle, behind everything (for floating look) */}
           <circle
             cx={cx}
             cy={cy}
-            r={r}
-            fill="#f7fafc"
-            stroke={bgColor}
-            strokeWidth={strokeWidth}
-            style={{ opacity: 0.68 }}
+            r={r + strokeWidth * 0.28}
+            fill="none"
+            stroke="#fffde8"
+            strokeOpacity="0.10"
+            strokeWidth={strokeWidth * 0.98}
+            style={{
+              filter: "blur(1.7px)",
+              opacity: 0.85,
+              pointerEvents: "none",
+            }}
           />
-          {/* Segments: each is a classic pie piece (sector) */}
+          {/* Segments: each is a classic pie piece (sector), now with smooth transition and rounded/soft edges */}
           {segments.map((seg, idx) => (
             <path
               key={idx}
@@ -171,9 +214,17 @@ function PieChart({
               fill={seg.color}
               style={{
                 cursor: "pointer",
-                opacity: idx === hoverIdx ? 1 : 0.92,
-                filter: idx === hoverIdx ? "drop-shadow(0 0 10px #ffd76897)" : "none",
-                transition: "opacity 0.21s, filter 0.17s"
+                opacity: idx === hoverIdx ? 1 : 0.94,
+                filter: idx === hoverIdx
+                  ? "drop-shadow(0 1px 12px #ffd768b6) drop-shadow(0 0 3px #51e48718)"
+                  : "drop-shadow(0 0 2px #aacff52b)",
+                transition: "opacity 0.19s, filter 0.19s, transform 0.12s",
+                transform: idx === hoverIdx ? "scale(1.035)" : "scale(1)",
+                stroke: "#f9fcfd",
+                strokeWidth: 1.5,
+                // Smoothed edge for modern appeal
+                borderRadius: "16px",
+                willChange: "opacity, filter, transform"
               }}
               tabIndex={0}
               aria-label={`${seg.name}, ${seg.displayPercent || seg.value + "%"}`}
@@ -186,17 +237,21 @@ function PieChart({
               onBlur={() => setHoverIdx(null)}
             />
           ))}
-          {/* Optional donut-ring border for definition */}
+          {/* Soft white highlight ring, for definition—not a box! */}
           <circle
             cx={cx}
             cy={cy}
             r={r}
             fill="none"
             stroke={bgColor}
-            strokeWidth={strokeWidth*0.26}
+            strokeWidth={strokeWidth * 0.18}
+            style={{
+              opacity: 0.31,
+              filter: "blur(0.9px) drop-shadow(0 1px 5px #ffffff16)"
+            }}
           />
-          {/* Label in center */}
-          {showLabel &&
+          {/* Central label */}
+          {showLabel && (
             <text
               x="50%"
               y="50%"
@@ -208,14 +263,15 @@ function PieChart({
               style={{
                 fontFamily: "'Nunito', 'Inter', 'Roboto', Helvetica, Arial, sans-serif",
                 pointerEvents: "none",
-                userSelect: "none"
+                userSelect: "none",
+                filter: "drop-shadow(0 1px 4px #fff)"
               }}
             >
               {segments.length === 1
                 ? (segments[0].displayPercent || (segments[0].value + "%"))
                 : "Goals"}
             </text>
-          }
+          )}
         </svg>
         {/* Tooltip */}
         {tooltip}
@@ -302,13 +358,43 @@ function PieChart({
     ) : null;
 
     return (
-      <div style={{ position: "relative", display: "inline-block" }}>
+      <div style={{
+        position: "relative",
+        display: "inline-block",
+        background: "none",
+        border: "none",
+        boxShadow: "0 6px 24px 0 #bed4ff38",
+        borderRadius: "50%",
+        overflow: "visible",
+        padding: 0,
+      }}>
         <svg
           width={size}
           height={size}
           viewBox={`0 0 ${size} ${size}`}
-          style={{ display: "block" }}
+          style={{
+            display: "block",
+            background: "none",
+            border: "none",
+            borderRadius: "50%",
+            filter: "drop-shadow(0 2px 22px #51e48716) drop-shadow(0 1px 7px #8eaff316)"
+          }}
         >
+          {/* Background shadow ring */}
+          <circle
+            cx={cx}
+            cy={cy}
+            r={r + strokeWidth * 0.28}
+            fill="none"
+            stroke="#fffde8"
+            strokeOpacity="0.10"
+            strokeWidth={strokeWidth * 0.98}
+            style={{
+              filter: "blur(1.7px)",
+              opacity: 0.85,
+              pointerEvents: "none"
+            }}
+          />
           {/* Background circle */}
           <circle
             cx={cx}
@@ -317,7 +403,10 @@ function PieChart({
             fill="none"
             stroke={bgColor}
             strokeWidth={strokeWidth}
-            style={{ opacity: 0.68, transition: "stroke 0.3s" }}
+            style={{
+              opacity: 0.68,
+              transition: "stroke 0.3s"
+            }}
           />
           {/* Segments */}
           {segments.map((seg, idx) => (
@@ -329,9 +418,13 @@ function PieChart({
               fill="none"
               strokeLinecap="round"
               style={{
-                filter: idx === hoverIdx ? "drop-shadow(0 0 10px #ffd76877)" : "none",
+                filter: idx === hoverIdx
+                  ? "drop-shadow(0 1px 12px #ffd768b6) drop-shadow(0 0 3px #51e48718)"
+                  : "drop-shadow(0 0 2px #aacff52b)",
                 opacity: idx === hoverIdx ? 1 : 0.93,
-                transition: "opacity 0.22s, filter 0.14s"
+                transition: "opacity 0.18s, filter 0.11s, transform 0.09s",
+                transform: idx === hoverIdx ? "scale(1.016)" : "scale(1)",
+                willChange: "opacity, filter, transform"
               }}
               onMouseMove={e => {
                 setHoverIdx(idx);
@@ -344,6 +437,19 @@ function PieChart({
               aria-label={`Goal: ${seg.name}, ${seg.pct}%`}
             />
           ))}
+          {/* Soft white highlight ring */}
+          <circle
+            cx={cx}
+            cy={cy}
+            r={r}
+            fill="none"
+            stroke={bgColor}
+            strokeWidth={strokeWidth * 0.18}
+            style={{
+              opacity: 0.31,
+              filter: "blur(0.9px) drop-shadow(0 1px 5px #ffffff16)"
+            }}
+          />
           {/* Central label */}
           {showLabel &&
             <text
@@ -357,7 +463,8 @@ function PieChart({
               style={{
                 fontFamily: "'Nunito', 'Inter', 'Roboto', Helvetica, Arial, sans-serif",
                 pointerEvents: "none",
-                userSelect: "none"
+                userSelect: "none",
+                filter: "drop-shadow(0 1px 4px #fff)"
               }}
             >
               {segments.length === 1
@@ -376,54 +483,108 @@ function PieChart({
   const offset = circ * (1 - pct / 100);
 
   return (
-    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
-      {/* Background arc */}
-      <circle
-        cx={cx}
-        cy={cy}
-        r={r}
-        fill="none"
-        stroke={bgColor}
-        strokeWidth={strokeWidth}
-        style={{ opacity: 0.72 }}
-      />
-      {/* Foreground arc */}
-      <circle
-        cx={cx}
-        cy={cy}
-        r={r}
-        fill="none"
-        stroke={fgColor}
-        strokeWidth={strokeWidth}
-        strokeDasharray={circ}
-        strokeDashoffset={offset}
-        strokeLinecap="round"
-        transform={`rotate(-90 ${cx} ${cy})`}
+    <div style={{
+      display: "inline-block",
+      background: "none",
+      border: "none",
+      borderRadius: "50%",
+      boxShadow: "0 6px 24px 0 #bed4ff38",
+      overflow: "visible",
+      padding: 0,
+    }}>
+      <svg
+        width={size}
+        height={size}
+        viewBox={`0 0 ${size} ${size}`}
         style={{
-          transition: "stroke-dashoffset 0.7s cubic-bezier(.7,0,0,.9)",
-          filter: pct === 100 ? "drop-shadow(0 0 7px #ffe15b66)" : "none"
+          display: "block",
+          background: "none",
+          borderRadius: "50%",
+          filter: "drop-shadow(0 2px 22px #51e48716) drop-shadow(0 1px 7px #8eaff316)"
         }}
-      />
-      {/* Optional percent label in the center */}
-      {showLabel && (
-        <text
-          x="50%"
-          y="50%"
-          textAnchor="middle"
-          dominantBaseline="central"
-          fontSize={size * 0.36}
-          fill={pct === 100 ? "#43a75b" : fgColor}
-          fontWeight={770}
+      >
+        {/* Shadow ring */}
+        <circle
+          cx={cx}
+          cy={cy}
+          r={r + strokeWidth * 0.28}
+          fill="none"
+          stroke="#fffde8"
+          strokeOpacity="0.10"
+          strokeWidth={strokeWidth * 0.98}
           style={{
-            fontFamily: "'Nunito', 'Inter', 'Roboto', Helvetica, Arial, sans-serif",
-            pointerEvents: "none",
-            userSelect: "none"
+            filter: "blur(1.7px)",
+            opacity: 0.82,
+            pointerEvents: "none"
           }}
-        >
-          {pct}%
-        </text>
-      )}
-    </svg>
+        />
+        {/* Background arc */}
+        <circle
+          cx={cx}
+          cy={cy}
+          r={r}
+          fill="none"
+          stroke={bgColor}
+          strokeWidth={strokeWidth}
+          style={{
+            opacity: 0.72
+          }}
+        />
+        {/* Foreground arc with smooth rounded cap and shadow highlight */}
+        <circle
+          cx={cx}
+          cy={cy}
+          r={r}
+          fill="none"
+          stroke={fgColor}
+          strokeWidth={strokeWidth}
+          strokeDasharray={circ}
+          strokeDashoffset={offset}
+          strokeLinecap="round"
+          transform={`rotate(-90 ${cx} ${cy})`}
+          style={{
+            transition: "stroke-dashoffset 0.7s cubic-bezier(.7,0,0,.9)",
+            filter: pct === 100
+              ? "drop-shadow(0 0 13px #ffe15b99) drop-shadow(0 1px 7px #51e48718)"
+              : "drop-shadow(0 0 3px #b7e5ef19)",
+            opacity: 1
+          }}
+        />
+        {/* Soft white highlight ring */}
+        <circle
+          cx={cx}
+          cy={cy}
+          r={r}
+          fill="none"
+          stroke={bgColor}
+          strokeWidth={strokeWidth * 0.18}
+          style={{
+            opacity: 0.26,
+            filter: "blur(0.9px) drop-shadow(0 1px 2px #ffffff22)"
+          }}
+        />
+        {/* Optional percent label in the center */}
+        {showLabel && (
+          <text
+            x="50%"
+            y="50%"
+            textAnchor="middle"
+            dominantBaseline="central"
+            fontSize={size * 0.36}
+            fill={pct === 100 ? "#43a75b" : fgColor}
+            fontWeight={770}
+            style={{
+              fontFamily: "'Nunito', 'Inter', 'Roboto', Helvetica, Arial, sans-serif",
+              pointerEvents: "none",
+              userSelect: "none",
+              filter: "drop-shadow(0 1px 4px #fff)"
+            }}
+          >
+            {pct}%
+          </text>
+        )}
+      </svg>
+    </div>
   );
 }
 
