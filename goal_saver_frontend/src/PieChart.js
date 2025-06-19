@@ -1,13 +1,11 @@
 import React, { useState } from "react";
 
 /**
- * PieChart renders visually appealing, interactive progress pies:
- *  - Main mode: Multiple segments (each with { name, value, color? }), each sweep proportional to its value.
- *  - Legacy: Donut ring using {goals: [{ name, percent, color? }]} or single percent.
- *  - Only SVG arcs (no filled backgrounds!) on a transparent background—so the pie floats visually.
- *  - Effects: gentle drop shadow, rounded segment edges, hover scale/fade effect, smooth transitions, tooltips, a soft highlight, and clean stroke.
- *
- * All backgrounds (SVG, container) removed for true transparency.
+ * PieChart renders a visually appealing, interactive progress pie or donut chart:
+ *  - SVG container and all internal elements are fully transparent (never filled white).
+ *  - Only the data arcs are visible; no opaque <rect> or <circle> backgrounds.
+ *  - Includes: drop shadow, smooth rounded ends (pie and donut), and lively slice hover/scale animation.
+ *  - All backgrounds/fills for SVG and wrapper are removed or set to transparent/none for "floating" look.
  *
  * Props:
  * @param {Array} [goalSegments] - [{ name, value, color? }]
@@ -158,11 +156,11 @@ function PieChart({
         border: "none",
         borderRadius: "50%",
         overflow: "visible",
-        // A floating drop shadow, visual lift, and smooth transition
-        boxShadow: "0 12px 38px 0 #a4ecfb29, 0 2px 24px 0 #8bffb71c",
+        // Custom soft drop shadow for pie lift
+        boxShadow: "0 8px 32px 0 #8ffcf029, 0 2px 18px 0 #70c6fd19",
         padding: 0,
         transition: "box-shadow 0.32s cubic-bezier(.24,.71,.48,1.38)",
-        WebkitTapHighlightColor: "transparent",
+        WebkitTapHighlightColor: "transparent"
       }}>
         <svg
           width={size}
@@ -173,41 +171,41 @@ function PieChart({
             background: "none",
             border: "none",
             borderRadius: "50%",
-            filter: "drop-shadow(0 6px 22px #91f1e626)", // layered shadows, faint glow
-            transition: "filter 0.19s",
+            filter: "drop-shadow(0 6px 22px #91f1e626)",
+            transition: "filter 0.19s"
           }}
         >
-          {/* Background shadow ring—never a filled background! */}
+          {/* Soft transparent shadow ring (no fill, subtle shadow ONLY) */}
           <circle
             cx={cx}
             cy={cy}
             r={r + strokeWidth * 0.26}
             fill="none"
             stroke="#fffde8"
-            strokeOpacity="0.10"
+            strokeOpacity="0.08"
             strokeWidth={strokeWidth * 0.98}
             style={{
-              filter: "blur(1.6px)",
-              opacity: 0.78,
-              pointerEvents: "none",
+              filter: "blur(2px)",
+              opacity: 0.4,
+              pointerEvents: "none"
             }}
           />
-          {/* Soft outer ring, gradient effect with opacity for aesthetics */}
+          {/* Subtle transparent highlight */}
           <circle
             cx={cx}
             cy={cy}
             r={r + strokeWidth * 0.46}
             fill="none"
             stroke="#AEE1F9"
-            strokeOpacity="0.13"
+            strokeOpacity="0.10"
             strokeWidth={strokeWidth * 0.29}
             style={{
-              filter: "blur(2.2px)",
-              opacity: 0.8,
-              pointerEvents: "none",
+              filter: "blur(2px)",
+              opacity: 0.42,
+              pointerEvents: "none"
             }}
           />
-          {/* Segments as pie sectors, hover animates lifting and opacity */}
+          {/* Segments as pie sectors, bold modern drop shadow, rounded smooth ends/hover animation */}
           {segments.map((seg, idx) => (
             <path
               key={idx}
@@ -215,15 +213,15 @@ function PieChart({
               fill={seg.color}
               style={{
                 cursor: "pointer",
-                opacity: idx === hoverIdx ? 1 : 0.94,
+                opacity: idx === hoverIdx ? 1 : 0.93,
                 filter: idx === hoverIdx
-                  ? "drop-shadow(0 2px 23px #ffd768cb) drop-shadow(0 1px 7px #51e48748)"
-                  : "drop-shadow(0 0 2px #aacff52b)",
-                transition: "opacity 0.19s, filter 0.18s, transform 0.18s cubic-bezier(.19,1.08,.53,1.1)",
-                transform: idx === hoverIdx ? "scale(1.04)" : "scale(1)",
+                  ? "drop-shadow(0 6px 33px #ffd768b8) drop-shadow(0 0 16px #51e48744)"
+                  : "drop-shadow(0 1.5px 7.2px #99eddc18)",
+                transition: "opacity 0.20s, filter 0.24s, transform 0.23s cubic-bezier(.19,1.08,.53,1.1)",
+                transform: idx === hoverIdx ? "scale(1.042)" : "scale(1)",
                 stroke: "#f8f9fb",
-                strokeWidth: 1.5,
-                borderRadius: "18px",
+                strokeWidth: 1.0,
+                borderRadius: "28px",
                 willChange: "opacity, filter, transform"
               }}
               tabIndex={0}
@@ -237,7 +235,7 @@ function PieChart({
               onBlur={() => setHoverIdx(null)}
             />
           ))}
-          {/* Subtle soft radial highlight ring */}
+          {/* Subtle soft radial highlight (almost transparent, just visual flair) */}
           <circle
             cx={cx}
             cy={cy}
@@ -246,8 +244,8 @@ function PieChart({
             stroke={bgColor}
             strokeWidth={strokeWidth * 0.18}
             style={{
-              opacity: 0.28,
-              filter: "blur(0.95px) drop-shadow(0 1.5px 6px #fff7e111)",
+              opacity: 0.16,
+              filter: "blur(1.1px) drop-shadow(0 1.5px 7px #fff7e116)",
               pointerEvents: "none"
             }}
           />
@@ -364,7 +362,7 @@ function PieChart({
         display: "inline-block",
         background: "none",
         border: "none",
-        boxShadow: "0 6px 24px 0 #bed4ff38",
+        boxShadow: "0 6px 20px 0 #bed4ff20",
         borderRadius: "50%",
         overflow: "visible",
         padding: 0,
@@ -378,25 +376,25 @@ function PieChart({
             background: "none",
             border: "none",
             borderRadius: "50%",
-            filter: "drop-shadow(0 2px 22px #51e48716) drop-shadow(0 1px 7px #8eaff316)"
+            filter: "drop-shadow(0 3px 15px #90eaea1a)"
           }}
         >
-          {/* Background shadow ring */}
+          {/* Soft transparent shadow ring (no fill, faint shadow ONLY) */}
           <circle
             cx={cx}
             cy={cy}
             r={r + strokeWidth * 0.28}
             fill="none"
             stroke="#fffde8"
-            strokeOpacity="0.10"
+            strokeOpacity="0.08"
             strokeWidth={strokeWidth * 0.98}
             style={{
-              filter: "blur(1.7px)",
-              opacity: 0.85,
+              filter: "blur(1.5px)",
+              opacity: 0.32,
               pointerEvents: "none"
             }}
           />
-          {/* Background circle */}
+          {/* Background ring (none) */}
           <circle
             cx={cx}
             cy={cy}
@@ -405,7 +403,7 @@ function PieChart({
             stroke={bgColor}
             strokeWidth={strokeWidth}
             style={{
-              opacity: 0.68,
+              opacity: 0.23,
               transition: "stroke 0.3s"
             }}
           />
@@ -489,7 +487,7 @@ function PieChart({
       background: "none",
       border: "none",
       borderRadius: "50%",
-      boxShadow: "0 6px 24px 0 #bed4ff38",
+      boxShadow: "0 6px 20px 0 #bed4ff20",
       overflow: "visible",
       padding: 0,
     }}>
@@ -501,25 +499,25 @@ function PieChart({
           display: "block",
           background: "none",
           borderRadius: "50%",
-          filter: "drop-shadow(0 2px 22px #51e48716) drop-shadow(0 1px 7px #8eaff316)"
+          filter: "drop-shadow(0 3px 15px #90eaea1a)"
         }}
       >
-        {/* Shadow ring */}
+        {/* Transparent shadow ring */}
         <circle
           cx={cx}
           cy={cy}
           r={r + strokeWidth * 0.28}
           fill="none"
           stroke="#fffde8"
-          strokeOpacity="0.10"
+          strokeOpacity="0.08"
           strokeWidth={strokeWidth * 0.98}
           style={{
-            filter: "blur(1.7px)",
-            opacity: 0.82,
+            filter: "blur(1.4px)",
+            opacity: 0.26,
             pointerEvents: "none"
           }}
         />
-        {/* Background arc */}
+        {/* Background arc (soft, nearly invisible just for arc contrast) */}
         <circle
           cx={cx}
           cy={cy}
@@ -528,10 +526,10 @@ function PieChart({
           stroke={bgColor}
           strokeWidth={strokeWidth}
           style={{
-            opacity: 0.72
+            opacity: 0.13
           }}
         />
-        {/* Foreground arc with smooth rounded cap and shadow highlight */}
+        {/* Foreground arc with rounded cap, shadow highlight, smooth animation */}
         <circle
           cx={cx}
           cy={cy}
@@ -546,12 +544,12 @@ function PieChart({
           style={{
             transition: "stroke-dashoffset 0.7s cubic-bezier(.7,0,0,.9)",
             filter: pct === 100
-              ? "drop-shadow(0 0 13px #ffe15b99) drop-shadow(0 1px 7px #51e48718)"
-              : "drop-shadow(0 0 3px #b7e5ef19)",
+              ? "drop-shadow(0 0 19px #ffe15b73) drop-shadow(0 1px 7px #51e48722)"
+              : "drop-shadow(0 0 6px #b7e5ef17)",
             opacity: 1
           }}
         />
-        {/* Soft white highlight ring */}
+        {/* Subtle soft highlight ring */}
         <circle
           cx={cx}
           cy={cy}
@@ -560,8 +558,8 @@ function PieChart({
           stroke={bgColor}
           strokeWidth={strokeWidth * 0.18}
           style={{
-            opacity: 0.26,
-            filter: "blur(0.9px) drop-shadow(0 1px 2px #ffffff22)"
+            opacity: 0.09,
+            filter: "blur(1.2px) drop-shadow(0 1px 3px #ffffff14)"
           }}
         />
         {/* Optional percent label in the center */}
