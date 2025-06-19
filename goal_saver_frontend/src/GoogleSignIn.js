@@ -4,24 +4,29 @@ import jwt_decode from "jwt-decode";
 import { getGoogleClientId } from "./env";
 
 /**
- * GoogleSignIn component modularized for easy consumption and styling.
- * Handles Google Sign-In/Sign-Out, exposes authenticated user, token and errors.
- * Integrates with UI by displaying correct state and exposing callbacks.
+ * GoogleSignIn
+ * Modular sign-in component for Google authentication using @react-oauth/google.
+ * Handles login/logout, authentication state, error state, and exposes callbacks for parent/consumer.
+ * 
+ * Reads the Google Client ID from environment variables using getGoogleClientId().
  * 
  * Props:
- *   onSuccess(user, token): callback, receives user info and OAuth token on successful login
- *   onLogout(): callback, called on logout
+ *    onSuccess(user, token): invoked after successful login.
+ *    onLogout(): invoked after logout.
+ * 
+ * Exposes UI for login, and after authentication, user info and a "Sign Out" button.
  */
- // PUBLIC_INTERFACE
+
+// PUBLIC_INTERFACE
 function GoogleSignIn({ onSuccess, onLogout }) {
-  const [googleUser, setGoogleUser] = useState(null);   // User profile (decoded from JWT)
-  const [token, setToken] = useState(null);  // Google access token
+  const [googleUser, setGoogleUser] = useState(null);       // Decoded user profile (JWT)
+  const [token, setToken] = useState(null);                // Google OAuth token (credential)
   const [error, setError] = useState(null);
 
-  // Handler for Google login success
+  // PUBLIC_INTERFACE
   function handleLoginSuccess(credentialResponse) {
     try {
-      // credentialResponse contains 'credential' (JWT) and 'clientId'
+      // Decode JWT credential for user info.
       const user = jwt_decode(credentialResponse.credential);
       setGoogleUser(user);
       setToken(credentialResponse.credential);
@@ -32,12 +37,12 @@ function GoogleSignIn({ onSuccess, onLogout }) {
     }
   }
 
-  // Handler for Google login error
+  // PUBLIC_INTERFACE
   function handleLoginError() {
     setError("Google sign-in failed. Please try again.");
   }
 
-  // Handler for log out
+  // PUBLIC_INTERFACE
   function handleLogout() {
     googleLogout();
     setGoogleUser(null);
@@ -59,16 +64,21 @@ function GoogleSignIn({ onSuccess, onLogout }) {
               size="large"
               logo_alignment="center"
             />
-            {error && <div style={{ color: "#b00020", marginTop: 6, fontSize: 15 }}>{error}</div>}
+            {error && (
+              <div style={{ color: "#b00020", marginTop: 6, fontSize: 15 }}>
+                {error}
+              </div>
+            )}
           </>
         ) : (
-          <div style={{
-            background: "rgba(33,150,243,0.12)",
-            borderRadius: 14,
-            padding: "14px 32px",
-            boxShadow: "0 2px 8px 0 rgba(33,150,243,0.07)",
-            textAlign: "center"
-          }}>
+          <div
+            style={{
+              background: "rgba(33,150,243,0.12)",
+              borderRadius: 14,
+              padding: "14px 32px",
+              boxShadow: "0 2px 8px 0 rgba(33,150,243,0.07)",
+              textAlign: "center"
+            }}>
             <img
               src={googleUser.picture}
               alt={googleUser.name}
