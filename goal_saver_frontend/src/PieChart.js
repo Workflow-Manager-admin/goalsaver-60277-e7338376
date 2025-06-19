@@ -150,14 +150,14 @@ function PieChart({
     // --- RENDER ---
     return (
       <div style={{
+        // Transparent floating pie: remove all backgrounds, border, radii, padding
         position: "relative",
         display: "inline-block",
-        background: "none", // enforce transparent container background
+        background: "transparent",
         border: "none",
-        borderRadius: "50%",
+        borderRadius: 0,
         overflow: "visible",
-        // Soft drop shadow for visual lift (kept for visual enhancement, not a background)
-        boxShadow: "0 8px 32px 0 #8ffcf029, 0 2px 18px 0 #70c6fd19",
+        boxShadow: "0 8px 32px 0 #8ffcf029, 0 2px 18px 0 #70c6fd19", // keep drop shadow for pie lift
         padding: 0,
         transition: "box-shadow 0.32s cubic-bezier(.24,.71,.48,1.38)",
         WebkitTapHighlightColor: "transparent"
@@ -168,9 +168,9 @@ function PieChart({
           viewBox={`0 0 ${size} ${size}`}
           style={{
             display: "block",
-            background: "none", // SVG background always set to transparent
+            background: "transparent", // force transparent SVG
             border: "none",
-            borderRadius: "50%",
+            borderRadius: 0,
             filter: "drop-shadow(0 6px 22px #91f1e626)",
             transition: "filter 0.19s"
           }}
@@ -358,12 +358,13 @@ function PieChart({
 
     return (
       <div style={{
+        // Remove all explicit non-transparent backgrounds, enforce floating transparent pie
         position: "relative",
         display: "inline-block",
-        background: "none", // always transparent
+        background: "transparent",
         border: "none",
         boxShadow: "0 6px 20px 0 #bed4ff20",
-        borderRadius: "50%",
+        borderRadius: 0,
         overflow: "visible",
         padding: 0,
       }}>
@@ -373,9 +374,9 @@ function PieChart({
           viewBox={`0 0 ${size} ${size}`}
           style={{
             display: "block",
-            background: "none", // always transparent
+            background: "transparent",
             border: "none",
-            borderRadius: "50%",
+            borderRadius: 0,
             filter: "drop-shadow(0 3px 15px #90eaea1a)"
           }}
         >
@@ -484,9 +485,9 @@ function PieChart({
   return (
     <div style={{
       display: "inline-block",
-      background: "none", // always transparent
+      background: "transparent",
       border: "none",
-      borderRadius: "50%",
+      borderRadius: 0,
       boxShadow: "0 6px 20px 0 #bed4ff20",
       overflow: "visible",
       padding: 0,
@@ -497,8 +498,8 @@ function PieChart({
         viewBox={`0 0 ${size} ${size}`}
         style={{
           display: "block",
-          background: "none", // enforce transparent SVG
-          borderRadius: "50%",
+          background: "transparent",
+          borderRadius: 0,
           filter: "drop-shadow(0 3px 15px #90eaea1a)"
         }}
       >
