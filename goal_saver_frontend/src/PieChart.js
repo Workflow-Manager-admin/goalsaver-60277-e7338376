@@ -1,20 +1,17 @@
 import React, { useState } from "react";
 
 /**
- * PieChart can render:
- *  - A single overall percent (backward compatible)
- *  - OR: Multiple segments (each with { name, value, color? }),
- *        where each segment's sweep is proportional to its value out of the sum of all segment values.
+ * PieChart renders visually appealing, interactive progress pies:
+ *  - Main mode: Multiple segments (each with { name, value, color? }), each sweep proportional to its value.
+ *  - Legacy: Donut ring using {goals: [{ name, percent, color? }]} or single percent.
+ *  - Only SVG arcs (no filled backgrounds!) on a transparent background—so the pie floats visually.
+ *  - Effects: gentle drop shadow, rounded segment edges, hover scale/fade effect, smooth transitions, tooltips, a soft highlight, and clean stroke.
  *
- * If 'goalSegments' prop is provided (array of objects), each is a segment:
- *   { name, value, color? } // value: the number used to build arc size (typically percent-of-total progress)
- * If 'goals' is provided with .percent, it assumes percent-of-goal and creates equal sweep, not suitable for real pie.
- * If 'percent' prop is provided (legacy compatibility), it renders a classic single arc.
+ * All backgrounds (SVG, container) removed for true transparency.
  *
- * Shows tooltip with name+value on hover for pie segments.
- *
- * @param {Array} [goalSegments] - [{ name, value, color? }]  // value is the percent-of-total-progress or absolute number
- * @param {Array} [goals]        - [{ name, percent, color? }] // fallback for legacy/incomplete mode, not real pie!
+ * Props:
+ * @param {Array} [goalSegments] - [{ name, value, color? }]
+ * @param {Array} [goals]        - [{ name, percent, color? }]
  * @param {number} [percent]
  * @param {number} size
  * @param {string} bgColor
@@ -32,20 +29,10 @@ function PieChart({
   strokeWidth = 15,
   showLabel = true,
 }) {
-  // PALETTE can be customized to match app style if needed
+  // Palette for slices (aesthetic, visually harmonious)
   const palette = [
-    "#6bbd53",
-    "#637be7",
-    "#ffd768",
-    "#ffb46b",
-    "#60d0f5",
-    "#9e66c7",
-    "#ff929c",
-    "#55d69c",
-    "#85a2ec",
-    "#efb3fa",
-    "#43a75b",
-    "#ffc268",
+    "#6bbd53", "#637be7", "#ffd768", "#ffb46b", "#60d0f5", "#9e66c7",
+    "#ff929c", "#55d69c", "#85a2ec", "#efb3fa", "#43a75b", "#ffc268",
   ];
 
   // Tooltip state
@@ -61,7 +48,7 @@ function PieChart({
   // --- MAIN PIE SEGMENTS MODE ---
   if (goalSegments && Array.isArray(goalSegments) && goalSegments.length > 0) {
     let total = goalSegments.reduce((sum, seg) => sum + (typeof seg.value === "number" ? seg.value : 0), 0);
-    total = total > 0 ? total : 1; // Prevent divide by 0
+    total = total > 0 ? total : 1; // Prevent divide by zero
     let startAngle = 0;
     const segments = goalSegments.map((seg, idx) => {
       const sweep = seg.value > 0 ? (seg.value / total) * 360 : 0;
@@ -77,7 +64,7 @@ function PieChart({
       return entry;
     });
 
-    // SVG arc path for pie sectors with ROUNDED (smoothed) corners
+    // SVG pie wedge with rounded edges
     function describeArcPath(startAngle, sweep) {
       if (sweep <= 0) return "";
       const rad = angle => (Math.PI / 180) * angle;
@@ -88,9 +75,8 @@ function PieChart({
       const x2 = cx + r * Math.cos(a2);
       const y2 = cy + r * Math.sin(a2);
       const largeArc = sweep > 180 ? 1 : 0;
-      // Rounded-edges: draw a small circular arc at each end for smoothness, then sector
-      // Fallback to sharp for too short arcs
       if (sweep > 0 && sweep < 25) {
+        // For tiny slices, use sharp corners
         return [
           `M ${cx} ${cy}`,
           `L ${x1} ${y1}`,
@@ -98,9 +84,8 @@ function PieChart({
           "Z"
         ].join(" ");
       } else {
-        // Add arc at both ends for rounded corners
-        const cornerR = strokeWidth * 0.75;
-        // Point near arc start (for edge round)
+        // Smoothed corners
+        const cornerR = strokeWidth * 0.82;
         const x1c = cx + (r - cornerR) * Math.cos(a1);
         const y1c = cy + (r - cornerR) * Math.sin(a1);
         const x2c = cx + (r - cornerR) * Math.cos(a2);
@@ -117,7 +102,7 @@ function PieChart({
       }
     }
 
-    // Tooltip (unchanged, still visually clean)
+    // Tooltip for interactive display
     const tooltip = hoverIdx != null && segments[hoverIdx] ? (
       <div
         style={{
@@ -139,7 +124,6 @@ function PieChart({
           lineHeight: 1.35,
           letterSpacing: 0.16,
           fontFamily: "'Nunito', 'Inter', sans-serif",
-          pointerEvents: "none",
           whiteSpace: "nowrap",
         }}
         aria-live="polite"
@@ -170,13 +154,15 @@ function PieChart({
       <div style={{
         position: "relative",
         display: "inline-block",
-        // Remove any forced backgrounds/borders, add soft shadow under the chart for elevation
         background: "none",
         border: "none",
-        boxShadow: "0 6px 24px 0 #bed4ff38",
         borderRadius: "50%",
         overflow: "visible",
+        // A floating drop shadow, visual lift, and smooth transition
+        boxShadow: "0 12px 38px 0 #a4ecfb29, 0 2px 24px 0 #8bffb71c",
         padding: 0,
+        transition: "box-shadow 0.32s cubic-bezier(.24,.71,.48,1.38)",
+        WebkitTapHighlightColor: "transparent",
       }}>
         <svg
           width={size}
@@ -187,26 +173,41 @@ function PieChart({
             background: "none",
             border: "none",
             borderRadius: "50%",
-            // Drop shadow directly on SVG for "floating" look without white box
-            filter: "drop-shadow(0 2px 22px #51e48716) drop-shadow(0 1px 7px #8eaff316)"
+            filter: "drop-shadow(0 6px 22px #91f1e626)", // layered shadows, faint glow
+            transition: "filter 0.19s",
           }}
         >
-          {/* Background shadow ring: subtle, behind everything (for floating look) */}
+          {/* Background shadow ring—never a filled background! */}
           <circle
             cx={cx}
             cy={cy}
-            r={r + strokeWidth * 0.28}
+            r={r + strokeWidth * 0.26}
             fill="none"
             stroke="#fffde8"
             strokeOpacity="0.10"
             strokeWidth={strokeWidth * 0.98}
             style={{
-              filter: "blur(1.7px)",
-              opacity: 0.85,
+              filter: "blur(1.6px)",
+              opacity: 0.78,
               pointerEvents: "none",
             }}
           />
-          {/* Segments: each is a classic pie piece (sector), now with smooth transition and rounded/soft edges */}
+          {/* Soft outer ring, gradient effect with opacity for aesthetics */}
+          <circle
+            cx={cx}
+            cy={cy}
+            r={r + strokeWidth * 0.46}
+            fill="none"
+            stroke="#AEE1F9"
+            strokeOpacity="0.13"
+            strokeWidth={strokeWidth * 0.29}
+            style={{
+              filter: "blur(2.2px)",
+              opacity: 0.8,
+              pointerEvents: "none",
+            }}
+          />
+          {/* Segments as pie sectors, hover animates lifting and opacity */}
           {segments.map((seg, idx) => (
             <path
               key={idx}
@@ -216,14 +217,13 @@ function PieChart({
                 cursor: "pointer",
                 opacity: idx === hoverIdx ? 1 : 0.94,
                 filter: idx === hoverIdx
-                  ? "drop-shadow(0 1px 12px #ffd768b6) drop-shadow(0 0 3px #51e48718)"
+                  ? "drop-shadow(0 2px 23px #ffd768cb) drop-shadow(0 1px 7px #51e48748)"
                   : "drop-shadow(0 0 2px #aacff52b)",
-                transition: "opacity 0.19s, filter 0.19s, transform 0.12s",
-                transform: idx === hoverIdx ? "scale(1.035)" : "scale(1)",
-                stroke: "#f9fcfd",
+                transition: "opacity 0.19s, filter 0.18s, transform 0.18s cubic-bezier(.19,1.08,.53,1.1)",
+                transform: idx === hoverIdx ? "scale(1.04)" : "scale(1)",
+                stroke: "#f8f9fb",
                 strokeWidth: 1.5,
-                // Smoothed edge for modern appeal
-                borderRadius: "16px",
+                borderRadius: "18px",
                 willChange: "opacity, filter, transform"
               }}
               tabIndex={0}
@@ -237,7 +237,7 @@ function PieChart({
               onBlur={() => setHoverIdx(null)}
             />
           ))}
-          {/* Soft white highlight ring, for definition—not a box! */}
+          {/* Subtle soft radial highlight ring */}
           <circle
             cx={cx}
             cy={cy}
@@ -246,8 +246,9 @@ function PieChart({
             stroke={bgColor}
             strokeWidth={strokeWidth * 0.18}
             style={{
-              opacity: 0.31,
-              filter: "blur(0.9px) drop-shadow(0 1px 5px #ffffff16)"
+              opacity: 0.28,
+              filter: "blur(0.95px) drop-shadow(0 1.5px 6px #fff7e111)",
+              pointerEvents: "none"
             }}
           />
           {/* Central label */}
