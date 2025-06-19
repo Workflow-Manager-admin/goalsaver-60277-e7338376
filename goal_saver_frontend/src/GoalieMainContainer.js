@@ -272,19 +272,43 @@ function GoalieMainContainer() {
     );
   }
 
-  // Goal post SVG component
-  function GoalPostIcon({ size = 29, animated }) {
+  // Goal post SVG component: a clear, visually appealing soccer goal
+  function GoalPostIcon({ size = 48, animated }) {
+    // By default, slightly bigger for more brand impact in header
     return (
-      <span style={{display:"inline-block"}}>
-        <svg width={size} height={size} viewBox="0 0 40 40" style={{
-          verticalAlign: "middle",
-          ...(animated ? {transform: "translateY(-1.5px) scale(1.07)", transition: "all .18s"} : {}),
-        }}>
-          <rect x="10" y="7" width="3.5" height="23" rx="1.25" fill="#8CBDFF"/>
-          <rect x="26.5" y="7" width="3.5" height="23" rx="1.25" fill="#8CBDFF"/>
-          <rect x="10" y="7" width="20" height="3.7" rx="1" fill="#FFDF5B"/>
-          <rect x="17.7" y="25.7" width="5.6" height="2.3" rx="1.1" fill="#FFD34E"/>
-          <circle cx="20" cy="28.5" r="2.4" fill="#43A75B" stroke="#89E37A" strokeWidth="1.1"/>
+      <span style={{ display: "inline-block" }}>
+        <svg
+          width={size}
+          height={size * 0.52}
+          viewBox="0 0 130 68"
+          style={{
+            verticalAlign: "middle",
+            aspectRatio: "130/68",
+            ...(animated ? { transform: "translateY(-1.5px) scale(1.06)", transition: "all .19s" } : {}),
+          }}
+          aria-hidden="true"
+        >
+          {/* Main goal post frame */}
+          <rect x="6" y="8" width="18" height="50" rx="3.8" fill="#8CBDFF" />
+          <rect x="106" y="8" width="18" height="50" rx="3.8" fill="#8CBDFF" />
+          <rect x="16" y="4" width="98" height="14" rx="5.6" fill="#FFE15B" stroke="#B4B299" strokeWidth="1.7"/>
+          
+          {/* Net: horizontal lines */}
+          <rect x="34" y="20" width="62" height="2.3" rx="1" fill="#dbecfb" opacity="0.75"/>
+          <rect x="34" y="28" width="62" height="2.3" rx="1" fill="#dbecfb" opacity="0.75"/>
+          <rect x="34" y="36" width="62" height="2.3" rx="1" fill="#dbecfb" opacity="0.75"/>
+          <rect x="34" y="44" width="62" height="2.3" rx="1" fill="#dbecfb" opacity="0.75"/>
+          {/* Net: vertical lines */}
+          <rect x="36" y="18" width="2.3" height="30" rx="1" fill="#dbecfb" opacity="0.7"/>
+          <rect x="48" y="18" width="2.3" height="30" rx="1" fill="#dbecfb" opacity="0.7"/>
+          <rect x="60" y="18" width="2.3" height="30" rx="1" fill="#dbecfb" opacity="0.7"/>
+          <rect x="72" y="18" width="2.3" height="30" rx="1" fill="#dbecfb" opacity="0.7"/>
+          <rect x="84" y="18" width="2.3" height="30" rx="1" fill="#dbecfb" opacity="0.7"/>
+          <rect x="96" y="18" width="2.3" height="30" rx="1" fill="#dbecfb" opacity="0.7"/>
+          {/* Goal field/ground shadow */}
+          <ellipse cx="65" cy="62" rx="55" ry="6" fill="#d0ffe9" opacity="0.25"/>
+          {/* Goal "back" post */}
+          <rect x="24" y="55" width="80" height="3.6" rx="2" fill="#70aadf" opacity="0.59"/>
         </svg>
       </span>
     );
