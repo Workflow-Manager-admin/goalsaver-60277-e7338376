@@ -974,9 +974,12 @@ function GoalieMainContainer() {
             }}
           >
             <PieChart
-              percent={overallPercent}
+              goals={goals.filter(g => g.targetAmount > 0).map((g, i) => ({
+                name: g.title,
+                percent: Math.round(100 * Math.min(1, g.savedAmount / g.targetAmount)),
+                // Palette is matched to PieChart, fallback is branding accent
+              }))}
               size={135}
-              fgColor={overallPercent === 100 ? "#43a75b" : palette.accent}
               bgColor={palette.progressBg}
               strokeWidth={15}
               showLabel={true}
